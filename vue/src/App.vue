@@ -7,3 +7,16 @@
     <router-view />
   </div>
 </template>
+
+<style>
+#nav {
+  background-color: blue;
+  color: white;
+  text-align: right;
+  padding: 20px 0px;
+}
+
+#nav a{
+color: white;
+}
+</style>

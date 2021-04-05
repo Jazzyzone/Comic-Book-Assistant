@@ -5,7 +5,8 @@
       <div class="alert alert-danger" role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
-      <label for="username" class="sr-only">Username</label>
+      <div>
+      <label for="username" class="sr-only">Username:</label>
       <input
         type="text"
         id="username"
@@ -15,7 +16,8 @@
         required
         autofocus
       />
-      <label for="password" class="sr-only">Password</label>
+      </div>
+      <label for="password" class="sr-only">Password:</label>
       <input
         type="password"
         id="password"
@@ -32,6 +34,20 @@
         v-model="user.confirmPassword"
         required
       />
+      
+      <p>Select account type:</p>
+      <div>
+        <input type="radio" id="standard" name="accountType" value="standard"
+              checked v-model="user.role">
+        <label for="standard">Standard User</label>
+      </div>
+
+      <div>
+        <input type="radio" id="Premium" name="accountType" value="premium" v-model="user.role">
+        <label for="premium">Premium User</label>
+      </div>
+
+
       <router-link :to="{ name: 'login' }">Have an account?</router-link>
       <button class="btn btn-lg btn-primary btn-block" type="submit">
         Create Account
@@ -51,7 +67,7 @@ export default {
         username: '',
         password: '',
         confirmPassword: '',
-        role: 'user',
+        role: 'standard'
       },
       registrationErrors: false,
       registrationErrorMsg: 'There were problems registering this user.',

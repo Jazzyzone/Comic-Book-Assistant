@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Logout from '../views/Logout.vue'
 import Register from '../views/Register.vue'
 import store from '../store/index'
+import UserCollections from '../views/UserCollections'
 
 Vue.use(Router)
 
@@ -51,6 +52,14 @@ const router = new Router({
       component: Register,
       meta: {
         requiresAuth: false
+      }
+    },
+    {
+      path: "/:username/Collections",
+      name: "userCollections",
+      component: UserCollections,
+      meta: {
+        requiresAuth: true
       }
     },
   ]
