@@ -14,6 +14,7 @@ import com.techelevator.dao.CollectionDAO;
 import com.techelevator.dao.UserDAO;
 import com.techelevator.model.CollectionDTO;
 import com.techelevator.model.ComicDTO;
+import com.techelevator.model.CreateCollectionDTO;
 
 
 @RestController
@@ -26,9 +27,7 @@ public class CollectionController {
 		this.collectionDAO = collectionDAO;
 		this.userDAO = userDAO;
 	}
-	/*
-	 * Do I need individual comic endpoints for add and up
-	 */
+
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value = "collection/{id}", method = RequestMethod.GET )
     public CollectionDTO getCollection(@PathVariable long id , Principal principal) {
@@ -39,26 +38,46 @@ public class CollectionController {
 		}
     	return collectionDAO.getCollection(id,userID);
     }
+	//Creates a blank collection is my guess, maybe it can pass in a list of comics already attached but tbh I don't think that is how I will handle it.
 	@RequestMapping(value = "collection/", method = RequestMethod.POST )
-    public boolean addCollection(@RequestBody CollectionDTO collection, Principal principal) {
+    public boolean addCollection(@RequestBody CreateCollectionDTO collection, Principal principal) {
 
 		int userID = userDAO.findIdByUsername(principal.getName());
     	return collectionDAO.addCollection(collection,userID);
     }
+	/*
+	 * This will just update the name and the privacy settings of the Collection
+	 */
 	@RequestMapping(value = "collection/{id}", method = RequestMethod.PUT )
-    public boolean updateCollection(@RequestBody CollectionDTO collection, @PathVariable long id ,Principal principal) {
+    public boolean updateCollection(@RequestBody CreateCollectionDTO collection, @PathVariable long id ,Principal principal) {
 		int userID = userDAO.findIdByUsername(principal.getName());
     	return collectionDAO.updateCollection(collection,userID);
     }
+    //Deletes the whole collection and removes references to comics, if the comics are orphaned then we remove the comics from our db
 	@RequestMapping(value = "collection/{id}", method = RequestMethod.DELETE)
     public boolean deleteCollection(@PathVariable long id  ,Principal principal) {
 		int userID = userDAO.findIdByUsername(principal.getName());
     	return collectionDAO.deleteCollection(id,userID);
 	}
+	//Anyone can look at comic details? Might end up unused since we can get better info from the Marvel API
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value = "comic/{id}", method = RequestMethod.GET)
 	public ComicDTO getComic(@PathVariable long id) {
 		return collectionDAO.getComic(id);
+	}
+	
+	
+	//Removes a comic from the Collection and if the comic is orphaned and no longer referenced removes it's data as well
+	@RequestMapping(value = "collection/{collectionID}/comic/{comicID}", method = RequestMethod.DELETE)
+	public boolean removeComic(@PathVariable long collectionID, @PathVariable long comicID,Principal principal) {
+		int userID = userDAO.findIdByUsername(principal.getName());
+		return collectionDAO.removeComic(collectionID,comicID,userID);
+	}
+	//Add a comic to the collection, checking first if there is information on the comic before adding it to our table.
+	@RequestMapping(value = "collection/{collectionID}/comic/", method = RequestMethod.POST)
+	public boolean addComic(@PathVariable long collectionID, @RequestBody ComicDTO comic,Principal principal) {
+		int userID = userDAO.findIdByUsername(principal.getName());
+		return collectionDAO.addComicToCollection(collectionID,comic,userID);
 	}
 	/*
 	 * Both of these two will probably change substantially once I get back the data, I'm thinking a hashmap that ties the search criteria to a value but we shall see.
