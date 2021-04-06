@@ -3,7 +3,7 @@
 //them to ComicsList
 
 <template>
-  <h1>My Comic Book Collection</h1>
+  <h1>Comic Book Collections</h1>
 
 </template>
 
