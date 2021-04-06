@@ -68,9 +68,8 @@ CREATE TABLE comics (
 
 	comic_id int DEFAULT nextval('seq_comic_id'::regclass) NOT NULL,
 	title varchar(50) NOT NULL,
-	issue_num int NOT NULL,
-	series varchar(50) NOT NULL,
-	img varchar(200) NOT NULL,
+	issue_num int,
+	img varchar(200),
 	
 	CONSTRAINT PK_comics PRIMARY KEY (comic_id)
 );
@@ -97,8 +96,7 @@ CREATE TABLE characters (
 CREATE TABLE creator (
 
 	creator_id int DEFAULT nextval('seq_creator_id'::regclass) NOT NULL,
-	first_name varchar(50)NOT NULL,
-	last_name varchar(50) NOT NULL,
+	full_name varchar(100)NOT NULL,
 	
         CONSTRAINT PK_creator PRIMARY KEY (creator_id)
 	--CONSTRAINT FK_accounts_user FOREIGN KEY (user_id) REFERENCES users (user_id)

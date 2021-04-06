@@ -13,6 +13,7 @@ GRANT ALL
 ON ALL SEQUENCES IN SCHEMA public
 TO final_capstone_owner;
 
+
 CREATE USER final_capstone_appuser
 WITH PASSWORD 'finalcapstone';
 
