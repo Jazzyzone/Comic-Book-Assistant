@@ -1,19 +1,18 @@
 BEGIN TRANSACTION;
 
+DROP TABLE IF EXISTS collections_user;
+DROP TABLE IF EXISTS collections_comics;
+DROP TABLE IF EXISTS characters_comics;
+DROP TABLE IF EXISTS creator_comics;
+DROP TABLE IF EXISTS series_comics;
+DROP TABLE IF EXISTS publisher_comics;
+
 DROP TABLE IF EXISTS comics;
 DROP TABLE IF EXISTS collections;
 DROP TABLE IF EXISTS characters;
 DROP TABLE IF EXISTS creator;
 DROP TABLE IF EXISTS series;
 DROP TABLE IF EXISTS publisher;
-
-DROP TABLE IF EXISTS collections_user;
-DROP TABLE IF EXISTS collections_comics;
-DROP TABLE IF EXISTS characters_comics;
-DROP TABLE IF EXISTS creator_comics;
-DROP TABLE IF EXISTS series_comics;
-DROP TABLE IF EXISTS characters_series;
-
 
 DROP SEQUENCE IF EXISTS seq_comic_id;
 DROP SEQUENCE IF EXISTS seq_collection_id;
@@ -175,16 +174,16 @@ CREATE TABLE collections_user (
         
 );
 
-/*CREATE TABLE characters_series (
+CREATE TABLE publisher_comics (
 
-        character_id int NOT NULL,
-        series_id int NOT NULL,
+        publisher_id int NOT NULL,
+        comic_id int NOT NULL,
         
-        CONSTRAINT PK_characters_series PRIMARY KEY (character_id, series_id),
-        CONSTRAINT FK_charactars_series_characters FOREIGN KEY (character_id) REFERENCES characters(character_id),
-        CONSTRAINT FK_characters_series_series FOREIGN KEY (series_id) REFERENCES series(series_id)      
+        CONSTRAINT PK_publisher_comic PRIMARY KEY (publisher_id, comic_id),
+        CONSTRAINT FK_publisher_comic_publisher FOREIGN KEY (publisher_id) REFERENCES publisher(publisher_id),
+        CONSTRAINT FK_publisher_comic_comic FOREIGN KEY (comic_id) REFERENCES comics(comic_id)      
 );
-*/
+
 
 --ROLLBACK;
 

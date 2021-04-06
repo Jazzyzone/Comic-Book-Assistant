@@ -2,33 +2,19 @@ package com.techelevator.model;
 
 public class CollectionDTO {
 	private String name;
-	private long collectionID;
 	private long userID;
-	private boolean isPublic;
-	private ComicDTO[] comics;
+	private boolean isPrivate;
 	public long getUserID() {
 		return userID;
 	}
 	public void setUserID(long userID) {
 		this.userID = userID;
 	}
-	public boolean isPublic() {
-		return isPublic;
+	public boolean isPrivate() {
+		return isPrivate;
 	}
-	public void setPublic(boolean isPublic) {
-		this.isPublic = isPublic;
-	}
-	public ComicDTO[] getComics() {
-		return comics;
-	}
-	public void setComics(ComicDTO[] comics) {
-		this.comics = comics;
-	}
-	public long getCollectionID() {
-		return collectionID;
-	}
-	public void setCollectionID(long collectionID) {
-		this.collectionID = collectionID;
+	public void setPrivate(boolean isPrivate) {
+		this.isPrivate = isPrivate;
 	}
 	public String getName() {
 		return name;

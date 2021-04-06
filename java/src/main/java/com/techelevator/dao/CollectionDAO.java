@@ -1,12 +1,16 @@
 package com.techelevator.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
 import com.techelevator.model.CollectionDTO;
 import com.techelevator.model.ComicDTO;
-import com.techelevator.model.CreateCollectionDTO;
+import com.techelevator.model.FullCollectionDTO;
 
 @Service
 public class CollectionDAO {
@@ -15,8 +19,22 @@ public class CollectionDAO {
     public CollectionDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-    
-    public CollectionDTO getCollection(long id,int userID) {
+    public List<CollectionDTO> getCollectionList(int userID,int collectionUserID) {
+    	
+    	List<CollectionDTO> collectionDTOs = new ArrayList<>();
+		String sqlFindAccountID = 
+				"SELECT c.* FROM collections c "
+				+ "			INNER JOIN collections_user cu ON cu.collection_id = c.collection_id "
+				+ "			WHERE cu.user_id = ? ";
+		SqlRowSet collectionRow = jdbcTemplate.queryForRowSet(sqlFindAccountID, collectionUserID);
+		while (collectionRow.next()) {
+			collectionDTOs.add(mapRowToCollection(collectionRow));
+		}
+
+
+    	return collectionDTOs;
+    }
+    public FullCollectionDTO getCollection(long id,int userID) {
     	//TODO: unstub this
     	ComicDTO com = new ComicDTO();
     	com.setName("Amazing Testor");
@@ -34,7 +52,7 @@ public class CollectionDAO {
     	com2.setIssueNumber(405);
     	com2.setPublisher("TE Comics");
     	com2.setThumbnailLink("none");
-    	CollectionDTO col = new CollectionDTO();
+    	FullCollectionDTO col = new FullCollectionDTO();
     	col.setName("Test Collection");
     	col.setComics(new ComicDTO[] {com,com2});
     	col.setPublic(false);
@@ -115,15 +133,25 @@ public class CollectionDAO {
      * @param userID
      * @return
      */
-    public boolean addCollection(CreateCollectionDTO collection,int userID){
+    public boolean addCollection(CollectionDTO collection,int userID){
     	//TODO: unstub
-    	if(collection.getUserID()!= ((long) userID))
-    		return false;
+    	//if(collection.getUserID()!= ((long) userID))
+    		//return false;
     	//Add empty Collection
 
     	
-    	
-    	
+    	String sqlInsertCollection = "INSERT INTO collections (user_id,name,private) VALUES (?,?,?) RETURNING collection_id";
+    	String sqlInsertCollectionUser = "INSERT INTO collections_user (user_id,collection_id) VALUES (?,?)";
+    	try {
+    
+    		SqlRowSet row = jdbcTemplate.queryForRowSet(sqlInsertCollection, collection.getUserID() ,collection.getName(),collection.isPrivate());
+    		if(row.next()) {
+    			jdbcTemplate.update(sqlInsertCollectionUser,collection.getUserID(),row.getInt("collection_id"));
+    		}
+    	}catch(DataAccessException ex) {
+    		ex.printStackTrace();
+    		return false;
+    	}    	
     	return true;
     }
     /***
@@ -132,7 +160,7 @@ public class CollectionDAO {
      * @param userID
      * @return
      */
-    public boolean updateCollection(CreateCollectionDTO collection,int userID){
+    public boolean updateCollection(CollectionDTO collection,int userID){
     	//TODO: unstub
     	return true;
     }
@@ -196,7 +224,11 @@ public class CollectionDAO {
     }
     private CollectionDTO mapRowToCollection(SqlRowSet comicRow) {
     	//TODO: Expand Stub
-    	return null;
+    	CollectionDTO collection = new CollectionDTO();
+    	collection.setName(comicRow.getString("name"));
+    	collection.setUserID(comicRow.getInt("user_id"));
+    	collection.setPrivate(comicRow.getBoolean("private"));
+    	return collection;
     }
 
 	

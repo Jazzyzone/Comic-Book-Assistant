@@ -1,6 +1,7 @@
 package com.techelevator.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techelevator.dao.CollectionDAO;
 import com.techelevator.dao.UserDAO;
-import com.techelevator.model.CollectionDTO;
 import com.techelevator.model.ComicDTO;
-import com.techelevator.model.CreateCollectionDTO;
+import com.techelevator.model.CollectionDTO;
+import com.techelevator.model.FullCollectionDTO;
 
 
 @RestController
@@ -27,10 +28,25 @@ public class CollectionController {
 		this.collectionDAO = collectionDAO;
 		this.userDAO = userDAO;
 	}
+	@RequestMapping(value = "collection/user/{user}", method = RequestMethod.GET )
+    public List<CollectionDTO> getCollections(@PathVariable String user , Principal principal) {
+		//userID of -1 is a anon user
+		int userID = -1;
+		if(principal != null) {
+			userID = userDAO.findIdByUsername(principal.getName());
+		}
+		int collectionUserID = -1;
+		try {
+			collectionUserID = userDAO.findIdByUsername(principal.getName());
+		}catch(RuntimeException rex) {
+			collectionUserID = -1;
+		}
 
+    	return collectionDAO.getCollectionList(userID,collectionUserID);
+    }
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value = "collection/{id}", method = RequestMethod.GET )
-    public CollectionDTO getCollection(@PathVariable long id , Principal principal) {
+    public FullCollectionDTO getCollection(@PathVariable long id , Principal principal) {
 		//userID of -1 is a anon user
 		int userID = -1;
 		if(principal != null) {
@@ -40,7 +56,7 @@ public class CollectionController {
     }
 	//Creates a blank collection is my guess, maybe it can pass in a list of comics already attached but tbh I don't think that is how I will handle it.
 	@RequestMapping(value = "collection/", method = RequestMethod.POST )
-    public boolean addCollection(@RequestBody CreateCollectionDTO collection, Principal principal) {
+    public boolean addCollection(@RequestBody CollectionDTO collection, Principal principal) {
 
 		int userID = userDAO.findIdByUsername(principal.getName());
     	return collectionDAO.addCollection(collection,userID);
@@ -49,7 +65,7 @@ public class CollectionController {
 	 * This will just update the name and the privacy settings of the Collection
 	 */
 	@RequestMapping(value = "collection/{id}", method = RequestMethod.PUT )
-    public boolean updateCollection(@RequestBody CreateCollectionDTO collection, @PathVariable long id ,Principal principal) {
+    public boolean updateCollection(@RequestBody CollectionDTO collection, @PathVariable long id ,Principal principal) {
 		int userID = userDAO.findIdByUsername(principal.getName());
     	return collectionDAO.updateCollection(collection,userID);
     }
@@ -71,6 +87,7 @@ public class CollectionController {
 	@RequestMapping(value = "collection/{collectionID}/comic/{comicID}", method = RequestMethod.DELETE)
 	public boolean removeComic(@PathVariable long collectionID, @PathVariable long comicID,Principal principal) {
 		int userID = userDAO.findIdByUsername(principal.getName());
+	
 		return collectionDAO.removeComic(collectionID,comicID,userID);
 	}
 	//Add a comic to the collection, checking first if there is information on the comic before adding it to our table.
