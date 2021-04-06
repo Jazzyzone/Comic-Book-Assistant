@@ -108,7 +108,7 @@ CREATE TABLE series (
 
 	series_id int DEFAULT nextval('seq_series_id'::regclass) NOT NULL,
 	title varchar(50) NOT NULL,
-	rating varchar(50) NOT NULL,
+	--rating varchar(50) NOT NULL,
 	
 	CONSTRAINT PK_series PRIMARY KEY (series_id)
 	
@@ -175,7 +175,7 @@ CREATE TABLE collections_user (
         
 );
 
-CREATE TABLE characters_series (
+/*CREATE TABLE characters_series (
 
         character_id int NOT NULL,
         series_id int NOT NULL,
@@ -184,7 +184,7 @@ CREATE TABLE characters_series (
         CONSTRAINT FK_charactars_series_characters FOREIGN KEY (character_id) REFERENCES characters(character_id),
         CONSTRAINT FK_characters_series_series FOREIGN KEY (series_id) REFERENCES series(series_id)      
 );
-
+*/
 
 --ROLLBACK;
 
