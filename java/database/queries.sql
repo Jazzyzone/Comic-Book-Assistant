@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS characters_comics;
 DROP TABLE IF EXISTS creator_comics;
 DROP TABLE IF EXISTS series_comics;
 DROP TABLE IF EXISTS publisher_comics;
+DROP TABLE IF EXISTS characters_series;
 
 DROP TABLE IF EXISTS comics;
 DROP TABLE IF EXISTS collections;
