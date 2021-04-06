@@ -3,8 +3,10 @@
 //them to ComicsList
 
 <template>
-  <h1>Comic Book Collections</h1>
-
+  <div>
+      
+  </div>
+    
 </template>
 
 <script>

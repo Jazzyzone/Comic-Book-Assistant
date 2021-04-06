@@ -1,5 +1,7 @@
 <template>
-  <div id="login" class="text-center">
+<div class="card text-center mx-auto bg-light" >
+  <div class="card-body">
+    <div id="login" class="text-center">
     <form class="form-signin" @submit.prevent="login">
       <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
       <div
@@ -36,9 +38,12 @@
       />
       </div>
       <router-link :to="{ name: 'register' }">Need an account?</router-link>
-      <button type="submit">Sign in</button>
+      <br>
+      <button type="submit" class="btn btn-outline-primary">Sign in</button>
     </form>
   </div>
+  </div>
+</div>
 </template>
 
 <script>
@@ -78,3 +83,27 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+
+/* .card-body{
+  justify-content: center;
+  margin: 0 auto;
+  line-height: 50px;
+} */
+.card {
+  margin-top: 200px;
+  max-width: 500px;
+}
+.form-signin {
+  max-width: 450px;
+  justify-content: center;
+  margin: 0 auto;
+  line-height: 50px;
+  /* margin-top: 100px; */
+}
+.form-signin input {
+  margin-bottom: 5px;
+  
+}
+</style>
