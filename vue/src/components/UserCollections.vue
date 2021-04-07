@@ -48,11 +48,12 @@ export default {
             collections: []
         };
     },
-     mounted() {
+     created() {
          ComicServices.getAllCollections(this.$store.state.user.username).then(response => {
              this.collections = response.data;
          });
     },
+    
     // methods: {
     //     retrieveCollections() {
     //         this.
