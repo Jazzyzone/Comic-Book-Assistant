@@ -11,7 +11,7 @@
         v-for="collection in collections"
         v-bind:key="collection.collection_id"
         >
-        <div  v-if="$store.state.token != ''">
+        <div>
             {{collection.name}}
         </div>
         </div>
@@ -48,7 +48,7 @@ export default {
             collections: []
         };
     },
-     created() {
+     mounted() {
          ComicServices.getAllCollections(this.$store.state.user.username).then(response => {
              this.collections = response.data;
          });
