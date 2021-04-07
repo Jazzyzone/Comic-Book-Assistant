@@ -9,9 +9,11 @@
     <div class="collections">
         <div class="collection"
         v-for="collection in collections"
-        v-bind:key="collection.id"
+        v-bind:key="collection.collection_id"
         >
+        <div  v-if="$store.state.token != ''">
             {{collection.name}}
+        </div>
         </div>
     </div>
 
@@ -37,15 +39,20 @@
 </template>
 
 <script>
+
+import ComicServices from '../services/ComicServices';
+
 export default {
     data() {
         return {
             collections: []
-        }
-    }
-    // created() {
-    //     this.retrieveCollections();
-    // },
+        };
+    },
+     created() {
+         ComicServices.getAllCollections(1).then(response => {
+             this.collections = response.data;
+         });
+    },
     // methods: {
     //     retrieveCollections() {
     //         this.
