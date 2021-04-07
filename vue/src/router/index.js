@@ -59,7 +59,7 @@ const router = new Router({
       name: "userCollections",
       component: UserCollections,
       meta: {
-        requiresAuth: true
+        requiresAuth: false
       }
     },
   ]
