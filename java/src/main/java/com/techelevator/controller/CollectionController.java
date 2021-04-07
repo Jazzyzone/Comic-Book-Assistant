@@ -28,6 +28,15 @@ public class CollectionController {
 		this.collectionDAO = collectionDAO;
 		this.userDAO = userDAO;
 	}
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value = "collection/", method = RequestMethod.GET)
+	public List<CollectionDTO> getAllCollections(Principal principal){
+		if(principal!=null) {
+			return collectionDAO.getAllCollectionList();
+		}else {
+			return collectionDAO.getAllPublicCollectionList();
+		}
+	}
 	@RequestMapping(value = "collection/user/{user}", method = RequestMethod.GET )
     public List<CollectionDTO> getCollections(@PathVariable String user , Principal principal) {
 		//userID of -1 is a anon user

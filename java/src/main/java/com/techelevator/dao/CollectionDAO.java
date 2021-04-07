@@ -20,7 +20,31 @@ public class CollectionDAO {
 	public CollectionDAO(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
+	public List<CollectionDTO> getAllPublicCollectionList() {
 
+		List<CollectionDTO> collectionDTOs = new ArrayList<>();
+		String sqlFindAccountID = "SELECT c.* FROM collections c "
+				+ "			INNER JOIN collections_user cu ON cu.collection_id = c.collection_id "
+				+ "			WHERE c.private = false ";
+		SqlRowSet collectionRow = jdbcTemplate.queryForRowSet(sqlFindAccountID);
+		while (collectionRow.next()) {
+			collectionDTOs.add(mapRowToCollection(collectionRow));
+		}
+
+		return collectionDTOs;
+	}
+	public List<CollectionDTO> getAllCollectionList() {
+
+		List<CollectionDTO> collectionDTOs = new ArrayList<>();
+		String sqlFindAccountID = "SELECT c.* FROM collections c "
+				+ "			INNER JOIN collections_user cu ON cu.collection_id = c.collection_id";
+		SqlRowSet collectionRow = jdbcTemplate.queryForRowSet(sqlFindAccountID);
+		while (collectionRow.next()) {
+			collectionDTOs.add(mapRowToCollection(collectionRow));
+		}
+
+		return collectionDTOs;
+	}
 	public List<CollectionDTO> getCollectionList(int userID, int collectionUserID) {
 
 		List<CollectionDTO> collectionDTOs = new ArrayList<>();
@@ -295,6 +319,7 @@ public class CollectionDAO {
 		collection.setName(comicRow.getString("name"));
 		collection.setUserID(comicRow.getInt("user_id"));
 		collection.setPrivate(comicRow.getBoolean("private"));
+		collection.setCollectionID(comicRow.getInt("collection_id"));
 		return collection;
 	}
 	
@@ -304,6 +329,7 @@ public class CollectionDAO {
 		FullCollectionDTO.setName(comicRow.getString("name"));
 		FullCollectionDTO.setUserID(comicRow.getInt("user_id"));
 		FullCollectionDTO.setPrivate(comicRow.getBoolean("private"));
+		FullCollectionDTO.setCollectionID(comicRow.getInt("collection_id"));
 		return FullCollectionDTO;
 	 }
 

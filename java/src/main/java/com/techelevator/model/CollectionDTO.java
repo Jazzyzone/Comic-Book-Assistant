@@ -3,6 +3,7 @@ package com.techelevator.model;
 public class CollectionDTO {
 	private String name;
 	private long userID;
+	private long collectionID;
 	private boolean isPrivate;
 	public long getUserID() {
 		return userID;
@@ -21,5 +22,11 @@ public class CollectionDTO {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public long getCollectionID() {
+		return collectionID;
+	}
+	public void setCollectionID(long collectionID) {
+		this.collectionID = collectionID;
 	}
 }
