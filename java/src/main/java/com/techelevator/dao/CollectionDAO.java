@@ -35,31 +35,15 @@ public class CollectionDAO {
 		return collectionDTOs;
 	}
 
-	public FullCollectionDTO getCollection(long id, int userID) {
-		// TODO: unstub this
-		ComicDTO com = new ComicDTO();
-		com.setName("Amazing Testor");
-		com.setId(1);
-		com.setCharacters(new String[] { "Testy", "TestLass" });
-		com.setCreators(new String[] { "Shawn", "Jasmine" });
-		com.setIssueNumber(404);
-		com.setPublisher("TE Comics");
-		com.setThumbnailLink("none");
-		ComicDTO com2 = new ComicDTO();
-		com2.setName("Amazing Testor 2");
-		com2.setId(2);
-		com2.setCharacters(new String[] { "Testy", "TestLass" });
-		com2.setCreators(new String[] { "Dennis", "JP" });
-		com2.setIssueNumber(405);
-		com2.setPublisher("TE Comics");
-		com2.setThumbnailLink("none");
-		FullCollectionDTO col = new FullCollectionDTO();
-		col.setName("Test Collection");
-		col.setComics(new ComicDTO[] { com, com2 });
-		col.setPublic(false);
-		col.setUserID(1);
-		col.setCollectionID(id);
-		return col;
+	public FullCollectionDTO getCollection(long collectionId, int userID) {
+		FullCollectionDTO fullCollectionDTO = new FullCollectionDTO();
+		String sqlGetCollection ="SELECT * FROM collections WHERE collection_id = ?";
+		SqlRowSet collectionRow = jdbcTemplate.queryForRowSet(sqlGetCollection, collectionId);
+		
+			if(collectionRow.next()) {
+				fullCollectionDTO = mapRowFullCollection(collectionRow);
+		}
+		return fullCollectionDTO;
 	}
 
 	public ComicDTO getComic(long id) {
@@ -313,5 +297,14 @@ public class CollectionDAO {
 		collection.setPrivate(comicRow.getBoolean("private"));
 		return collection;
 	}
+	
+	private FullCollectionDTO mapRowFullCollection(SqlRowSet comicRow) {
+		// TODO: Expand Stub
+		FullCollectionDTO FullCollectionDTO = new FullCollectionDTO();
+		FullCollectionDTO.setName(comicRow.getString("name"));
+		FullCollectionDTO.setUserID(comicRow.getInt("user_id"));
+		FullCollectionDTO.setPrivate(comicRow.getBoolean("private"));
+		return FullCollectionDTO;
+	 }
 
 }
