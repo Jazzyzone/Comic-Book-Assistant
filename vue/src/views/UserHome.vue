@@ -1,14 +1,14 @@
 //displays the users home page when signed in
 <template>
   <div>
-      <user-collections />
+      <user-home />
   </div>
 </template>
 
 <script>
-import UserCollections from '@/components/UserCollections'
+import UserHome from '@/components/UserHome'
 export default {
-  components: { UserCollections },
+  components: { UserHome },
 
 }
 </script>

@@ -4,8 +4,19 @@
 
 <template>
 <div>
-<h1>Welcome {{this.$store.state.user.username}}</h1>
-    <router-link :to="{ name: 'userCollections', params: {username: this.$store.state.user.username} }">View My Comic Book Collections</router-link>
+<h1> {{this.$store.state.user.username}} Comic Collections</h1>
+    
+    <div class="collections">
+        <div class="collection"
+        v-for="collection in collections"
+        v-bind:key="collection.id"
+        >
+            {{collection.name}}
+        </div>
+    </div>
+
+
+    <!-- <router-link :to="{ name: 'userCollections', params: {username: this.$store.state.user.username} }">View My Comic Book Collections</router-link> -->
     <p>Add Comic Book Collection</p>
     <p>Add Comic Book</p>
     <p>My Friends</p>
@@ -27,6 +38,11 @@
 
 <script>
 export default {
+    data() {
+        return {
+            collections: []
+        }
+    }
     // created() {
     //     this.retrieveCollections();
     // },
