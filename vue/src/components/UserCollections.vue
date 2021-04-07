@@ -49,7 +49,7 @@ export default {
         };
     },
      created() {
-         ComicServices.getAllCollections(1).then(response => {
+         ComicServices.getAllCollections(this.$store.state.user.username).then(response => {
              this.collections = response.data;
          });
     },
