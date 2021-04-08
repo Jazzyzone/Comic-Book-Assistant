@@ -16,6 +16,10 @@ export default {
 
   addCollection(userId){
     return http.post(`/collection/`, userId)
+  },
+
+  removeCollection(collectionId){
+    return http.delete(`/collection/`, collectionId)
   }
 
 }
