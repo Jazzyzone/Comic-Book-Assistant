@@ -43,6 +43,11 @@ public class CollectionController {
 	public List<User> getAllUsers(){
 		return userDAO.findAll();
 	}
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value = "user/{user}", method = RequestMethod.GET)
+	public User getAllUsers(@PathVariable String user){
+		return userDAO.findByUsername(user);
+	}
 	@RequestMapping(value = "collection/user/{user}", method = RequestMethod.GET )
     public List<CollectionDTO> getCollections(@PathVariable String user , Principal principal) {
 		//userID of -1 is a anon user
