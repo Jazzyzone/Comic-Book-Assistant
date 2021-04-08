@@ -12,6 +12,10 @@ export default {
 
   getCollectionById(collectionId) {
       return http.get(`/collection/${collectionId}`)
+  },
+
+  addCollection(userId){
+    return http.post(`/collection/`, userId)
   }
 
 }
