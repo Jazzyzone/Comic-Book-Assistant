@@ -319,8 +319,36 @@ public class CollectionDAO {
 		comic.setIssueNumber(comicRow.getInt("issue_num"));
 		comic.setName(comicRow.getString("title"));
 		comic.setThumbnailLink(comicRow.getString("img"));
+		comic.setId(comicRow.getLong("comic_id"));
+		String getSeriesComic = "SELECT * FROM series_comics scc " +
+								"        INNER JOIN series AS s ON scc.series_id = s.series_id " +
+								"WHERE scc.comic_id =?";
+		String getPublisherComics = "SELECT * FROM publisher_comics pcc " +
+									"	 INNER JOIN publisher AS p ON pcc.publisher_id = p.publisher_id " +
+									"WHERE pcc.comic_id = ?";
+		String getCharacterComic = "SELECT * FROM character_comics ccc " + 
+									"        INNER JOIN characters AS ch ON ccc.character_id = ch.character_id " +
+									"WHERE ccc.comic_id = ?";
+		SqlRowSet characterComicRow = jdbcTemplate.queryForRowSet(getCharacterComic, comic.getId());
+		SqlRowSet publisherComicRow = jdbcTemplate.queryForRowSet(getPublisherComics, comic.getId());
+		SqlRowSet seriesComicRow = jdbcTemplate.queryForRowSet(getSeriesComic, comic.getId());
+		
+		ArrayList<String> aListOfCharacters = new ArrayList<String>(); 
+		 
+		while(characterComicRow.next()) {
+			
+			
+		}
+		if(publisherComicRow.next()) {
+			comic.setPublisher(publisherComicRow.getString("name"));
+		}
+		if(seriesComicRow.next()) {
+			comic.setSeries(seriesComicRow.getString("title"));
+		}
 		return comic;
 	}
+		
+		
 
 	private CollectionDTO mapRowToCollection(SqlRowSet comicRow) {
 		// TODO: Expand Stub
