@@ -278,6 +278,7 @@ public class CollectionDAO {
 //			
 //		}
 		//jdbcTemplate.update(deleteUnreferecedComics);
+		//SELECT c.* FROM comics c LEFT JOIN collections_comics cc ON cc.comic_id = c.comic_id WHERE cc.comic_id IS NULL
 		jdbcTemplate.update(deleteCollectionComicReferences, collectionID);
 		jdbcTemplate.update(deleteCollectionUserReferences, collectionID);
 		
