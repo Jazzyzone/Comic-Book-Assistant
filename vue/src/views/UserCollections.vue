@@ -1,15 +1,18 @@
 <template>
-  
+  <div>
   <user-collections />
-
+  <!-- <add-a-collection /> -->
+  </div>
 </template>
 
 <script>
 import UserCollections from '@/components/UserCollections'
+// import AddACollection from './AddACollection.vue'
 
 export default {
     components: {
-        UserCollections
+        UserCollections,
+        // AddACollection
     }
 }
 </script>

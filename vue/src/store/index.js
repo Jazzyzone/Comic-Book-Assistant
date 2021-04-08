@@ -19,13 +19,14 @@ if(currentToken != null) {
 export default new Vuex.Store({
   state: {
     token: currentToken || '',
-    user: currentUser || {}
+    user: currentUser || {},
+    userCollections: []
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
       state.token = token;
       localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      axios.defaults.headers.common['Authorization'] = `Bearer ${state.token}`;
     },
     SET_USER(state, user) {
       state.user = user;
@@ -36,7 +37,11 @@ export default new Vuex.Store({
       localStorage.removeItem('user');
       state.token = '';
       state.user = {};
+      state.userCollections = [];
       axios.defaults.headers.common = {};
+    },
+    SET_COLLECTIONS(state, collection) {
+      state.userCollections = collection;
     }
   }
 })

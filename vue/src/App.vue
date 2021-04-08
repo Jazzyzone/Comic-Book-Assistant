@@ -8,6 +8,16 @@
     <router-view />
   </div>
 </template>
+<script>
+
+
+export default {
+  unmounted() {
+    this.$store.commit("LOGOUT");
+    
+  }
+}
+</script>
 
 <style>
 #nav {

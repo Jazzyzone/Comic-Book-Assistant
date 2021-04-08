@@ -52,6 +52,7 @@ public class CollectionController {
 			collectionUserID = -1;
 		}
 		System.out.println(collectionUserID);
+		System.out.println(principal.getName());
     	return collectionDAO.getCollectionList(userID,collectionUserID);
     }
 	@PreAuthorize("permitAll()")

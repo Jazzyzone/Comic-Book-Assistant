@@ -3,15 +3,15 @@
 <template>
 <div>
     <form>
-        <label for="collectionName">Name:</label>
+        <label for="collectionName">Collection Name:</label>
         <input type="text" id="collectionName" name="collectionName" v-model="collections.name">
 
         <label for="porp">Private or Public?</label>
         <input type="radio" id="porp" value="true" v-model="collections.private">
         <input type="radio" id="porp" value="false" v-model="collections.private">
         
-        <label for="addCollection">Submit</label>
-        <input type="button" id="addCollection" v-on:click="addCollection">
+        
+        <button type="submit" class="btn btn-primary" v-on:click="addCollection()">Save Collection</button>
 
     </form>
   </div>
@@ -25,7 +25,7 @@ export default {
     data() {
         return {
             collections: {
-                user_id: this.$store.state.user.id,
+                userID: this.$store.state.user.id,
                 name: "",
                 private: false
             }
@@ -35,12 +35,12 @@ export default {
     methods: {
         addCollection(){
             ComicServices
-            .create(this.collections)
-            .then(response =>{
-               if(response === 201){
-                   this.$router.push('/');
-               }
-            })
+            .addCollection(this.collections)
+            // .then(response =>{
+            //    if(response.status === 200){
+            //        this.$router.push("/");
+            //    }
+            // })
         }
     }
 
