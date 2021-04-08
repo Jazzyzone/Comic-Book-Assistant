@@ -44,13 +44,14 @@ public class CollectionController {
 		if(principal != null) {
 			userID = userDAO.findIdByUsername(principal.getName());
 		}
+		System.out.println(userID);
 		int collectionUserID = -1;
 		try {
 			collectionUserID = userDAO.findIdByUsername(user);
 		}catch(RuntimeException rex) {
 			collectionUserID = -1;
 		}
-
+		System.out.println(collectionUserID);
     	return collectionDAO.getCollectionList(userID,collectionUserID);
     }
 	@PreAuthorize("permitAll()")
