@@ -264,12 +264,23 @@ public class CollectionDAO {
 	 */
 	public boolean deleteCollection(long collectionID, int userID) {
 		// TODO: unstub
-
+		String getCollectionReferences = "SELECT comic_id FROM collections_comics WHERE collection_id = ?";
 		String deleteCollectionComicReferences = "DELETE FROM collections_comics WHERE collection_id = ?";
 		String deleteCollectionUserReferences = "DELETE FROM collections_user WHERE collection_id = ?";
 		String deleteCollection = "DELETE FROM collections WHERE collection_id = ?";
+//		SqlRowSet refRows = jdbcTemplate.queryForRowSet(getCollectionReferences);
+//		List<Long> comicIds = new ArrayList<>();
+//		while (refRows.next()) {
+//			comicIds.add(refRows.getLong("comic_id"));
+//		}
+		//String deleteUnreferecedComics = "DELETE c FROM comics c JOIN collections_comics cc ON cc.comic_id = c.comic_id WHERE cc.comic_id IS NULL";
+//		for(Integer i : comicIds) {
+//			
+//		}
+		//jdbcTemplate.update(deleteUnreferecedComics);
 		jdbcTemplate.update(deleteCollectionComicReferences, collectionID);
 		jdbcTemplate.update(deleteCollectionUserReferences, collectionID);
+		
 		jdbcTemplate.update(deleteCollection,collectionID);
 		return true;
 	}

@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techelevator.dao.CollectionDAO;
 import com.techelevator.dao.UserDAO;
-import com.techelevator.model.ComicDTO;
 import com.techelevator.model.CollectionDTO;
+import com.techelevator.model.ComicDTO;
 import com.techelevator.model.FullCollectionDTO;
+import com.techelevator.model.User;
 
 
 @RestController
@@ -36,6 +37,11 @@ public class CollectionController {
 		}else {
 			return collectionDAO.getAllPublicCollectionList();
 		}
+	}
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value = "user/", method = RequestMethod.GET)
+	public List<User> getAllUsers(){
+		return userDAO.findAll();
 	}
 	@RequestMapping(value = "collection/user/{user}", method = RequestMethod.GET )
     public List<CollectionDTO> getCollections(@PathVariable String user , Principal principal) {
