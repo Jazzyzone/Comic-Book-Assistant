@@ -76,17 +76,15 @@ public class CollectionDAO {
 		return fullCollectionDTO;
 	}
 
-	public ComicDTO getComic(long id) {
+	public ComicDTO getComic(long comicId) {
 		// TODO: unstub this
-		ComicDTO com = new ComicDTO();
-		com.setName("Amazing Testor");
-		com.setId(1);
-		com.setCharacters(new String[] { "Testy", "TestLass" });
-		com.setCreators(new String[] { "Shawn", "Jasmine" });
-		com.setIssueNumber(404);
-		com.setPublisher("TE Comics");
-		com.setThumbnailLink("none");
-		return com;
+		String sqlGetComic = "SELECT * FROM comics WHERE comic_id = ?";
+		SqlRowSet comicRow = jdbcTemplate.queryForRowSet(sqlGetComic,comicId);
+		ComicDTO comic = new ComicDTO();
+		if(comicRow.next()) {
+			comic = mapRowToComic(comicRow);
+		}
+		return comic;
 	}
 
 	/***
