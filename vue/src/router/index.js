@@ -7,6 +7,7 @@ import Register from '../views/Register.vue'
 import store from '../store/index'
 import UserCollections from '../views/UserCollections'
 import UserHome from '../views/UserHome'
+import AddACollection from '../views/AddACollection'
 
 Vue.use(Router)
 
@@ -71,6 +72,14 @@ const router = new Router({
         requiresAuth: false
       }
     },
+    {
+      path: "/:username/Collections/addACollection",
+      name: "AddACollection",
+      component: AddACollection,
+      meta: {
+        requiresAuth: false
+      }
+    }
   ]
 })
 
