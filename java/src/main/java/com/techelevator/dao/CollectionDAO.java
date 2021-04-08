@@ -249,8 +249,12 @@ public class CollectionDAO {
 	 * @param userID
 	 * @return
 	 */
-	public boolean updateCollection(CollectionDTO collection, int userID) {
-		// TODO: unstub
+	public boolean updateCollection(CollectionDTO collection, int userID, long collectionID) {
+		String sqlUpdateCollection = "UPDATE collections SET name = ?, private = ? " +
+									"WHERE collection_id = ?";
+		int updateCollectionRow = jdbcTemplate.update(sqlUpdateCollection,
+				collection.getName(), collection.isPrivate(), collectionID);
+			System.out.println(updateCollectionRow);
 		return true;
 	}
 

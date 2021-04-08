@@ -89,7 +89,7 @@ public class CollectionController {
 	@RequestMapping(value = "collection/{id}", method = RequestMethod.PUT )
     public boolean updateCollection(@RequestBody CollectionDTO collection, @PathVariable long id ,Principal principal) {
 		int userID = userDAO.findIdByUsername(principal.getName());
-    	return collectionDAO.updateCollection(collection,userID);
+    	return collectionDAO.updateCollection(collection,userID,id);
     }
     //Deletes the whole collection and removes references to comics, if the comics are orphaned then we remove the comics from our db
 	@RequestMapping(value = "collection/{id}", method = RequestMethod.DELETE)
