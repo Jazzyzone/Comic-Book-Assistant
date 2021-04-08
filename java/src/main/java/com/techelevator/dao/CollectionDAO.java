@@ -62,10 +62,16 @@ public class CollectionDAO {
 	public FullCollectionDTO getCollection(long collectionId, int userID) {
 		FullCollectionDTO fullCollectionDTO = new FullCollectionDTO();
 		String sqlGetCollection ="SELECT * FROM collections WHERE collection_id = ?";
+		String sqlGetComicCollection = "SELECT * FROM collections_comics cc " + 
+		        "INNER JOIN comics AS cm ON cm.comic_id = cc.comic_id ";
 		SqlRowSet collectionRow = jdbcTemplate.queryForRowSet(sqlGetCollection, collectionId);
 		
-			if(collectionRow.next()) {
-				fullCollectionDTO = mapRowFullCollection(collectionRow);
+		if(collectionRow.next()) {
+			fullCollectionDTO = mapRowFullCollection(collectionRow);
+			SqlRowSet comicRow = jdbcTemplate.queryForRowSet(sqlGetComicCollection);
+			while(comicRow.next()) {
+				fullCollectionDTO.addComics(mapRowToComic(comicRow));
+			}
 		}
 		return fullCollectionDTO;
 	}
@@ -309,8 +315,11 @@ public class CollectionDAO {
 	}
 
 	private ComicDTO mapRowToComic(SqlRowSet comicRow) {
-		// TODO: Expand Stub
-		return null;
+		ComicDTO comic = new ComicDTO();
+		comic.setIssueNumber(comicRow.getInt("issue_num"));
+		comic.setName(comicRow.getString("title"));
+		comic.setThumbnailLink(comicRow.getString("img"));
+		return comic;
 	}
 
 	private CollectionDTO mapRowToCollection(SqlRowSet comicRow) {
