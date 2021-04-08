@@ -1,25 +1,22 @@
 import axios from 'axios';
 
-const http = axios.create({
-    baseURL: "http://localhost:8080"
-  });
 
 export default {
 
   getAllCollections(user) {
-    return http.get(`collection/user/${user}`)
+    return axios.get(`collection/user/${user}`)
   },
 
   getCollectionById(collectionId) {
-      return http.get(`/collection/${collectionId}`)
+      return axios.get(`/collection/${collectionId}`)
   },
 
   addCollection(userId){
-    return http.post(`/collection/`, userId)
+    return axios.post(`/collection/`, userId)
   },
 
   removeCollection(collectionId){
-    return http.delete(`/collection/`, collectionId)
+    return axios.delete(`/collection/`, collectionId)
   }
 
 }
