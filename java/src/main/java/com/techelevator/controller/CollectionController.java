@@ -46,7 +46,7 @@ public class CollectionController {
 		}
 		int collectionUserID = -1;
 		try {
-			collectionUserID = userDAO.findIdByUsername(principal.getName());
+			collectionUserID = userDAO.findIdByUsername(user);
 		}catch(RuntimeException rex) {
 			collectionUserID = -1;
 		}
