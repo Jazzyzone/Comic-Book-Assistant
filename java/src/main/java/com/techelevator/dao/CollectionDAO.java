@@ -189,6 +189,7 @@ public class CollectionDAO {
 	 * @return success
 	 */
 	public boolean deleteComic(long id) {
+		
 		return false;
 	}
 
@@ -263,22 +264,15 @@ public class CollectionDAO {
 	 * @param userID
 	 * @return
 	 */
-	public boolean deleteCollection(long id, int userID) {
+	public boolean deleteCollection(long collectionID, int userID) {
 		// TODO: unstub
 
-		ComicDTO[] comics = null;
-		// get all comics linked to id
-
-		// Delete from collection-comic all instances where this collection is linked to
-		// a comic
-		if (comics != null) {
-			for (ComicDTO comic : comics) {
-				if (comicOrphaned(comic)) {
-					deleteComic(comic.getId());
-				}
-			}
-		}
-
+		String deleteCollectionComicReferences = "DELETE FROM collections_comics WHERE collection_id = ?";
+		String deleteCollectionUserReferences = "DELETE FROM collections_user WHERE collection_id = ?";
+		String deleteCollection = "DELETE FROM collections WHERE collection_id = ?";
+		jdbcTemplate.update(deleteCollectionComicReferences, collectionID);
+		jdbcTemplate.update(deleteCollectionUserReferences, collectionID);
+		jdbcTemplate.update(deleteCollection,collectionID);
 		return true;
 	}
 
@@ -320,28 +314,42 @@ public class CollectionDAO {
 		comic.setName(comicRow.getString("title"));
 		comic.setThumbnailLink(comicRow.getString("img"));
 		comic.setId(comicRow.getLong("comic_id"));
-		String getSeriesComic = "SELECT * FROM series_comics scc " +
-								"        INNER JOIN series AS s ON scc.series_id = s.series_id " +
-								"WHERE scc.comic_id =?";
-		String getPublisherComics = "SELECT * FROM publisher_comics pcc " +
-									"	 INNER JOIN publisher AS p ON pcc.publisher_id = p.publisher_id " +
-									"WHERE pcc.comic_id = ?";
-		String getCharacterComic = "SELECT * FROM character_comics ccc " + 
-									"        INNER JOIN characters AS ch ON ccc.character_id = ch.character_id " +
-									"WHERE ccc.comic_id = ?";
-		SqlRowSet characterComicRow = jdbcTemplate.queryForRowSet(getCharacterComic, comic.getId());
-		SqlRowSet publisherComicRow = jdbcTemplate.queryForRowSet(getPublisherComics, comic.getId());
-		SqlRowSet seriesComicRow = jdbcTemplate.queryForRowSet(getSeriesComic, comic.getId());
 		
-		ArrayList<String> aListOfCharacters = new ArrayList<String>(); 
+		String getCreatorComic = "SELECT * FROM creator_comics cc " + 
+				"        INNER JOIN creator AS c ON cc.creator_id = c.creator_id " +
+				"WHERE cc.comic_id = ?";
+		SqlRowSet creatorRow = jdbcTemplate.queryForRowSet(getCreatorComic, comic.getId());
+		ArrayList<String> creator = new ArrayList<>(); 
+		 
+		while(creatorRow.next()) {
+			creator.add(creatorRow.getString("full_name"));			
+		}
+		comic.setCreators(creator.toArray(new String[creator.size()]));
+		
+		
+		String getCharacterComic = "SELECT * FROM characters_comics ccc " + 
+				"        INNER JOIN characters AS ch ON ccc.character_id = ch.character_id " +
+				"WHERE ccc.comic_id = ?";
+		SqlRowSet characterComicRow = jdbcTemplate.queryForRowSet(getCharacterComic, comic.getId());
+		ArrayList<String> characters = new ArrayList<>(); 
 		 
 		while(characterComicRow.next()) {
-			
-			
+			characters.add(characterComicRow.getString("name"));			
 		}
+		comic.setCharacters(characters.toArray(new String[characters.size()]));
+		String getPublisherComics = "SELECT * FROM publisher_comics pcc " +
+				"	 INNER JOIN publisher AS p ON pcc.publisher_id = p.publisher_id " +
+				"WHERE pcc.comic_id = ?";
+
+
+		SqlRowSet publisherComicRow = jdbcTemplate.queryForRowSet(getPublisherComics, comic.getId());
 		if(publisherComicRow.next()) {
 			comic.setPublisher(publisherComicRow.getString("name"));
 		}
+		String getSeriesComic = "SELECT * FROM series_comics scc " +
+				"        INNER JOIN series AS s ON scc.series_id = s.series_id " +
+				"WHERE scc.comic_id =?";
+		SqlRowSet seriesComicRow = jdbcTemplate.queryForRowSet(getSeriesComic, comic.getId());
 		if(seriesComicRow.next()) {
 			comic.setSeries(seriesComicRow.getString("title"));
 		}
