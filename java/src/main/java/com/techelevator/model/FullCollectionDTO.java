@@ -1,11 +1,13 @@
 package com.techelevator.model;
 
+import java.util.ArrayList;
+
 public class FullCollectionDTO {
 	private String name;
 	private long collectionID;
 	private long userID;
 	private boolean isPrivate;
-	private ComicDTO[] comics;
+	private ArrayList<ComicDTO> comics;
 	public long getUserID() {
 		return userID;
 	}
@@ -18,11 +20,11 @@ public class FullCollectionDTO {
 	public void setPrivate(boolean isPrivate) {
 		this.isPrivate = isPrivate;
 	}
-	public ComicDTO[] getComics() {
+	public ArrayList<ComicDTO> getComics() {
 		return comics;
 	}
-	public void setComics(ComicDTO[] comics) {
-		this.comics = comics;
+	public void setComics(ComicDTO comic) {
+		comics.add(comic);
 	}
 	public long getCollectionID() {
 		return collectionID;
