@@ -8,6 +8,7 @@ import store from '../store/index'
 import UserCollections from '../views/UserCollections'
 import UserHome from '../views/UserHome'
 import AddACollection from '../views/AddACollection'
+import SearchedUser from '../views/SearchedUser'
 
 Vue.use(Router)
 
@@ -29,7 +30,7 @@ const router = new Router({
       name: 'home',
       component: Home,
       meta: {
-        requiresAuth: true
+        requiresAuth: false
       }
     },
     {
@@ -76,6 +77,14 @@ const router = new Router({
       path: "/:username/Collections/addACollection",
       name: "AddACollection",
       component: AddACollection,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
+      path: "/searchUser/:username",
+      name:"SearchUser",
+      component: SearchedUser,
       meta: {
         requiresAuth: false
       }

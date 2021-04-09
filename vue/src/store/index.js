@@ -20,7 +20,8 @@ export default new Vuex.Store({
   state: {
     token: currentToken || '',
     user: currentUser || {},
-    userCollections: []
+    userCollections: [],
+    userSearch: ''
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
@@ -42,6 +43,9 @@ export default new Vuex.Store({
     },
     SET_COLLECTIONS(state, collection) {
       state.userCollections = collection;
+    },
+    SET_USERSEARCH(state, username) {
+      state.userSearch = username;
     }
   }
 })

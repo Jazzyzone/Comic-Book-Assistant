@@ -19,16 +19,29 @@ export default {
     return axios.post(`/comic/`, userId)
   },
 
-  updateCollection(collectionId){
-    return axios.put(`/collection/${collection.Id}`, collectionId)
-  }, 
+     updateCollection(collection){
+        return axios.put(`/collection/${collection.collectionID}`, collection)
+ }, 
 
   removeCollection(collectionId){
-    return axios.delete(`/collection/`, collectionId)
+    return axios.delete(`/collection/${collectionId}`);
   },
 
-  getStats() {
-    return axios.get(`/stats/${type}`)
-}
+  returnAllCollections(){
+      return axios.get('/collection');
+  },
+  
+  getAllUsernames() {
+      return axios.get('/user');
+  },
+
+  getUserByUsername(username) {
+      return axios.get(`/user/${username}`);
+  },
+
+
+//   getStats() {
+//     return axios.get(`/stats/${type}`)
+
 
 }

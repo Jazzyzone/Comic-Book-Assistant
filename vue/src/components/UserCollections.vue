@@ -4,13 +4,13 @@
 
 <template>
 <div>
-<h1> {{this.$store.state.user.username}} Comic Collections</h1>
+<h1> {{this.$route.params.username}} Comic Collections</h1>
         <div class="collections">
             <div class="collection"
             v-for="collection in collections"
             v-bind:key="collection.collection_id"
             >
-            <div id="cards_landscape_wrap-2">
+            <div id="cards_landscape_wrap-2" v-if="($store.state.token == '' && collection.private === false) || $store.state.token != ''">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -18,11 +18,19 @@
                         <div class="card-body">
                             <div class="card-title">
                                 {{collection.name}}
+                            <div v-if="isCurrentUser">               
+                                <button type="button" class="btn btn-secondary btn-sm" v-on:click="changeCollectionName(collection.collectionID)">{{collection.collectionID === changeId ? "Cancel" :"Rename Collection"}}</button>
+                            </div>
+                            <div v-if="changeName && collection.collectionID === changeId">
+                                 <label for="collectionName">Collection Name:</label>
+                                    <input type="text" id="collectionName" name="collectionName" v-model="collection.name">
+                                    <button type="submit" class="btn btn-primary" v-on:click="updateCollection(collection)">Save Changes</button>       
+                                </div>
                                 <div class="card-text">
                                     <p>placeholder for comicbook</p>
-                                    <div>
+                                    <div v-if="isCurrentUser">
                                     <button type="button" class="btn btn-success">Add Comic</button>
-                                      <button type="button" class="btn btn-danger">Delete Collection</button>  
+                                      <button type="button" class="btn btn-danger" @click="deleteCollection(collection.collectionID)">Delete Collection</button>  
                                     </div>
                                     </div>
                             </div>
@@ -38,9 +46,12 @@
     <add-a-collection />
     </div> -->
     <!-- <router-link :to="{ name: 'userCollections', params: {username: this.$store.state.user.username} }">View My Comic Book Collections</router-link> -->
-    <button type="button" class="btn btn-primary" v-on:click="createCollection = !createCollection">{{!createCollection? "Create a Collection" : "Cancel"}}</button>
-    <div v-if="createCollection">
-        <add-a-collection />
+    <div v-if="isCurrentUser">
+     <button type="button" class="btn btn-primary" v-on:click="createCollection = !createCollection">{{!createCollection? "Create a Collection" : "Cancel"}}</button>
+    
+        <div v-if="createCollection">
+            <add-a-collection />
+        </div>
     </div>
     
     <p>Add Comic Book</p>
@@ -71,11 +82,13 @@ export default {
   components: { AddACollection },
    data() {
        return {
-     createCollection: false
+     createCollection: false,
+     changeName: false,
+     changeId: ''
        }
    },
     created() {
-         ComicServices.getAllCollections(this.$store.state.user.username).then(response => {
+         ComicServices.getAllCollections(this.$route.params.username).then(response => {
              this.$store.commit("SET_COLLECTIONS", response.data)
          });
          //window.alert(this.collections.length);
@@ -83,14 +96,40 @@ export default {
     computed: {
         collections() {
             return this.$store.state.userCollections;
+        },
+        isCurrentUser() {
+            return this.$route.params.username === this.$store.state.user.username;
+        },
+    },
+    methods: {
+        deleteCollection(collectionId) {
+            ComicServices.removeCollection(collectionId).then(response => {
+                if(response.status == 200) {
+                    ComicServices.getAllCollections(this.$route.params.username).then(response => {
+             this.$store.commit("SET_COLLECTIONS", response.data)
+         });
+                }
+            });
+        },
+        changeCollectionName(collectionId) {
+            if(this.changeId === collectionId) {
+                this.changeId = ''
+            } else {
+                this.changeId = collectionId;
+            }
+            this.changeName = !this.changeName;
+            
+        },
+        updateCollection(collection) {
+            ComicServices.updateCollection(collection).then(response => {
+                if(response.status == 200) {
+                    ComicServices.getAllCollections(this.$route.params.username).then(response => {
+             this.$store.commit("SET_COLLECTIONS", response.data)
+         });
+                }
+            });
         }
     }
-    
-    // methods: {
-    //     retrieveCollections() {
-    //         this.
-    //     }
-    // }
 }
 </script>
 
