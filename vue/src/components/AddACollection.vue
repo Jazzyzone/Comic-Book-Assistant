@@ -4,7 +4,7 @@
 <div>
     <form>
         <label for="collectionName">Collection Name:</label>
-        <input type="text" id="collectionName" name="collectionName" v-model="collections.name">
+        <input type="text" id="collectionName" name="collectionName" v-model="collections.name" required>
 
         <label for="porp">Private or Public?</label>
         <input type="radio" id="porp" value="true" v-model="collections.private">
@@ -34,8 +34,19 @@ export default {
     },
     methods: {
         addCollection(){
+            this.collections.name = this.collections.name.trim();
+            if(this.collections.name != "") {
             ComicServices
-            .addCollection(this.collections)
+            .addCollection(this.collections).then(response => {
+                if(response.status == 200) {
+                    ComicServices.getAllCollections(this.$route.params.username).then(response => {
+             this.$store.commit("SET_COLLECTIONS", response.data)
+            });
+                }
+            });
+            }
+
+
             // .then(response =>{
             //    if(response.status === 200){
             //        this.$router.push("/");

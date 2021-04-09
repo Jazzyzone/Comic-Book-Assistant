@@ -3,6 +3,7 @@
     <div id="nav">
       <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;&nbsp;
       <router-link :to="{ name: 'UserHome', params: {username: this.$store.state.user.username} }" v-if="$store.state.token != ''">| View My Page</router-link>&nbsp;&nbsp;
+      <router-link v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''">| Login</router-link>
       <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">| Logout</router-link>
     </div>
     <router-view />

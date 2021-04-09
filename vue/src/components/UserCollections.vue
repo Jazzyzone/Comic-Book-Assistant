@@ -23,7 +23,7 @@
                             </div>
                             <div v-if="changeName && collection.collectionID === changeId">
                                  <label for="collectionName">Collection Name:</label>
-                                    <input type="text" id="collectionName" name="collectionName" v-model="collection.name">
+                                    <input type="text" id="collectionName" name="collectionName" v-model="collection.name" required>
                                     <button type="submit" class="btn btn-primary" v-on:click="updateCollection(collection)">Save Changes</button>       
                                 </div>
                                 <div class="card-text">
@@ -112,12 +112,17 @@ export default {
             });
         },
         changeCollectionName(collectionId) {
-            if(this.changeId === collectionId) {
-                this.changeId = ''
-            } else {
+            if(this.changeId !== collectionId) {
+                this.changeName = true;
                 this.changeId = collectionId;
+            
+            }else if(this.changeId === collectionId) {
+                this.changeId = '';
+                this.changeName = false;
+            }else{
+                this.changeName = !this.changeName;
             }
-            this.changeName = !this.changeName;
+                
             
         },
         updateCollection(collection) {

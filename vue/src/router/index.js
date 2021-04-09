@@ -70,7 +70,7 @@ const router = new Router({
       name: "UserHome",
       component: UserHome,
       meta: {
-        requiresAuth: false
+        requiresAuth: true
       }
     },
     {
