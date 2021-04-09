@@ -29,8 +29,13 @@
                                 <div class="card-text">
                                     <comics-list v-bind:collectionID="collection.collectionID"/>
                                     <div v-if="isCurrentUser">
-                                    <button type="button" class="btn btn-success">Add Comic</button>
-                                      <button type="button" class="btn btn-danger" @click="deleteCollection(collection.collectionID)">Delete Collection</button>  
+                                    <button type="button" class="btn btn-success" v-on:click="searchComic(collection.collectionID)">Add Comic</button>
+                                      <button type="button" class="btn btn-danger" @click="deleteCollection(collection.collectionID)">Delete Collection</button> 
+                                      <div v-if="collection.collectionID === collectionid">
+                                 <label for="searchComicBook">Enter Comic Title:</label>
+                                    <input type="text" id="searchComicBook" name="searchComicBook" v-model="searchFor" placeholder="Enter title" required>
+                                    <button type="submit" class="btn btn-primary" @click="searchForComic(collection.collectionID)">Search</button>       
+                                </div> 
                                     </div>
                                     </div>
                             </div>
@@ -54,7 +59,7 @@
         </div>
     </div>
     
-    <p>Add Comic Book</p>
+    
     <p>My Friends</p>
     <p>See Collections of Others</p>
   <div>
@@ -85,7 +90,10 @@ export default {
        return {
      createCollection: false,
      changeName: false,
-     changeId: ''
+     changeId: '',
+     collectionid: '',
+     search: false,
+     searchFor: ''
        }
    },
     created() {
@@ -122,9 +130,15 @@ export default {
                 this.changeName = false;
             }else{
                 this.changeName = !this.changeName;
-            }
-                
-            
+            }     
+        },
+        searchComic(collectionId) {
+             this.collectionid = collectionId;
+        },
+        searchForComic(collectionId) {
+            this.collectionid = collectionId;
+            //will need a conditional to make sure string isn't empty and will need a .trim()
+            this.$router.push({ name: "ComicSearch", params: {collectionID: this.collectionid, search: this.searchFor}});
         },
         updateCollection(collection) {
             
@@ -137,7 +151,7 @@ export default {
          });
                 }
             });
-        }
+        },
     }
 }
 </script>

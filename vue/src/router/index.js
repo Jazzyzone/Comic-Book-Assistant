@@ -83,7 +83,7 @@ const router = new Router({
       }
     },
     {
-      path: "/:username/ComicSearch/",
+      path: "/:username/ComicSearch/:collectionId",
       name:"ComicSearch",
       component: SearchedUser,
       meta: {

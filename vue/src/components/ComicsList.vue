@@ -55,10 +55,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
  div img {
-     max-width: 150px;
-     max-height: 175px;
+     max-width: 200px;
+     max-height: 250px;
  }
 
 

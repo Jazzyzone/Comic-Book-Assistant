@@ -15,8 +15,8 @@ export default {
     return axios.post(`/collection/`, userId)
   },
 
-  addComic(userId){
-    return axios.post(`/comic/`, userId)
+  addComic(collectionid, comic){
+    return axios.post(`/collection/${collectionid}/comic/`, comic)
   },
 
      updateCollection(collection){
