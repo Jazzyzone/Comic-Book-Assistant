@@ -45,6 +45,7 @@ public class CollectionDAO {
 
 		return collectionDTOs;
 	}
+	
 	public List<CollectionDTO> getCollectionList(int userID, int collectionUserID) {
 
 		List<CollectionDTO> collectionDTOs = new ArrayList<>();
@@ -58,24 +59,33 @@ public class CollectionDAO {
 
 		return collectionDTOs;
 	}
-
+	
 	public FullCollectionDTO getCollection(long collectionId, int userID) {
 		FullCollectionDTO fullCollectionDTO = new FullCollectionDTO();
 		String sqlGetCollection ="SELECT * FROM collections WHERE collection_id = ?";
 		String sqlGetComicCollection = "SELECT * FROM collections_comics cc " + 
-		        "INNER JOIN comics AS cm ON cm.comic_id = cc.comic_id ";
+		        "INNER JOIN comics AS cm ON cm.comic_id = cc.comic_id WHERE collection_id = ?";
 		SqlRowSet collectionRow = jdbcTemplate.queryForRowSet(sqlGetCollection, collectionId);
 		
 		if(collectionRow.next()) {
 			fullCollectionDTO = mapRowFullCollection(collectionRow);
-			SqlRowSet comicRow = jdbcTemplate.queryForRowSet(sqlGetComicCollection);
+			SqlRowSet comicRow = jdbcTemplate.queryForRowSet(sqlGetComicCollection, collectionId);
 			while(comicRow.next()) {
 				fullCollectionDTO.addComics(mapRowToComic(comicRow));
 			}
 		}
 		return fullCollectionDTO;
 	}
-
+public List<ComicDTO> getAllComics(){
+		//AAAAAHAHHA this is extra cursed too bad
+		List<ComicDTO> comics = new ArrayList<>();
+		String sqlGetComics = "SELECT * FROM comics c INNER JOIN collections_comics cc ON  c.comic_id = cc.comic_id";
+		SqlRowSet comicRow = jdbcTemplate.queryForRowSet(sqlGetComics);
+		while(comicRow.next()) {
+			comics.add(mapRowToComic(comicRow));
+		}
+		return comics;
+	}
 	public ComicDTO getComic(long comicId) {
 		// TODO: unstub this
 		String sqlGetComic = "SELECT * FROM comics WHERE comic_id = ?";
@@ -98,19 +108,28 @@ public class CollectionDAO {
 	 */
 	public boolean addComicToCollection(long collectionID, ComicDTO comic, int userID) {
 		// if not the owner get the heck out of there
-		if (!ownsCollection(collectionID, userID))
+		if (!ownsCollection(collectionID, userID)) {
+			System.out.println("invalid");
 			return false;
+		}
 
 		// check if the comic exists and if not add it to the db.
+		String sqlInsertCollectionComic = "INSERT INTO collections_comics (collection_id, comic_id) VALUES (?,?)";
 		long id = getComicID(comic);
 		if (id > 0) {
-			id = addComic(comic);
+			try {
+				jdbcTemplate.update(sqlInsertCollectionComic, collectionID, id);
+			}catch(DataAccessException ex) {
+				System.out.println("Tried adding a dupe comic to collection");
+				return false;
+			}
+			return true;
 		}
 		// link comic in collection-comic and all bride tables + depending tables
 		String sqlInsertComic = "INSERT INTO comics (title, issue_num, img) VALUES (?,?,?) RETURNING comic_id";
-		String sqlInsertCollectionComic = "INSERT INTO collections_comics (collection_id, comic_id) VALUES (?,?)";
+		
 		String sqlInsertCharacterComic = "INSERT INTO characters_comics (character_id, comic_id) VALUES (?,?)";
-		String sqlInsertSeriesComic = "INSERT INTO series_comics (series_id, comic_id) VALUES (?,?)";
+		
 		String sqlInsertPublisherComic = "INSERT INTO publisher_comics (publisher_id, comic_id) VALUES (?,?)";
 		String sqlInsertCreatorComic = "INSERT INTO creator_comics (creator_id, comic_id) VALUES (?,?)";
 		String sqlInsertCharacters = "INSERT INTO characters (name) VALUES (?) RETURNING character_id";
@@ -129,36 +148,52 @@ public class CollectionDAO {
 				jdbcTemplate.update(sqlInsertCollectionComic, collectionID, newComicId);
 
 			}
-
-			row = jdbcTemplate.queryForRowSet(sqlInsertSeries, comic.getSeries());
-
-			if (row.next()) {
-				jdbcTemplate.update(sqlInsertSeriesComic, row.getInt("series_id"), newComicId);
-			}
-
-			row = jdbcTemplate.queryForRowSet(sqlInsertPublisher, comic.getPublisher());
-
-			if (row.next()) {
-				jdbcTemplate.update(sqlInsertPublisherComic, row.getInt("publisher_id"), newComicId);
-			}
-
-			for (String character : comic.getCharacters()) {
-
-				row = jdbcTemplate.queryForRowSet(sqlInsertCharacters, character);
-
+			
+			long tempID = getSeriesID(comic.getSeries());
+			if(tempID==-1) {
+				row = jdbcTemplate.queryForRowSet(sqlInsertSeries, comic.getSeries());
 				if (row.next()) {
-					jdbcTemplate.update(sqlInsertCharacterComic, row.getInt("character_id"), newComicId);
+					tempID = row.getInt("series_id");
 				}
+			}
+			String sqlInsertSeriesComic = "INSERT INTO series_comics (series_id, comic_id) VALUES (?,?)";
+			jdbcTemplate.update(sqlInsertSeriesComic, tempID, newComicId);
+			
+			
+			tempID = getPublisherID(comic.getPublisher());
+			if(tempID==-1) {
+				row = jdbcTemplate.queryForRowSet(sqlInsertPublisher, comic.getPublisher());
+	
+				if (row.next()) {
+					tempID = row.getInt("publisher_id");
+				}
+			}
+			jdbcTemplate.update(sqlInsertPublisherComic, tempID , newComicId);
+			
+			for (String character : comic.getCharacters()) {
+				tempID = getCharacterID(character);
+				if(tempID==-1) {
 
+					row = jdbcTemplate.queryForRowSet(sqlInsertCharacters, character);
+	
+					if (row.next()) {
+						tempID = row.getInt("character_id");
+					}
+				}
+				jdbcTemplate.update(sqlInsertCharacterComic, tempID , newComicId);
 			}
 
 			for (String creator : comic.getCreators()) {
+				tempID = getCreatorID(creator);
+				if(tempID==-1) {
 
-				row = jdbcTemplate.queryForRowSet(sqlInsertCreator, creator);
-
-				if (row.next()) {
-					jdbcTemplate.update(sqlInsertCreatorComic, row.getInt("creator_id"), newComicId);
+					row = jdbcTemplate.queryForRowSet(sqlInsertCreator, creator);
+	
+					if (row.next()) {
+						tempID = row.getInt("creator_id");
+					}
 				}
+				jdbcTemplate.update(sqlInsertCreatorComic, tempID, newComicId);
 			}
 
 		} catch (DataAccessException ex) {
@@ -167,29 +202,39 @@ public class CollectionDAO {
 		}
 		return true;
 	}
-
-	/***
-	 * Adds a new comic to the DB
-	 * 
-	 * @param comic
-	 * @return success
-	 */
-	public int addComic(ComicDTO comic) {
-		// TODO: Stub will add the comic to the DB
-		return 1;
+	public long getSeriesID(String series) {
+		String getComicID = "SELECT series_id FROM series WHERE title = ? ";
+		SqlRowSet row = jdbcTemplate.queryForRowSet(getComicID,series);
+		if(row.next()) {
+			return row.getLong("series_id");
+		}
+		return -1;
+	}
+	public  long getPublisherID(String publisher) {
+		String getComicID = "SELECT publisher_id FROM publisher WHERE name = ? ";
+		SqlRowSet row = jdbcTemplate.queryForRowSet(getComicID,publisher);
+		if(row.next()) {
+			return row.getLong("publisher_id");
+		}
+		return -1;
+	}
+	public long getCreatorID(String creator) {
+		String getComicID = "SELECT creator_id FROM creator WHERE full_name = ? ";
+		SqlRowSet row = jdbcTemplate.queryForRowSet(getComicID,creator);
+		if(row.next()) {
+			return row.getLong("creator_id");
+		}
+		return -1;
+	}
+	public long getCharacterID(String character) {
+		String getComicID = "SELECT character_id FROM characters WHERE name = ? ";
+		SqlRowSet row = jdbcTemplate.queryForRowSet(getComicID,character);
+		if(row.next()) {
+			return row.getLong("character_id");
+		}
+		return -1;
 	}
 
-	/***
-	 * Deletes comic from the db should only be called if the comic is orphaned
-	 * first
-	 * 
-	 * @param id
-	 * @return success
-	 */
-	public boolean deleteComic(long id) {
-		
-		return false;
-	}
 
 	/***
 	 * Gets comic ID if it exists in our db, if not returns -1
@@ -198,20 +243,15 @@ public class CollectionDAO {
 	 * @return
 	 */
 	public long getComicID(ComicDTO comic) {
-		// TODO: Expand Stub
+		String getComicID = "SELECT comic_id FROM comics WHERE title = ? AND issue_num = ? AND img = ? ";
+		SqlRowSet row = jdbcTemplate.queryForRowSet(getComicID,comic.getName(),comic.getIssueNumber(),comic.getThumbnailLink());
+		if(row.next()) {
+			return row.getLong("comic_id");
+		}
 		return -1;
 	}
 
-	/**
-	 * Checks if there are any references to the comic remaining in the link table
-	 * 
-	 * @param comic
-	 * @return orphaned status
-	 */
-	public boolean comicOrphaned(ComicDTO comic) {
-		// TODO: Expand Stub
-		return false;
-	}
+
 
 	/***
 	 * Adds the collection
@@ -286,8 +326,8 @@ public class CollectionDAO {
 		jdbcTemplate.update(deleteCollectionComicReferences, collectionID);
 		jdbcTemplate.update(deleteCollectionUserReferences, collectionID);
 		
-		jdbcTemplate.update(deleteCollection,collectionID);
-		return true;
+		int success = jdbcTemplate.update(deleteCollection,collectionID);
+		return (success>0)?true:false;
 	}
 
 	/***
@@ -299,14 +339,9 @@ public class CollectionDAO {
 	 * @return success
 	 */
 	public boolean removeComic(long collectionID, long comicID, int userID) {
-		if (!ownsCollection(collectionID, userID))
-			return false;
-		// TODO Auto-generated method stub
-		// delete the connecting row in comic-collection
-		if (comicOrphaned(getComic(comicID))) {
-			// delete comic if the comic has no references.
-		}
-		return false;
+		String severComicConnection = "DELETE FROM collections_comics WHERE comic_id = ? AND collection_id = ?";
+		int success = jdbcTemplate.update(severComicConnection,comicID,collectionID);
+		return (success>0)?true:false;
 	}
 
 	/***
@@ -317,9 +352,9 @@ public class CollectionDAO {
 	 * @return
 	 */
 	private boolean ownsCollection(long collectionID, int userID) {
-		// TODO: expand stub
-
-		return true;
+		//This is probably a cursed way of doing this
+		SqlRowSet row  = jdbcTemplate.queryForRowSet("SELECT * FROM collections_user WHERE collection_id = ? AND user_id = ?",collectionID,userID);
+		return row.next();
 	}
 
 	private ComicDTO mapRowToComic(SqlRowSet comicRow) {

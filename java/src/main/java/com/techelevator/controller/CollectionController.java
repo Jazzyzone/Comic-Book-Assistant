@@ -1,6 +1,7 @@
 package com.techelevator.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techelevator.dao.CollectionDAO;
@@ -29,6 +31,7 @@ public class CollectionController {
 		this.collectionDAO = collectionDAO;
 		this.userDAO = userDAO;
 	}
+
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value = "collection/", method = RequestMethod.GET)
 	public List<CollectionDTO> getAllCollections(Principal principal){
@@ -38,16 +41,19 @@ public class CollectionController {
 			return collectionDAO.getAllPublicCollectionList();
 		}
 	}
+	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value = "user/", method = RequestMethod.GET)
 	public List<User> getAllUsers(){
 		return userDAO.findAll();
 	}
+	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value = "user/{user}", method = RequestMethod.GET)
 	public User getAllUsers(@PathVariable String user){
 		return userDAO.findByUsername(user);
 	}
+	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value = "collection/user/{user}", method = RequestMethod.GET )
     public List<CollectionDTO> getCollections(@PathVariable String user , Principal principal) {
@@ -66,6 +72,7 @@ public class CollectionController {
 		
     	return collectionDAO.getCollectionList(userID,collectionUserID);
     }
+	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value = "collection/{id}", method = RequestMethod.GET )
     public FullCollectionDTO getCollection(@PathVariable long id , Principal principal) {
@@ -76,6 +83,7 @@ public class CollectionController {
 		}
     	return collectionDAO.getCollection(id,userID);
     }
+	
 	//Creates a blank collection is my guess, maybe it can pass in a list of comics already attached but tbh I don't think that is how I will handle it.
 	@RequestMapping(value = "collection/", method = RequestMethod.POST )
     public boolean addCollection(@RequestBody CollectionDTO collection, Principal principal) {
@@ -83,6 +91,7 @@ public class CollectionController {
 		int userID = userDAO.findIdByUsername(principal.getName());
     	return collectionDAO.addCollection(collection,userID);
     }
+	
 	/*
 	 * This will just update the name and the privacy settings of the Collection
 	 */
@@ -91,6 +100,7 @@ public class CollectionController {
 		int userID = userDAO.findIdByUsername(principal.getName());
     	return collectionDAO.updateCollection(collection,userID,id);
     }
+	
     //Deletes the whole collection and removes references to comics, if the comics are orphaned then we remove the comics from our db
 	@RequestMapping(value = "collection/{id}", method = RequestMethod.DELETE)
     public boolean deleteCollection(@PathVariable long id  ,Principal principal) {
@@ -98,6 +108,7 @@ public class CollectionController {
     	return collectionDAO.deleteCollection(id,userID);
 	}
 	//Anyone can look at comic details? Might end up unused since we can get better info from the Marvel API
+	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value = "comic/{id}", method = RequestMethod.GET)
 	public ComicDTO getComic(@PathVariable long id) {
@@ -118,20 +129,110 @@ public class CollectionController {
 		int userID = userDAO.findIdByUsername(principal.getName());
 		return collectionDAO.addComicToCollection(collectionID,comic,userID);
 	}
-	/*
-	 * Both of these two will probably change substantially once I get back the data, I'm thinking a hashmap that ties the search criteria to a value but we shall see.
-	 */
-	@PreAuthorize("permitAll()")
-	@RequestMapping(value = "stats/{type}", method = RequestMethod.GET)
-	public int getAggregateStats(@PathVariable String type){
-		//TODO: Unstub this and figure out how we are returning it. It might make more sense to have an object with all of the aggregate criteria
-		return 10;
+	@RequestMapping(value = "collection/{id}/search",method = RequestMethod.GET)
+	public List<ComicDTO> searchComicCollection(Principal principal,@PathVariable long id,
+			@RequestParam (required=false) List<String> characters,
+			@RequestParam (required=false) List<String> creators,
+			@RequestParam (required=false) String publisher,
+			@RequestParam (required=false) String series,
+			@RequestParam (required=false) String title,
+			@RequestParam (required=false) Integer issue){
+		
+		int userID = -1;
+		if(principal!=null) {
+			userID =  userDAO.findIdByUsername(principal.getName());
+		}
+		FullCollectionDTO collection = collectionDAO.getCollection( id,userID);
+		
+		if(collection!=null) {
+			return acquireFilteredComics(collection.getComics(),characters,creators,publisher,series,title,issue);
+		}else {
+			return null;
+		}
 	}
-	@RequestMapping(value = "collection/{id}/stats", method = RequestMethod.GET)
-	public int getCollectionStats(@PathVariable long id , Principal principal){
-		//TODO: Unstub this and figure out how we are returning it. It might make more sense to have an object with all of the stats
-		int userID = userDAO.findIdByUsername(principal.getName());
-		return 10;
+	@RequestMapping(value = "comic/search",method = RequestMethod.GET)
+	public List<ComicDTO> searchComics(Principal principal,
+			@RequestParam (required=false) List<String> characters,
+			@RequestParam (required=false) List<String> creators,
+			@RequestParam (required=false) String publisher,
+			@RequestParam (required=false) String series,
+			@RequestParam (required=false) String title,
+			@RequestParam (required=false) Integer issue){
+
+		List<ComicDTO> comics = collectionDAO.getAllComics();
+		if(comics!=null) {
+			return acquireFilteredComics(comics,characters,creators,publisher,series,title,issue);
+		}else {
+			return null;
+		}
+	}
+	@RequestMapping(value = "collection/{id}/stat",method = RequestMethod.GET)
+	public int statComicCollection(Principal principal,@PathVariable long id,
+			@RequestParam (required=false) List<String> characters,
+			@RequestParam (required=false) List<String> creators,
+			@RequestParam (required=false) String publisher,
+			@RequestParam (required=false) String series,
+			@RequestParam (required=false) String title,
+			@RequestParam (required=false) Integer issue){
+		
+		int userID = -1;
+		if(principal!=null) {
+			userID =  userDAO.findIdByUsername(principal.getName());
+		}
+		FullCollectionDTO collection = collectionDAO.getCollection( id,userID);
+		if(collection!=null) {
+			return acquireFilteredComics(collection.getComics(),characters,creators,publisher,series,title,issue).size();
+		}else {
+			return 0;
+		}
+	}
+	@RequestMapping(value = "comic/stat",method = RequestMethod.GET)
+	public int statComics(Principal principal,
+			@RequestParam (required=false) List<String> characters,
+			@RequestParam (required=false) List<String> creators,
+			@RequestParam (required=false) String publisher,
+			@RequestParam (required=false) String series,
+			@RequestParam (required=false) String title,
+			@RequestParam (required=false) Integer issue){
+
+		List<ComicDTO> comics = collectionDAO.getAllComics();
+		if(comics!=null) {
+			return acquireFilteredComics(comics,characters,creators,publisher,series,title,issue).size();
+		}else {
+			return 0;
+		}
+	}
+	public List<ComicDTO> acquireFilteredComics(List<ComicDTO> comics,List<String> characters,List<String> creators, String publisher, String series, String title, Integer issue){
+		List<ComicDTO> filteredComics = new ArrayList<>();
+		for(ComicDTO comic : comics) {
+			//THIS IS HELLA CURSED
+			if( (publisher==null||comic.getPublisher().toLowerCase().equals(publisher.toLowerCase()))&&
+				(series==null||comic.getSeries().toLowerCase().equals(series.toLowerCase()))&&
+				(title==null||comic.getName().toLowerCase().equals(title.toLowerCase()))&&
+				(issue==null||comic.getIssueNumber()==(issue.intValue()))&&
+				(creators==null||listContainsWords(comic.getCreators(),creators))&&
+				(characters==null||listContainsWords(comic.getCharacters(),characters))
+				) {
+				
+				filteredComics.add(comic);
+			}
+		}
+		return filteredComics;
 	}
 	
+	public boolean listContainsWords(String[] list, List<String> wordsToSearch) {
+		boolean found;
+		for(String searchWord : wordsToSearch) {
+			found = false;
+			for(String word : list) {
+				if(word.toLowerCase().equals(searchWord.toLowerCase())) {
+					found = true;
+				}
+			}
+			if(!found) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
