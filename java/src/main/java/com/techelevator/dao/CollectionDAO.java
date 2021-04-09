@@ -25,7 +25,7 @@ public class CollectionDAO {
 		List<CollectionDTO> collectionDTOs = new ArrayList<>();
 		String sqlFindAccountID = "SELECT c.* FROM collections c "
 				+ "			INNER JOIN collections_user cu ON cu.collection_id = c.collection_id "
-				+ "			WHERE c.private = false ";
+				+ "			WHERE c.private = false ORDER BY c.collection_id";
 		SqlRowSet collectionRow = jdbcTemplate.queryForRowSet(sqlFindAccountID);
 		while (collectionRow.next()) {
 			collectionDTOs.add(mapRowToCollection(collectionRow));
@@ -37,7 +37,7 @@ public class CollectionDAO {
 
 		List<CollectionDTO> collectionDTOs = new ArrayList<>();
 		String sqlFindAccountID = "SELECT c.* FROM collections c "
-				+ "			INNER JOIN collections_user cu ON cu.collection_id = c.collection_id";
+				+ "			INNER JOIN collections_user cu ON cu.collection_id = c.collection_id ORDER BY c.collection_id" ;
 		SqlRowSet collectionRow = jdbcTemplate.queryForRowSet(sqlFindAccountID);
 		while (collectionRow.next()) {
 			collectionDTOs.add(mapRowToCollection(collectionRow));
@@ -50,7 +50,7 @@ public class CollectionDAO {
 		List<CollectionDTO> collectionDTOs = new ArrayList<>();
 		String sqlFindAccountID = "SELECT c.* FROM collections c "
 				+ "			INNER JOIN collections_user cu ON cu.collection_id = c.collection_id "
-				+ "			WHERE cu.user_id = ? ";
+				+ "			WHERE cu.user_id = ? ORDER BY c.collection_id";
 		SqlRowSet collectionRow = jdbcTemplate.queryForRowSet(sqlFindAccountID, collectionUserID);
 		while (collectionRow.next()) {
 			collectionDTOs.add(mapRowToCollection(collectionRow));
