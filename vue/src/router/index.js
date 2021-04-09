@@ -10,6 +10,7 @@ import UserHome from '../views/UserHome'
 import AddACollection from '../views/AddACollection'
 import SearchedUser from '../views/SearchedUser'
 
+
 Vue.use(Router)
 
 /**
@@ -82,8 +83,8 @@ const router = new Router({
       }
     },
     {
-      path: "/searchUser/:username",
-      name:"SearchUser",
+      path: "/:username/ComicSearch/",
+      name:"ComicSearch",
       component: SearchedUser,
       meta: {
         requiresAuth: false

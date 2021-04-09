@@ -27,7 +27,7 @@
                                     <button type="submit" class="btn btn-primary" v-on:click="updateCollection(collection)">Save Changes</button>       
                                 </div>
                                 <div class="card-text">
-                                    <p>placeholder for comicbook</p>
+                                    <comics-list v-bind:collectionID="collection.collectionID"/>
                                     <div v-if="isCurrentUser">
                                     <button type="button" class="btn btn-success">Add Comic</button>
                                       <button type="button" class="btn btn-danger" @click="deleteCollection(collection.collectionID)">Delete Collection</button>  
@@ -76,10 +76,11 @@
 
 import ComicServices from '../services/ComicServices';
 import AddACollection from './AddACollection.vue';
+import ComicsList from './ComicsList.vue';
 
 
 export default {
-  components: { AddACollection },
+  components: { AddACollection, ComicsList },
    data() {
        return {
      createCollection: false,
@@ -126,6 +127,7 @@ export default {
             
         },
         updateCollection(collection) {
+            
             ComicServices.updateCollection(collection).then(response => {
                 if(response.status == 200) {
                     this.changeId = '';

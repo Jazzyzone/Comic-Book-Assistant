@@ -1,13 +1,13 @@
 <template>
 
-  <searched-user />
+  <comic-search />
 </template>
 
 <script>
-import SearchedUser from '../components/SearchedUser';
+import ComicSearch from '../components/ComicSearch';
 
 export default {
-  components: { SearchedUser },
+  components: { ComicSearch },
 
 }
 </script>

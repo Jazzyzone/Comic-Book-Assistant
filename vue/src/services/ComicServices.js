@@ -39,6 +39,14 @@ export default {
       return axios.get(`/user/${username}`);
   },
 
+  getAllComicsByCollectionId(collectionId) {
+      return axios.get(`/collection/${collectionId}`);
+  },
+
+  deleteComicByComicId(collectionID, comicID) {
+      return axios.delete(`collection/${collectionID}/comic/${comicID}`)
+  }
+
 
 //   getStats() {
 //     return axios.get(`/stats/${type}`)

@@ -5,8 +5,8 @@ export default {
     getComicList(config){
         return axios.get("/marvel/",null,config);
     },
-    getComicListTest(config){
-        config = {
+    getComicListTest(){
+       let config = {
             title : "Uncanny X-Men",
             issue : 1,
             page : 1
