@@ -129,7 +129,7 @@ public class CollectionController {
 		int userID = userDAO.findIdByUsername(principal.getName());
 		return collectionDAO.addComicToCollection(collectionID,comic,userID);
 	}
-	@RequestMapping(value = "collection/{id}/search",method = RequestMethod.GET)
+	@RequestMapping(value = "collection/{id}/search/",method = RequestMethod.GET)
 	public List<ComicDTO> searchComicCollection(Principal principal,@PathVariable long id,
 			@RequestParam (required=false) List<String> characters,
 			@RequestParam (required=false) List<String> creators,
@@ -150,7 +150,7 @@ public class CollectionController {
 			return null;
 		}
 	}
-	@RequestMapping(value = "comic/search",method = RequestMethod.GET)
+	@RequestMapping(value = "comic/search/",method = RequestMethod.GET)
 	public List<ComicDTO> searchComics(Principal principal,
 			@RequestParam (required=false) List<String> characters,
 			@RequestParam (required=false) List<String> creators,
@@ -166,7 +166,7 @@ public class CollectionController {
 			return null;
 		}
 	}
-	@RequestMapping(value = "collection/{id}/stat",method = RequestMethod.GET)
+	@RequestMapping(value = "collection/{id}/stat/",method = RequestMethod.GET)
 	public int statComicCollection(Principal principal,@PathVariable long id,
 			@RequestParam (required=false) List<String> characters,
 			@RequestParam (required=false) List<String> creators,
@@ -186,7 +186,7 @@ public class CollectionController {
 			return 0;
 		}
 	}
-	@RequestMapping(value = "comic/stat",method = RequestMethod.GET)
+	@RequestMapping(value = "comic/stat/",method = RequestMethod.GET)
 	public int statComics(Principal principal,
 			@RequestParam (required=false) List<String> characters,
 			@RequestParam (required=false) List<String> creators,
