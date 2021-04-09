@@ -55,7 +55,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
  div img {
      max-width: 200px;
      max-height: 250px;
