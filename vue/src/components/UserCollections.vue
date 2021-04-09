@@ -123,6 +123,8 @@ export default {
         updateCollection(collection) {
             ComicServices.updateCollection(collection).then(response => {
                 if(response.status == 200) {
+                    this.changeId = '';
+                    this.changeName = false;
                     ComicServices.getAllCollections(this.$route.params.username).then(response => {
              this.$store.commit("SET_COLLECTIONS", response.data)
          });
