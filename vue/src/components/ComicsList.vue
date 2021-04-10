@@ -35,6 +35,7 @@ export default {
          ComicServices.getAllComicsByCollectionId(this.collectionID).then(response => {
              this.collection = response.data;
          });
+         
          //window.alert(this.collections.length);
     },
     methods: {
@@ -55,7 +56,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
  div img {
      max-width: 200px;
      max-height: 250px;

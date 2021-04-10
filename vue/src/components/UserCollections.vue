@@ -4,20 +4,30 @@
 
 <template>
 <div>
+
+
+    <div v-if="isCurrentUser">
+     <button type="button" class="btn btn-primary" v-on:click="createCollection = !createCollection">{{!createCollection? "Create a Collection" : "Cancel"}}</button>
+        <div v-if="createCollection">
+            <add-a-collection />
+        </div>
+    </div>
+    <div class="container">
+         
 <h1> {{this.$route.params.username}} Comic Collections</h1>
         <div class="collections">
             <div class="collection"
             v-for="collection in collections"
             v-bind:key="collection.collection_id"
             >
-            <div id="cards_landscape_wrap-2" v-if="($store.state.token == '' && collection.private === false) || $store.state.token != ''">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="row" v-if="($store.state.token == '' && collection.private === false) || $store.state.token != ''">
+        
+           
+                <div class="column">
                     <div class="card">
                         <div class="card-body">
                             <div class="card-title">
-                                {{collection.name}}
+                                <h5>{{collection.name}}</h5>
                             <div v-if="isCurrentUser">               
                                 <button type="button" class="btn btn-secondary btn-sm" v-on:click="changeCollectionName(collection.collectionID)">{{collection.collectionID === changeId ? "Cancel" :"Rename Collection"}}</button>
                             </div>
@@ -42,7 +52,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            
         </div>
             </div>
         </div>
@@ -51,27 +61,11 @@
     <add-a-collection />
     </div> -->
     <!-- <router-link :to="{ name: 'userCollections', params: {username: this.$store.state.user.username} }">View My Comic Book Collections</router-link> -->
-    <div v-if="isCurrentUser">
-     <button type="button" class="btn btn-primary" v-on:click="createCollection = !createCollection">{{!createCollection? "Create a Collection" : "Cancel"}}</button>
     
-        <div v-if="createCollection">
-            <add-a-collection />
-        </div>
-    </div>
     
     
     <p>My Friends</p>
     <p>See Collections of Others</p>
-  <div>
-      <div>
-      <!-- for collections in collections creates separate columns displaying collection names -->
-      </div>
-    <div>
-        <!-- hamburger menu the collection columns and then when they're clicked they expand
-        to show the full list of comic book names, which could also be a link when clicked
-        displays the comic collection -->
-    </div>
-  </div>
 </div>
 
     
@@ -100,6 +94,7 @@ export default {
          ComicServices.getAllCollections(this.$route.params.username).then(response => {
              this.$store.commit("SET_COLLECTIONS", response.data)
          });
+         
          //window.alert(this.collections.length);
     },
     computed: {
@@ -156,8 +151,59 @@ export default {
 }
 </script>
 
-<style>
-#cards_landscape_wrap-2{
+<style scoped>
+div img {
+     max-width: 200px;
+     max-height: 250px;
+ }
+
+    * {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Float four columns side by side */
+.column {
+  float: left;
+  width: 25%;
+  padding: 0 10px;
+}
+
+/* Remove extra left and right margins, due to padding in columns */
+.rowz {margin: 0 -5px;}
+
+/* Clear floats after the columns */
+.rowz:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Style the counter cards */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+  padding: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+
+/* Responsive columns - one column layout (vertical) on small screens */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+
+.container {
+    margin-left: 300px;
+}
+
+/* #cards_landscape_wrap-2{
   text-align: center;
   background: #F7F7F7;
 }
@@ -227,14 +273,19 @@ export default {
   letter-spacing: 1px;
   color: #000000;
 }
+
+.row {
+    max-width: 600px;
+}
+
 #cards_landscape_wrap-2 .card h5{
   margin-top: 0px;
   margin-bottom: 4px; 
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   text-transform: uppercase;
   font-family: 'Roboto Black', sans-serif;
   letter-spacing: 1px;
   color: #00acc1;
-}
+} */
 </style>
