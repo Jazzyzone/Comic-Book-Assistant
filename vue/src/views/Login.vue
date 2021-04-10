@@ -1,49 +1,39 @@
 <template>
-<div class="card text-center mx-auto bg-light" >
-  <div class="card-body">
-    <div id="login" class="text-center">
-    <form class="form-signin" @submit.prevent="login">
-      <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
-      <div
-        class="alert alert-danger"
-        role="alert"
-        v-if="invalidCredentials"
-      >Invalid username and password!</div>
-      <div
-        class="alert alert-success"
-        role="alert"
-        v-if="this.$route.query.registration"
-      >Thank you for registering, please sign in.</div>
-      <div>
-      <label for="username" class="sr-only">Username</label>
-      <input
-        type="text"
-        id="username"
-        class="form-control"
-        placeholder="Username"
-        v-model="user.username"
-        required
-        autofocus
-      />
-      </div>
-      <div>
-      <label for="password" class="sr-only">Password</label>
-      <input
-        type="password"
-        id="password"
-        class="form-control"
-        placeholder="Password"
-        v-model="user.password"
-        required
-      />
-      </div>
-      <router-link :to="{ name: 'register' }">Need an account?</router-link>
-      <br>
-      <button type="submit" class="btn btn-outline-primary">Sign in</button>
-    </form>
-  </div>
-  </div>
-</div>
+  <v-app>
+    <v-card width="400" class="mx-auto mt-5">
+      <v-card-title>
+        <h1 class="display-1">Login</h1>
+      </v-card-title>
+      <v-card-text>
+        <v-form>
+          <v-alert
+            color="red"
+            type="error"
+            v-if="invalidCredentials"
+          >
+          Invalid Credentials
+          </v-alert>
+          <v-text-field prepend-icon="mdi-account-circle"  v-model="user.username" label="User"/>
+          <v-text-field 
+            prepend-icon="mdi-lock" 
+            label="Password"
+            v-model="user.password"
+            :type="showPassword ? 'test' : 'password'" 
+            :append-icon="showPassword ? 'mdi-eye':'mdi-eye-off'"
+            @click:append="showPassword=!showPassword"
+            />
+        </v-form>
+      </v-card-text>
+      <v-divider></v-divider>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+          <v-btn color="success" :to="{ name: 'register' }">Register</v-btn>
+          
+          <v-btn color="info" @click="login">Login</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-app>
+
 </template>
 
 <script>
@@ -54,6 +44,7 @@ export default {
   components: {},
   data() {
     return {
+      showPassword : false,
       user: {
         username: "",
         password: ""
@@ -86,24 +77,4 @@ export default {
 
 <style scoped>
 
-/* .card-body{
-  justify-content: center;
-  margin: 0 auto;
-  line-height: 50px;
-} */
-.card {
-  margin-top: 200px;
-  max-width: 500px;
-}
-.form-signin {
-  max-width: 450px;
-  justify-content: center;
-  margin: 0 auto;
-  line-height: 50px;
-  /* margin-top: 100px; */
-}
-.form-signin input {
-  margin-bottom: 5px;
-  
-}
 </style>

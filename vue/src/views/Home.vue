@@ -1,33 +1,29 @@
 <template>
-  <div class="home">
-
-    <img src="../images/marvel_comics_cast.png" alt="" srcset="">
-
-    <div id="searchUser">
-    <form @submit.prevent="searchUser">
-        <label for="collectionName">Enter Users Name:</label>
-        <input type="text" id="collectionName" name="collectionName" v-model="userSearch">
-
-        <!-- <router-link :to="{ name: 'userCollections', params: {username: userSearch} }"> -->
-          <button type="submit" class="btn btn-primary">Search</button>
-        <!-- </router-link> -->
-        
-
-    </form>
-    </div>
-  </div>
+  <v-container> 
+<div class="small">
+    <test-chart :chart-data="datacollection"></test-chart>
+    <button @click="fillData()">Randomize</button>
+</div>
+  </v-container>
 </template>
 
 <script>
 import ComicServices from '../services/ComicServices';
-
+import TestChart from '../charts/TestChart.js'
 export default {
+   components: {
+      TestChart
+    },
   name: "home",
   data() {
     return {
+      datacollection: null,
     userSearch: ''
     }
   },
+  mounted () {
+      this.fillData()
+    },
   methods: {
     searchUser() {
       
@@ -41,18 +37,34 @@ export default {
           }
         })
 
-
-      // ComicServices.getAllUsernames().then(response => {
-      //       let found = response.data;
-      //         found.find(e => e === this.userSearch);
-      //       if (found) {
-      //         this.$store.commit("SET_USERSEARCH", found )
-      //         this.this.$router.push({ name: "userCollections", params: {username: found}});
-      //       }
-             
-      //    });
-    }
+    },
+    fillData () {
+        this.datacollection = {
+          labels: [this.getRandomInt(), this.getRandomInt()],
+          datasets: [
+            {
+              label: 'Data One',
+              backgroundColor: '#f87979',
+              data: [this.getRandomInt(), this.getRandomInt()]
+            }, {
+              label: 'Data One',
+              backgroundColor: '#f87979',
+              data: [this.getRandomInt(), this.getRandomInt()]
+            }
+          ]
+        }
+      },
+      getRandomInt () {
+        return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+      }
+    
   }
   
 };
 </script>
+<style>
+ .small {
+    max-width: 600px;
+    margin:  150px auto;
+  }
+</style>

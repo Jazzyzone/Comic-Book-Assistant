@@ -1,20 +1,20 @@
 //Add a collection to a user list of collections
 
 <template>
-<div>
-    <form>
-        <label for="collectionName">Collection Name:</label>
-        <input type="text" id="collectionName" name="collectionName" v-model="collections.name" required>
 
-        <label for="porp">Private or Public?</label>
-        <input type="radio" id="porp" value="true" v-model="collections.private">
-        <input type="radio" id="porp" value="false" v-model="collections.private">
+    <v-container
+    class="pa-5 d-flex flex-row"
+    fluid
+    align-center
+  >
+       
         
-        
-        <button type="submit" class="btn btn-primary" v-on:click="addCollection()">Save Collection</button>
+         <v-text-field  v-model="collections.name" label="Collection Name" :append-icon="collections.private ? 'mdi-eye':'mdi-eye-off'"
+            @click:append="collections.private=!collections.private"/>     
+        <v-btn icon v-on:click="addCollection()" class="ml-2"><v-icon>mdi-content-save</v-icon></v-btn>
 
-    </form>
-  </div>
+   </v-container>
+  
 </template>
 
 <script>

@@ -1,8 +1,8 @@
 //displays the users home page when signed in
 <template>
-  <div>
+  <v-container>
       <user-home />
-  </div>
+  </v-container>
 </template>
 
 <script>

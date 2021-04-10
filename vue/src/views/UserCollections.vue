@@ -1,6 +1,6 @@
 <template>
   <div>
-  <user-collections />
+  <user-collections :key="$route.params.username"/>
   <!-- <add-a-collection /> -->
   </div>
 </template>

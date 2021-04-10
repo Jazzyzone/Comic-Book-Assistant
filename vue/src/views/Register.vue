@@ -1,5 +1,71 @@
 <template>
-<div class="card text-center mx-auto bg-light" style="max-width: 650px; margin: 175px 0px" >
+  <v-app>
+    <v-card width="800" class="mx-auto mt-5">
+      <v-card-title>
+        <h1 class="display-1">Register</h1>
+      </v-card-title>
+      <v-card-text>
+        <v-form>
+
+          <v-alert
+            color="red"
+            type="error"
+            v-if="registrationErrors"
+          >
+          {{registrationErrorMsg}}
+          </v-alert>
+          <v-text-field prepend-icon="mdi-account-circle"  v-model="user.username" label="User"/>
+          <v-text-field 
+            type="password"
+            label="Password"
+            v-model="user.password"
+            prepend-icon="mdi-lock"
+            @click:append="showPassword=!showPassword"
+            />
+            <v-text-field 
+            prepend-icon="mdi-lock-check"
+            label="confirm Password"
+            v-model="user.confirmPassword"
+            type="password"
+            @click:append="showPassword=!showPassword"
+            />
+
+              <v-row>
+            <v-col cols=6>
+              <v-card height="200" class = "ma-1" :elevation="user.role=='premium' ? 10:2" :color="user.role=='premium' ? 'yellow lighten-3' : 'white'" lighten3 @click= "user.role='premium'">
+                <v-card-title>
+                  Comic Elevator Super!
+                </v-card-title>
+                <v-card-text>
+                  Power up your collection with with a Comic Elevator Super account. Store unlimited amounts of comics in your collections!
+                </v-card-text>
+              </v-card>
+              </v-col>
+                <v-col cols=6>
+              <v-card  height="200" class = "ma-1" :elevation="user.role=='standard' ? 10:2" :color="user.role=='standard' ? 'yellow lighten-3' : 'white'" @click= "user.role='standard'" >
+                <v-card-title>
+                  Comic Elevator Basic.
+                </v-card-title>
+                <v-card-text>
+                  <v-card-text>
+                  A basic Comic Elevator account, you are limited to only 100 comics within your collection.
+                  </v-card-text>
+                </v-card-text>
+              </v-card>
+              </v-col>
+              </v-row>
+
+        </v-form>
+      </v-card-text>
+      <v-divider></v-divider>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+          
+          <v-btn color="info" @click="register">Login</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-app>
+<!--<div class="card text-center mx-auto bg-light" style="max-width: 650px; margin: 175px 0px" >
   <div class="card-body">
   <div id="register" class="text-center">
     <form class="form-register" @submit.prevent="register">
@@ -68,20 +134,6 @@
             </div>
         </div>
     </div>
-
-      <!-- <p>Select account type:</p>
-      <div>
-        <input type="radio" id="standard" name="accountType" value="standard"
-              checked v-model="user.role">
-        <label for="standard">Standard User</label>
-      </div>
-
-      <div>
-        <input type="radio" id="Premium" name="accountType" value="premium" v-model="user.role">
-        <label for="premium">Premium User</label>
-      </div> -->
-
-
       <router-link :to="{ name: 'login' }">Have an account?</router-link>
       <button class="btn btn-lg btn-primary btn-block" type="submit">
         Create My Account
@@ -89,7 +141,7 @@
     </form>
   </div>
   </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -113,7 +165,7 @@ export default {
     register() {
       if (this.user.password != this.user.confirmPassword) {
         this.registrationErrors = true;
-        this.registrationErrorMsg = 'Password & Confirm Password do not match.';
+        this.registrationErrorMsg = 'Passwords do not match!';
       } else {
         authService
           .register(this.user)
@@ -142,102 +194,7 @@ export default {
 };
 </script>
 
-<style scoped>
-
-
-.form-register {
-  max-width: 650px;
-  justify-content: center;
-  margin: 0 auto;
-  
-  /* margin-top: 100px; */
-}
-
-.form-register input {
-  margin-bottom: 5px;
-  
-}
-
-#cards_landscape_wrap-2{
-  text-align: center;
-  background: #F7F7F7;
-}
-#cards_landscape_wrap-2 .container{
-  padding-top: 30px; 
-  padding-bottom: 100px;
-}
-
-#cards_landscape_wrap-2 .card {
-  border-radius: 5px;
-}
-
-#cards_landscape_wrap-2 .card .image-box{
-  background: #ffffff;
-  overflow: hidden;
-  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.50);
-  border-radius: 5px;
-}
-#cards_landscape_wrap-2 .card .image-box img{
-  -webkit-transition:all .9s ease; 
-  -moz-transition:all .9s ease; 
-  -o-transition:all .9s ease;
-  -ms-transition:all .9s ease; 
-  width: 100%;
-  height: 200px;
-}
-
-#cards_landscape_wrap-2 .card:hover .image-box img{
-  opacity: 0.7;
-  -webkit-transform:scale(1.15);
-  -moz-transform:scale(1.15);
-  -ms-transform:scale(1.15);
-  -o-transform:scale(1.15);
-  transform:scale(1.15);
-}
-#cards_landscape_wrap-2 .card .text-box{
-  text-align: center;
-}
-#cards_landscape_wrap-2 .card .text-box .text-container{
-  padding: 30px 18px;
-}
-#cards_landscape_wrap-2 .card{
-  background: #FFFFFF;
-  margin-top: 50px;
-  -webkit-transition: all 0.2s ease-in;
-  -moz-transition: all 0.2s ease-in;
-  -ms-transition: all 0.2s ease-in;
-  -o-transition: all 0.2s ease-in;
-  transition: all 0.2s ease-in;
-  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.40);
-}
-#cards_landscape_wrap-2 .card:hover{
-  background: #fff;
-  box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
-  -webkit-transition: all 0.2s ease-in;
-  -moz-transition: all 0.2s ease-in;
-  -ms-transition: all 0.2s ease-in;
-  -o-transition: all 0.2s ease-in;
-  transition: all 0.2s ease-in;
-  margin-top: 50px;
-}
-#cards_landscape_wrap-2 .card .text-box p{
-  margin-top: 10px;
-  margin-bottom: 0px;
-  padding-bottom: 0px; 
-  font-size: 14px;
-  letter-spacing: 1px;
-  color: #000000;
-}
-#cards_landscape_wrap-2 .card h5{
-  margin-top: 0px;
-  margin-bottom: 4px; 
-  font-size: 18px;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-family: 'Roboto Black', sans-serif;
-  letter-spacing: 1px;
-  color: #00acc1;
-}
+<style>
 
 
 </style>

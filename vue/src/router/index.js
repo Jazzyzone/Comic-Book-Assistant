@@ -26,8 +26,9 @@ const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    { path: '/', redirect: '/home' },
     {
-      path: '/',
+      path: '/home/',
       name: 'home',
       component: Home,
       meta: {
@@ -67,8 +68,8 @@ const router = new Router({
       }
     },
     {
-      path: "/:username/",
-      name: "UserHome",
+      path: "/account/:username/",
+      name: "userHome",
       component: UserHome,
       meta: {
         requiresAuth: true

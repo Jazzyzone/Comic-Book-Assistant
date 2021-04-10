@@ -1,21 +1,34 @@
 //Displays every comic book in users collection
 <template>
-
-  <div>
-      <div class="collections">
-            <div class="comic"
-            v-for="comic in collection.comics"
+    <v-container>
+        
+        <v-flex class="d-flex flex-wrap flex-row align-stretch ">
+            <v-sheet v-for="comic in collection.comics"
             v-bind:key="comic.id"
+            class="rounded-xl mx-auto transition-swing  pa-2 ma-3 d-flex flex-wrap flex-column justify-space-between"
+            max-width="300"
+            :elevation="10"
             >
-            <div>
-            {{comic.name}}
-            </div>
-            <button type="button" class="btn-danger delete" id="deletebtn" @click="deleteComic(comic.id)">X</button>
-        <img v-bind:src="comic.thumbnailLink" alt="" srcset=""/>
-      </div>
-  </div>
-  </div>
 
+
+                <div>
+                    <v-card-title 
+                    class="headline"
+                    v-text="comic.name"
+                    ></v-card-title>
+                    
+                    <v-card-subtitle v-text="comic.publisher"></v-card-subtitle>
+                     <v-divider></v-divider>
+                </div>
+                <div>
+
+                    <v-img  min-height="480" min-width="280" class="rounded-xl" :aspect-ratio="6.5/10" :src="comic.thumbnailLink"></v-img>
+                    <v-btn v-if="isCurrentUser" width="100%" class="rounded-xl" color="red" @click="deleteComic(comic.id)" >Remove</v-btn>
+                </div>
+          </v-sheet>
+        </v-flex>
+        
+    </v-container>
 </template>
 
 <script>
@@ -35,8 +48,13 @@ export default {
          ComicServices.getAllComicsByCollectionId(this.collectionID).then(response => {
              this.collection = response.data;
          });
-         
          //window.alert(this.collections.length);
+    },
+    computed: {
+        
+        isCurrentUser() {
+            return this.$route.params.username === this.$store.state.user.username;
+        },
     },
     methods: {
         deleteComic(comicID){
@@ -56,11 +74,8 @@ export default {
 }
 </script>
 
-<style scoped>
- div img {
-     max-width: 200px;
-     max-height: 250px;
- }
+<style>
+
 
 
 </style>

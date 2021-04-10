@@ -3,70 +3,128 @@
 //them to ComicsList
 
 <template>
-<div>
+<v-container>
+    <v-row  justify="center">
+  <v-col class="shrink">
+      <v-btn
+        class="ma-2"
+        color="primary"
+        @click="expand = !expand"
+      >
+        Add a Collection
+      </v-btn>
 
+      <v-expand-transition >
+        <v-card
+          v-show="expand"
+          lighten3
+          class="mx-auto white mb-2"
+          width = "300"
+          elevation=10
+        >
+         <add-a-collection />
+         </v-card>
+      </v-expand-transition>
+    </v-col>
+   </v-row>
+  <v-expansion-panels accordion>
+    <v-expansion-panel
+      v-for="collection in collections"
+            v-bind:key="collection.collection_ID"
+    >
+      <v-expansion-panel-header>
+        {{collection.name}}
+      </v-expansion-panel-header>
+      <v-expansion-panel-content>
+        <v-flex v-if="isCurrentUser" class="d-flex flex-row align-center">
+ 
+          <v-expansion-panels class="ma-1">
+            <v-expansion-panel>
+              <v-expansion-panel-header>
+                <template v-slot:default="{ open }">
+                  <v-row no-gutters>
+                    <v-col cols="4">
+                      Add a comic
+                    </v-col>
+                    <v-col
+                      cols="8"
+                      class="text--secondary"
+                    >
+                      <v-fade-transition leave-absolute>
+                        <span
+                          v-if="open"
+                          key="0"
+                        >
+                          Search the Marvel database for a comic
+                        </span>
+                        <span
+                          v-else
+                          key="1"
+                        >
+                         
+                        </span>
+                      </v-fade-transition>
+                    </v-col>
+                  </v-row>
+                </template>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-row>
+                <v-col  cols="8">
+                <v-text-field label="title" v-model="searchForT"
 
-    <div v-if="isCurrentUser">
-     <button type="button" class="btn btn-primary" v-on:click="createCollection = !createCollection">{{!createCollection? "Create a Collection" : "Cancel"}}</button>
-        <div v-if="createCollection">
-            <add-a-collection />
-        </div>
-    </div>
-    <div class="container">
-         
-<h1> {{this.$route.params.username}} Comic Collections</h1>
-        <div class="collections">
-            <div class="collection"
-            v-for="collection in collections"
-            v-bind:key="collection.collection_id"
-            >
-            <div class="row" v-if="($store.state.token == '' && collection.private === false) || $store.state.token != ''">
-        
-           
-                <div class="column">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title">
-                                <h5>{{collection.name}}</h5>
-                            <div v-if="isCurrentUser">               
-                                <button type="button" class="btn btn-secondary btn-sm" v-on:click="changeCollectionName(collection.collectionID)">{{collection.collectionID === changeId ? "Cancel" :"Rename Collection"}}</button>
-                            </div>
-                            <div v-if="changeName && collection.collectionID === changeId">
-                                 <label for="collectionName">Collection Name:</label>
-                                    <input type="text" id="collectionName" name="collectionName" v-model="collection.name" required>
-                                    <button type="submit" class="btn btn-primary" v-on:click="updateCollection(collection)">Save Changes</button>       
-                                </div>
-                                <div class="card-text">
-                                    <comics-list v-bind:collectionID="collection.collectionID"/>
-                                    <div v-if="isCurrentUser">
-                                    <button type="button" class="btn btn-success" v-on:click="searchComic(collection.collectionID)">Add Comic</button>
-                                      <button type="button" class="btn btn-danger" @click="deleteCollection(collection.collectionID)">Delete Collection</button> 
-                                      <div v-if="collection.collectionID === collectionid">
-                                 <label for="searchComicBook">Enter Comic Title:</label>
-                                    <input type="text" id="searchComicBook" name="searchComicBook" v-model="searchFor" placeholder="Enter title" required>
-                                    <button type="submit" class="btn btn-primary" @click="searchForComic(collection.collectionID)">Search</button>       
-                                </div> 
-                                    </div>
-                                    </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            
-        </div>
-            </div>
-        </div>
-    </div>
-    <!-- <div>
-    <add-a-collection />
-    </div> -->
-    <!-- <router-link :to="{ name: 'userCollections', params: {username: this.$store.state.user.username} }">View My Comic Book Collections</router-link> -->
-    
-    
-    
-    <p>My Friends</p>
-    <p>See Collections of Others</p>
-</div>
+                ></v-text-field>
+                </v-col>
+                  <v-col  cols="4">
+                    <v-text-field label="issue number" v-model="searchForI"
+
+                ></v-text-field>
+                    </v-col>
+                    </v-row>
+                    <v-btn text @click="searchForComic(collection.collectionID)">Search</v-btn>  
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+             </v-expansion-panels>
+
+          <div class="text-center ma-1">
+            <v-dialog v-model="dialog" width="500">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="orange lighten-1"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  Edit
+                </v-btn>
+              </template>
+
+              <v-card>
+                <v-card-title class="headline grey lighten-2">
+                  Edit Collection
+                </v-card-title>
+
+                <v-card-text>
+                  <v-text-field v-model="rename" label="name"></v-text-field>                          
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn  color="green lighten-1"
+                  dark @click="updateCollection(collection)">Add</v-btn>     
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </div>
+
+            <v-btn color="red lighten-1" dark class="ma-1" @click="deleteCollection(collection.collectionID)">Delete</v-btn>
+        </v-flex>
+        <comics-list v-bind:collectionID="collection.collectionID"/>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+  </v-expansion-panels>
+
+</v-container>
 
     
 </template>
@@ -82,19 +140,19 @@ export default {
   components: { AddACollection, ComicsList },
    data() {
        return {
+         expand:false,
      createCollection: false,
-     changeName: false,
-     changeId: '',
      collectionid: '',
-     search: false,
-     searchFor: ''
+     searchForI:"",
+     searchForT:"",
+     rename:"",
+     dialog : false,
        }
    },
     created() {
          ComicServices.getAllCollections(this.$route.params.username).then(response => {
              this.$store.commit("SET_COLLECTIONS", response.data)
          });
-         
          //window.alert(this.collections.length);
     },
     computed: {
@@ -115,28 +173,16 @@ export default {
                 }
             });
         },
-        changeCollectionName(collectionId) {
-            if(this.changeId !== collectionId) {
-                this.changeName = true;
-                this.changeId = collectionId;
-            
-            }else if(this.changeId === collectionId) {
-                this.changeId = '';
-                this.changeName = false;
-            }else{
-                this.changeName = !this.changeName;
-            }     
-        },
         searchComic(collectionId) {
              this.collectionid = collectionId;
         },
         searchForComic(collectionId) {
             this.collectionid = collectionId;
             //will need a conditional to make sure string isn't empty and will need a .trim()
-            this.$router.push({ name: "ComicSearch", params: {collectionID: this.collectionid, search: this.searchFor}});
+            this.$router.push({ name: "ComicSearch", params: {collectionID: this.collectionid, title: this.searchForT, issue: this.searchForI}});
         },
         updateCollection(collection) {
-            
+            collection.name = this.rename
             ComicServices.updateCollection(collection).then(response => {
                 if(response.status == 200) {
                     this.changeId = '';
@@ -151,141 +197,6 @@ export default {
 }
 </script>
 
-<style scoped>
-div img {
-     max-width: 200px;
-     max-height: 250px;
- }
+<style>
 
-    * {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Float four columns side by side */
-.column {
-  float: left;
-  width: 25%;
-  padding: 0 10px;
-}
-
-/* Remove extra left and right margins, due to padding in columns */
-.rowz {margin: 0 -5px;}
-
-/* Clear floats after the columns */
-.rowz:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Style the counter cards */
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
-  padding: 16px;
-  text-align: center;
-  background-color: #f1f1f1;
-}
-
-/* Responsive columns - one column layout (vertical) on small screens */
-@media screen and (max-width: 600px) {
-  .column {
-    width: 100%;
-    display: block;
-    margin-bottom: 20px;
-  }
-}
-
-.container {
-    margin-left: 300px;
-}
-
-/* #cards_landscape_wrap-2{
-  text-align: center;
-  background: #F7F7F7;
-}
-#cards_landscape_wrap-2 .container{
-  padding-top: 30px; 
-  padding-bottom: 100px;
-}
-
-#cards_landscape_wrap-2 .card {
-  border-radius: 5px;
-}
-
-#cards_landscape_wrap-2 .card .image-box{
-  background: #ffffff;
-  overflow: hidden;
-  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.50);
-  border-radius: 5px;
-}
-#cards_landscape_wrap-2 .card .image-box img{
-  -webkit-transition:all .9s ease; 
-  -moz-transition:all .9s ease; 
-  -o-transition:all .9s ease;
-  -ms-transition:all .9s ease; 
-  width: 100%;
-  height: 200px;
-}
-
-#cards_landscape_wrap-2 .card:hover .image-box img{
-  opacity: 0.7;
-  -webkit-transform:scale(1.15);
-  -moz-transform:scale(1.15);
-  -ms-transform:scale(1.15);
-  -o-transform:scale(1.15);
-  transform:scale(1.15);
-}
-#cards_landscape_wrap-2 .card .text-box{
-  text-align: center;
-}
-#cards_landscape_wrap-2 .card .text-box .text-container{
-  padding: 30px 18px;
-}
-#cards_landscape_wrap-2 .card{
-  background: #FFFFFF;
-  margin-top: 50px;
-  -webkit-transition: all 0.2s ease-in;
-  -moz-transition: all 0.2s ease-in;
-  -ms-transition: all 0.2s ease-in;
-  -o-transition: all 0.2s ease-in;
-  transition: all 0.2s ease-in;
-  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.40);
-}
-#cards_landscape_wrap-2 .card:hover{
-  background: #fff;
-  box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
-  -webkit-transition: all 0.2s ease-in;
-  -moz-transition: all 0.2s ease-in;
-  -ms-transition: all 0.2s ease-in;
-  -o-transition: all 0.2s ease-in;
-  transition: all 0.2s ease-in;
-  margin-top: 50px;
-}
-#cards_landscape_wrap-2 .card .text-box p{
-  margin-top: 10px;
-  margin-bottom: 0px;
-  padding-bottom: 0px; 
-  font-size: 14px;
-  letter-spacing: 1px;
-  color: #000000;
-}
-
-.row {
-    max-width: 600px;
-}
-
-#cards_landscape_wrap-2 .card h5{
-  margin-top: 0px;
-  margin-bottom: 4px; 
-  font-size: 20px;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-family: 'Roboto Black', sans-serif;
-  letter-spacing: 1px;
-  color: #00acc1;
-} */
 </style>

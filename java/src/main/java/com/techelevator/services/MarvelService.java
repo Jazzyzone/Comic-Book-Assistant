@@ -18,7 +18,7 @@ public class MarvelService {
 	    String myHash = DigestUtils.md5Hex(combo);
 	    String query = "";
 	    if(title!=null) {
-	    	query += "&title="+title;
+	    	query += "&titleStartsWith="+title;
 	    }
 	    if(issue!=null) {
 	    	query += "&issueNumber="+issue;

@@ -37,8 +37,16 @@ export default {
     created() {
         let config = {
         params: {
-            title : this.$route.params.search,
+            title : null,
+            issue : null
         }
+        }
+        if(this.$route.params.title!=""){
+            config.params.title = this.$route.params.title;
+        }
+
+        if(this.$route.params.issue!=""){
+            config.params.issue = this.$route.params.issue;
         }
         MarvelService.getComicList(config).then(response => {
              this.searchResults = response.data.data.results;
