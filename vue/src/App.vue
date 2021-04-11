@@ -45,7 +45,7 @@
          
         <v-sheet
            min-height="85vh"
-   background-color=seconday
+   
           >
        
           <router-view />

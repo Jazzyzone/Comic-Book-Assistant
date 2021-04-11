@@ -1,19 +1,15 @@
 <template>
   <v-container> 
-<div class="small">
-    <test-chart :chart-data="datacollection"></test-chart>
-    <button @click="fillData()">Randomize</button>
-</div>
+    
+
   </v-container>
 </template>
 
 <script>
 import ComicServices from '../services/ComicServices';
-import TestChart from '../charts/TestChart.js'
+
 export default {
-   components: {
-      TestChart
-    },
+
   name: "home",
   data() {
     return {

@@ -9,7 +9,22 @@ export default new Vuetify({
             light:{
                 primary: colors.blue.lighten1,
                 secondary: colors.purple.lighten2,
-                accent: colors.orange.lighten1
+                accent: colors.orange.lighten1,
+                error: '#FF5252',
+                info: '#2196F3',
+                success: '#4CAF50',
+                warning: '#FFC107',
+                potato: colors.yellow.lighten1
+            },
+            dark:{
+                primary: colors.red.lighten1,
+                secondary: colors.purple.lighten2,
+                accent: colors.orange.lighten1,
+                error: '#FF5252',
+                info: '#2196F3',
+                success: '#4CAF50',
+                warning: '#FFC107',
+                potato: colors.yellow.lighten1
             }
         }
     }
