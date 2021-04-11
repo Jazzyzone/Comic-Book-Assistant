@@ -6,16 +6,18 @@
             v-for="comic in searchResults"
             v-bind:key="comic.id"
             >
-            <div class="card">
-                <img v-bind:src='comic.thumbnail.path.concat("." + comic.thumbnail.extension)' srcset=""/>
-                <div class="card-title">{{comic.title}}</div>
+            <v-card >
+                <v-img v-bind:src='comic.thumbnail.path.concat("." + comic.thumbnail.extension)' srcset=""/>
+                <div>{{comic.title}}</div>
             
             <!-- {{comic.issueNumber}} -->
             <!-- {{comic.id}} -->
             <!-- {{comic.characters}} -->
             <!-- {{comic.description}} -->
-            <button type="button" class="btn-success delete" @click="addComicToCollection(comic)">add</button>
-            </div>
+            <v-btn disabled v-if="comicInCollection(comic.title)">already in collection</v-btn>
+            <v-btn  @click="addComicToCollection(comic)" v-else>add to collection</v-btn>
+            
+            </v-card>
             
         
       </div>
@@ -31,7 +33,13 @@ import MarvelService from '../services/MarvelService'
 export default {
     data() {
         return {
-            searchResults: []
+            searchResults: [],
+            collection: {
+
+            },
+            // collectionid: '',
+            comicid: '',
+            inCollection: false
         }
     },
     created() {
@@ -48,6 +56,9 @@ export default {
         if(this.$route.params.issue!=""){
             config.params.issue = this.$route.params.issue;
         }
+        ComicServices.getAllComicsByCollectionId(this.$route.params.collectionID).then(response => {
+             this.collection = response.data;
+         });
         MarvelService.getComicList(config).then(response => {
              this.searchResults = response.data.data.results;
          });
@@ -68,7 +79,24 @@ export default {
                 series: comic.series.name
             }
             ComicServices.addComic(this.$route.params.collectionID, comicDTO)
-        }
+        },
+        comicInCollection(comicTitle) {
+            let comics = (this.collection.comics);
+            // comics = true;
+            // let comics = comicTitle;
+            // if (comicTitle == 'Spider-Man (2019) #5') {
+            //     return true;
+            // }
+            
+            if (comics.find(e => e.name === comicTitle)) {
+               return true;
+             } else {
+                 return false;
+             }
+        },
+    },
+    computed: {
+        
     }
 }
 </script>
