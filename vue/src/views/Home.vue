@@ -1,12 +1,11 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-carousel
      v-model="model"
       cycle
       height="400"
       hide-delimiter-background
       show-arrows-on-hover
-
     >
       <v-carousel-item>
         <v-sheet color="pink" height="100%" tile>
@@ -43,29 +42,9 @@
   elevation="6"
   icon="mdi-graph"
   single-line
->Check Your Stats Below</v-banner>
- <v-divider></v-divider>
-   <v-sparkline
-    :value="value"
-    :labels="labels"
-    :smooth="false"
-    
-    :line-width="width"
-    :stroke-linecap="lineCap"
+  >Check Your Stats Below</v-banner>
+   <h1>Welcome To Comic Elevator</h1>
 
-
-    :type="type"
-    :auto-line-width="autoLineWidth"
-    auto-draw
-  ><template v-slot:label="item">
-            {{ item.value }} {{item.label}}
-          </template></v-sparkline>
-    <v-icon
-        class="mr-2"
-        small
-      >
-        mdi-graph
-      </v-icon>
   </v-container>
 </template>
 
