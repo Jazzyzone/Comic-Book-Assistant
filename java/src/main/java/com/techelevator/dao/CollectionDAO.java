@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.techelevator.model.CollectionDTO;
 import com.techelevator.model.ComicDTO;
 import com.techelevator.model.FullCollectionDTO;
+import com.techelevator.model.StatDTO;
 
 @Service
 public class CollectionDAO {
@@ -426,9 +427,77 @@ public List<ComicDTO> getAllComics(){
 		FullCollectionDTO.setCollectionID(comicRow.getInt("collection_id"));
 		return FullCollectionDTO;
 	 }
-	public int getTopCharacters(int findIdByUsername) {
-		// TODO Auto-generated method stub
-		return 0;
+	public List<StatDTO> getTopCharacters(int userID) {
+		String sqlGetTopChar ="SELECT ch.name, COUNT(ch.name) as amount FROM collections_user cu "+
+									"INNER JOIN collections_comics cc ON cu.collection_id = cc.collection_id "+
+										"INNER JOIN comics c ON c.comic_id=cc.comic_id  "+
+									"INNER JOIN characters_comics chc ON chc.comic_id = c.comic_id "+
+										"INNER JOIN characters ch ON chc.character_id = ch.character_id "+
+								"WHERE cu.user_id = ? "+
+								"GROUP BY ch.name "+
+								"ORDER BY amount DESC "+
+								"LIMIT 5; ";
+		SqlRowSet topRow = jdbcTemplate.queryForRowSet(sqlGetTopChar, userID);
+		List<StatDTO> stats = new ArrayList<>();
+		while(topRow.next()) {
+			stats.add(mapRowToStat(topRow));
+		}
+		return stats;
 	}
-
+	public List<StatDTO> getTopCreators(int userID) {
+		String sqlGetTopChar ="SELECT ch.full_name as name, COUNT(ch.full_name) as amount FROM collections_user cu "+
+									"INNER JOIN collections_comics cc ON cu.collection_id = cc.collection_id "+
+										"INNER JOIN comics c ON c.comic_id=cc.comic_id  "+
+									"INNER JOIN creator_comics chc ON chc.comic_id = c.comic_id "+
+										"INNER JOIN creator ch ON chc.creator_id = ch.creator_id "+
+								"WHERE cu.user_id = ? "+
+								"GROUP BY name "+
+								"ORDER BY amount DESC "+
+								"LIMIT 5; ";
+		SqlRowSet topRow = jdbcTemplate.queryForRowSet(sqlGetTopChar, userID);
+		List<StatDTO> stats = new ArrayList<>();
+		while(topRow.next()) {
+			stats.add(mapRowToStat(topRow));
+		}
+		return stats;
+	}
+	public List<StatDTO> getAllTopCharacters() {
+		String sqlGetTopChar ="SELECT ch.name, COUNT(ch.name) as amount FROM collections_user cu "+
+									"INNER JOIN collections_comics cc ON cu.collection_id = cc.collection_id "+
+										"INNER JOIN comics c ON c.comic_id=cc.comic_id  "+
+									"INNER JOIN characters_comics chc ON chc.comic_id = c.comic_id "+
+										"INNER JOIN characters ch ON chc.character_id = ch.character_id "+								
+								"GROUP BY ch.name "+
+								"ORDER BY amount DESC "+
+								"LIMIT 5; ";
+		SqlRowSet topRow = jdbcTemplate.queryForRowSet(sqlGetTopChar);
+		List<StatDTO> stats = new ArrayList<>();
+		while(topRow.next()) {
+			stats.add(mapRowToStat(topRow));
+		}
+		return stats;
+	}
+	public List<StatDTO> getAllTopCreators() {
+		String sqlGetTopChar ="SELECT ch.full_name as name, COUNT(ch.full_name) as amount FROM collections_user cu "+
+				"INNER JOIN collections_comics cc ON cu.collection_id = cc.collection_id "+
+					"INNER JOIN comics c ON c.comic_id=cc.comic_id  "+
+				"INNER JOIN creator_comics chc ON chc.comic_id = c.comic_id "+
+					"INNER JOIN creator ch ON chc.creator_id = ch.creator_id "+
+			"GROUP BY name "+
+			"ORDER BY amount DESC "+
+			"LIMIT 5; ";
+		SqlRowSet topRow = jdbcTemplate.queryForRowSet(sqlGetTopChar);
+		List<StatDTO> stats = new ArrayList<>();
+		while(topRow.next()) {
+			stats.add(mapRowToStat(topRow));
+		}
+		return stats;
+	}
+	
+	public StatDTO mapRowToStat(SqlRowSet statRow) {
+		StatDTO tempStat = new StatDTO();
+		tempStat.setName(statRow.getString("name"));
+		tempStat.setNumber(statRow.getInt("amount"));
+		return tempStat;
+	}
 }

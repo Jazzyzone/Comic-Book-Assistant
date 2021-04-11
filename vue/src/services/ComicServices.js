@@ -45,8 +45,19 @@ export default {
 
   deleteComicByComicId(collectionID, comicID) {
       return axios.delete(`collection/${collectionID}/comic/${comicID}`)
+  },
+  getTopCharacterByUser(user){
+    return axios.get(`/comic/${user}/topCharacters/`);
+  },
+  getTopCreatorByUser(user){
+    return axios.get(`/comic/${user}/topCreator/`);
+  },
+  getAllTopCharacterByUser(){
+    return axios.get(`/comic/topCharacters/`);
+  },
+  getAllTopCreatorByUser(){
+    return axios.get(`/comic/topCreators/`);
   }
-
 
 //   getStats() {
 //     return axios.get(`/stats/${type}`)

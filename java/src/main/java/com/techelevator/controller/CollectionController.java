@@ -18,6 +18,7 @@ import com.techelevator.dao.UserDAO;
 import com.techelevator.model.CollectionDTO;
 import com.techelevator.model.ComicDTO;
 import com.techelevator.model.FullCollectionDTO;
+import com.techelevator.model.StatDTO;
 import com.techelevator.model.User;
 
 
@@ -202,10 +203,32 @@ public class CollectionController {
 			return 0;
 		}
 	}
+	@PreAuthorize("permitAll()")
 	@RequestMapping(value = "comic/{username}/topCharacters/",method = RequestMethod.GET)
-	public int statComics(Principal principal, @PathVariable String username){
+	public List<StatDTO> statCharacterComics(Principal principal, @PathVariable String username){
 
 		return collectionDAO.getTopCharacters(userDAO.findIdByUsername(username));
+		
+	}
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value = "comic/{username}/topCreator/",method = RequestMethod.GET)
+	public List<StatDTO> statCreatorComics(Principal principal, @PathVariable String username){
+
+		return collectionDAO.getTopCreators(userDAO.findIdByUsername(username));
+		
+	}
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value = "comic/topCharacters/",method = RequestMethod.GET)
+	public List<StatDTO> statAllCharacterComics(Principal principal){
+
+		return collectionDAO.getAllTopCharacters();
+		
+	}
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value = "comic/topCreators/",method = RequestMethod.GET)
+	public List<StatDTO> statAllCreatorComics(Principal principal){
+
+		return collectionDAO.getAllTopCreators();
 		
 	}
 	public List<ComicDTO> acquireFilteredComics(List<ComicDTO> comics,List<String> characters,List<String> creators, String publisher, String series, String title, Integer issue){
