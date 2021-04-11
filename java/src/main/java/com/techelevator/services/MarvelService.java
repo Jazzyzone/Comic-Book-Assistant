@@ -16,7 +16,7 @@ public class MarvelService {
 		String time =  String.valueOf(System.currentTimeMillis());
 		String combo = time+privateKey+publicKey;
 	    String myHash = DigestUtils.md5Hex(combo);
-	    String query = "";
+	    String query = "&limit=100";
 	    if(title!=null) {
 	    	query += "&titleStartsWith="+title;
 	    }
@@ -24,7 +24,7 @@ public class MarvelService {
 	    	query += "&issueNumber="+issue;
 	    }
 	    if(page!=null) {
-	    	query += "&offset="+(page-1)*20;
+	    	query += "&offset="+(page-1)*100;
 	    }
 	    ResponseEntity<String> response = restTemplate.getForEntity(BASE_URL+"?apikey="+publicKey+"&ts="+time+"&hash="+myHash+query, String.class);
 		return response;

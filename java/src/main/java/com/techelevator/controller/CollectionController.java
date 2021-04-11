@@ -202,6 +202,12 @@ public class CollectionController {
 			return 0;
 		}
 	}
+	@RequestMapping(value = "comic/{username}/topCharacters/",method = RequestMethod.GET)
+	public int statComics(Principal principal, @PathVariable String username){
+
+		return collectionDAO.getTopCharacters(userDAO.findIdByUsername(username));
+		
+	}
 	public List<ComicDTO> acquireFilteredComics(List<ComicDTO> comics,List<String> characters,List<String> creators, String publisher, String series, String title, Integer issue){
 		List<ComicDTO> filteredComics = new ArrayList<>();
 		for(ComicDTO comic : comics) {

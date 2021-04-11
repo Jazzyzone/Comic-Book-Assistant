@@ -426,5 +426,9 @@ public List<ComicDTO> getAllComics(){
 		FullCollectionDTO.setCollectionID(comicRow.getInt("collection_id"));
 		return FullCollectionDTO;
 	 }
+	public int getTopCharacters(int findIdByUsername) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

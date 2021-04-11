@@ -3,21 +3,17 @@
     <h1>{{$route.params.username}}</h1>
     <v-divider></v-divider>
     <v-container v-if="isCurrentUser">
-      <v-sparkline
-    :value="value"
-    :labels="labels"
-    :smooth="false"
-    
-    :line-width="width"
-    :stroke-linecap="lineCap"
 
+       <GChart
+  
+    :settings="{packages: ['bar']}"       
+    :data="chartData"
+    :options="chartOptions"
+    :createChart="(el, google) => new google.charts.Bar(el)"
+    @ready="onChartReady"
+      />
 
-    :type="type"
-    :auto-line-width="autoLineWidth"
-    auto-draw
-  ><template v-slot:label="item">
-            {{ item.value }} {{item.label}}
-          </template></v-sparkline>
+      
     </v-container>
     <v-container v-else>
       ITS NOT ME
@@ -26,26 +22,50 @@
 </template>
 
 <script>
+import { GChart } from 'vue-google-charts'
+ 
 
 
   export default {
+    components: {
+      GChart
+    },
     data: () => ({
-      width: 5,
-
-      lineCap: 'square',
-      value: [100,200,300,150,220],
-      labels: ["Spider-Man","Iron Man","Thor","Captain America","Thanos"],
-
-      fill: false,
-      type: 'bar',
-      autoLineWidth: true,
+      chartsLib: null, 
+      chartData: [
+        ['Comic Name', 'Comics'],
+        ['Spider-Man', 100],
+        ['Thor', 50],
+        ['Storm', 26],
+        ['Wolverine',10],
+        ['Gambit', 4],
+      ],
     }),
-  computed: {
-        
+computed: {
+    chartOptions () {
+      if (!this.chartsLib) return null
+      return this.chartsLib.charts.Bar.convertOptions({
+        chart: {
+          title: 'Top Five Characters in Collection',
+        },
+        bars: 'vertical', // Required for Material Bar Charts.
+        hAxis: { format: 'decimal' },
+        height: 400,
+        width:600,
+        colors: ['#1b9e77']
+      })
+    },
+  
+
         isCurrentUser() {
             return this.$route.params.username === this.$store.state.user.username;
         },
     },
+  methods: {
+    onChartReady (chart, google) {
+      this.chartsLib = google
+    }
+  }
 }
 </script>
 
