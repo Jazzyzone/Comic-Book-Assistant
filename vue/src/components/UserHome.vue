@@ -1,26 +1,48 @@
 <template>
   <v-container>
-    <h1>{{$route.params.username}}</h1>
+    <h1>{{$route.params.username}}
+      <v-icon
+        color="yellow"
+        large
+        v-if="this.$store.state.user.role=='ROLE_PREMIUM'"
+      >
+        mdi-star
+      </v-icon> </h1>
     <v-divider></v-divider>
-    <h2>{{characterOptions.chart.title}}</h2>
-    <GChart
-     type="ColumnChart"
-    :data="characterData"
-    :options="characterOptions"
-    v-if="chartLoaded"
-    />
-    <h2>{{creatorOptions.chart.title}}</h2>
-    <GChart
-     type="ColumnChart"
-    :data="creatorData"
-    :options="creatorOptions"
-    v-if="chartLoaded2"
-    />
-    <v-container v-if="isCurrentUser">
-
-       
-
-
+    <v-card max-width="600">
+      <v-carousel v-model="model" >
+        <v-carousel-item>
+          <v-sheet :color="color" height="100%" tile>
+            <v-row class="fill-height" align="center" justify="center" >
+              <div class="display-3" v-if="characterData.length>1">
+                  <h2 class ="ml-1">{{characterOptions.chart.title}}</h2>
+                  <GChart type="ColumnChart" :data="characterData" :options="characterOptions" v-if="chartLoaded" />
+              </div>
+              <div class="display-3" v-else>
+                 <h2 >Fill a collection with comics</h2>
+                 <h2 >to see collection stats!</h2>
+                </div>
+            </v-row>
+          </v-sheet>
+        </v-carousel-item >
+        <v-carousel-item >     
+        <v-sheet :color="color" height="100%" tile >
+          <v-row class="fill-height" align="center" justify="center" >
+              <div class="display-3"  v-if="creatorData.length>1">
+                <h2 class ="ml-1">{{creatorOptions.chart.title}}</h2>
+                <GChart type="ColumnChart" :data="creatorData" :options="creatorOptions" v-if="chartLoaded2" />
+              </div>
+              <div class="display-3" v-else>
+                 <h2 >Fill a collection with comics</h2>
+                 <h2 >to see collection stats!</h2>
+                </div>
+            </v-row>
+          </v-sheet>
+        </v-carousel-item>
+      </v-carousel>
+    </v-card>
+    <v-container v-if="isCurrentUser">   
+      
     </v-container>
     <v-container v-else>
       ITS NOT ME
@@ -39,11 +61,13 @@ import ComicServices from '../services/ComicServices';
     },
     data() {
       return{
+        model: 0,
         chartLoaded:false,
         chartLoaded2:false,
         characterData: [
           ['Comic Name', 'Comics']
         ],
+        color:'primary',
         characterOptions: {
             chart: {
               title: "",
@@ -78,7 +102,7 @@ import ComicServices from '../services/ComicServices';
           arr.push(element.number);
           this.characterData.push(arr);
         });
-        this.characterOptions.chart.title = `Top ${this.characterData.length-1} Characters in Collections`;
+        this.characterOptions.chart.title = `Top ${this.characterData.length-1} Characters in User's Collections`;
         this.chartLoaded=true;
       });
       ComicServices.getTopCreatorByUser(this.$route.params.username).then(response =>{

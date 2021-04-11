@@ -57,7 +57,13 @@ export default {
   },
   getAllTopCreatorByUser(){
     return axios.get(`/comic/topCreators/`);
-  }
+  },
+  getTopCharacterByCollection(id){
+    return axios.get(`/collection/${id}/topCharacters/`);
+  },
+  getTopCreatorByCollection(id){
+    return axios.get(`/collection/${id}/topCreators/`);
+  },
 
 //   getStats() {
 //     return axios.get(`/stats/${type}`)

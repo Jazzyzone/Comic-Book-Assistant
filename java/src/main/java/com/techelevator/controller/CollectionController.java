@@ -231,6 +231,20 @@ public class CollectionController {
 		return collectionDAO.getAllTopCreators();
 		
 	}
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value = "collection/{id}/topCharacters/",method = RequestMethod.GET)
+	public List<StatDTO> statCollectionCharacters(Principal principal, @PathVariable int id){
+
+		return collectionDAO.getTopCharactersByCollection(id);
+		
+	}
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value = "collection/{id}/topCreators/",method = RequestMethod.GET)
+	public List<StatDTO> statCollectionCreator(Principal principal, @PathVariable int id){
+
+		return collectionDAO.getTopCreatorsByCollection(id);
+		
+	}
 	public List<ComicDTO> acquireFilteredComics(List<ComicDTO> comics,List<String> characters,List<String> creators, String publisher, String series, String title, Integer issue){
 		List<ComicDTO> filteredComics = new ArrayList<>();
 		for(ComicDTO comic : comics) {

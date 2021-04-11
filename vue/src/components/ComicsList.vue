@@ -23,7 +23,7 @@
                 <div>
 
                     <v-img  min-height="480" min-width="280" class="rounded-xl" :aspect-ratio="6.5/10" :src="comic.thumbnailLink"></v-img>
-                    <v-btn v-if="isCurrentUser" width="100%" class="rounded-xl" color="red" @click="deleteComic(comic.id)" >Remove</v-btn>
+                    <v-btn   v-if="isCurrentUser" width="100%" class="rounded-xl" color="red" @click="deleteComic(comic.id)" >Remove</v-btn>
                 </div>
           </v-sheet>
         </v-flex>
