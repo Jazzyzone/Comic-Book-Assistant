@@ -1,28 +1,44 @@
 <template>
   <div>
-      
-      <div class="search">
-            <div class="comic"
-            v-for="comic in searchResults"
+    <v-container>
+      <v-flex class="d-flex flex-wrap flex-row align-stretch " v-if="searchResults.length > 0">
+            <v-sheet class="rounded-xl mx-auto pa-2 ma-3 d-flex flex-wrap flex-column justify-space-between"
+            v-for="comic in searchResults.slice(((10 * this.page) - 10),(this.page * 10) + 2)"
             v-bind:key="comic.id"
             >
-            <v-card >
+            <v-row
+      class="mb-6"
+      no-gutters
+    >
+    <v-col>
+            <v-card max-width="300" :elevation="10" class="mb-5">
                 <v-img v-bind:src='comic.thumbnail.path.concat("." + comic.thumbnail.extension)' srcset=""/>
-                <div>{{comic.title}}</div>
+                <v-card-title>{{comic.title}}</v-card-title>
             
             <!-- {{comic.issueNumber}} -->
             <!-- {{comic.id}} -->
             <!-- {{comic.characters}} -->
             <!-- {{comic.description}} -->
-            <v-btn disabled v-if="comicInCollection(comic.title)">already in collection</v-btn>
-            <v-btn  @click="addComicToCollection(comic)" v-else>add to collection</v-btn>
+            <v-btn disabled v-if="comicInCollection(comic.title)" :class="disabled">already in collection</v-btn>
+            <v-btn rounded
+      color="primary"
+      dark @click="addComicToCollection(comic)" v-else>add to collection</v-btn>
             
             </v-card>
             
-        
-      </div>
-  </div>
-
+            </v-col>
+        </v-row>
+      </v-sheet>
+      </v-flex>
+      <h2 v-else>No search results found</h2>
+    </v-container>
+    <div class="text-center">
+        <v-pagination
+        v-model="page"
+        :length="searchResults.length / 10"
+        v-if="searchResults.length > 0"
+        ></v-pagination>
+        </div>
   </div>
 </template>
 
@@ -37,6 +53,7 @@ export default {
             collection: {
 
             },
+            page: 1,
             // collectionid: '',
             comicid: '',
             inCollection: false
@@ -65,6 +82,7 @@ export default {
     },
     methods: {
         addComicToCollection(comic) {
+            
             let comicDTO = {
                 name: comic.title,
                 issueNumber: comic.issueNumber,
@@ -78,7 +96,14 @@ export default {
                 thumbnailLink: comic.thumbnail.path.concat("." + comic.thumbnail.extension),
                 series: comic.series.name
             }
-            ComicServices.addComic(this.$route.params.collectionID, comicDTO)
+            comic.characters.items.forEach(character => {
+                comicDTO.characters.push(character.name);
+            });
+            comic.creators.items.forEach(creator => {
+                comicDTO.creators.push(creator.name);
+            });
+            ComicServices.addComic(this.$route.params.collectionID, comicDTO);
+            this.collection.comics.push(comicDTO);
         },
         comicInCollection(comicTitle) {
             let comics = (this.collection.comics);
@@ -96,11 +121,15 @@ export default {
         },
     },
     computed: {
-        
+        filterItems () {
+        return this.searchResults.slice(this.startIndex, this.stopIndex);  // or any condition u want 
+    }
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+h2 {
+    text-align: center;
+}
 </style>
