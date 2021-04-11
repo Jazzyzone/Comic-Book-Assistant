@@ -1,5 +1,7 @@
 <template>
-  <v-container>
+  <v-container fluid>
+    <h1>Welcome To Comic Elevator</h1>
+    <p>Home to comic enthusiasts who wish to keep their collections all in one place.</p>
     <v-carousel
      v-model="model"
       cycle
@@ -11,16 +13,16 @@
         <v-sheet color="pink" height="100%" tile>
           <v-row class="fill-height" align="center" justify="center">
             <div class="display-3" align="center">
-              Comic Elevator Lets You Make Your Own Custom of Great Comics
+              Comic Elevator Lets You Make Your Own Custom Collection of Great Comics
             </div>
           </v-row>
         </v-sheet>
       </v-carousel-item>
       <v-carousel-item>
-        <v-sheet color="blue" height="100%" tile>
+        <v-sheet color="purple" height="100%" tile>
           <v-row class="fill-height" align="center" justify="center">
             <div class="display-3" align="center">
-              Love Your Collection? Share It With A Friend?
+              Love Your Collection? Why Not Share It With A Friend?
             </div>
           </v-row>
         </v-sheet>
@@ -40,64 +42,101 @@
   <v-divider></v-divider>
   <v-banner
   elevation="6"
-  icon="mdi-graph"
   single-line
-  >Check Your Stats Below</v-banner>
-   <h1>Welcome To Comic Elevator</h1>
+  ><span class="mdi mdi-chart-box"></span> Check Out Some of the Current Stats of the Site Below</v-banner>
+  <v-divider></v-divider>
+   <h2>{{characterOptions.chart.title}}</h2>
+    <GChart
+     type="ColumnChart"
+    :data="characterData"
+    :options="characterOptions"
+    v-if="chartLoaded"
+    />
+    <h2>{{creatorOptions.chart.title}}</h2>
+    <GChart
+     type="ColumnChart"
+    :data="creatorData"
+    :options="creatorOptions"
+    v-if="chartLoaded2"
+    />
 
   </v-container>
 </template>
 
 <script>
 import ComicServices from "../services/ComicServices";
+import {GChart} from "vue-google-charts";
 
 export default {
-  name: "home",
-  data() {
-    
+  components: {
+    GChart
+  },
+  data() { 
     return {
-      datacollection: null,
-      userSearch: "",
-    };
+      model: 0,
+       chartLoaded:false,
+        chartLoaded2:false,
+        characterData: [
+          ['Comic Name', 'Comics']
+        ],
+        characterOptions: {
+            chart: {
+              title: "",
+            },
+            bars: 'vertical', // Required for Material Bar Charts.
+            hAxis: { format: 'decimal' },
+            height: 400,
+            width:600,
+            colors: ['#1b9e77']
+          },
+        creatorData: [
+          ['Creator Name', 'comics']
+        ],
+        creatorOptions: {
+            chart: {
+              title: "",
+            },
+            bars: 'vertical', // Required for Material Bar Charts.
+            hAxis: { format: 'decimal' },
+            height: 400,
+            width:600,
+            colors: ['#1c9e77']
+          },
+    }
  
   },
-  mounted() {
-    this.fillData();
-  },
-  methods: {
-    searchUser() {
-      ComicServices.getUserByUsername(this.userSearch).then((response) => {
-        console.log(response.data.username);
-        if (response.data !== "") {
-          this.$store.commit("SET_USERSEARCH", response.data.username);
-          this.$router.push({
-            name: "SearchUser",
-            params: { username: response.data.username },
-          });
-        }
+    created(){
+      ComicServices.getAllTopCharacterByUser().then(response =>{
+        console.log(response.data);
+        response.data.forEach(element => {
+          let arr = [];
+          arr.push(element.name);
+          arr.push(element.number);
+          this.characterData.push(arr);
+        });
+        this.characterOptions.chart.title = `Top ${this.characterData.length-1} Characters in Collections`;
+        this.chartLoaded=true;
+      });
+      ComicServices.getAllTopCreatorByUser().then(response =>{
+        console.log(response.data);
+        response.data.forEach(element => {
+          let arr = [];
+          arr.push(element.name);
+          arr.push(element.number);
+          this.creatorData.push(arr);
+        });
+        this.creatorOptions.chart.title = `Top ${this.characterData.length-1} Creators in Collections`;
+        this.chartLoaded2=true;
       });
     },
-    fillData() {
-      this.datacollection = {
-        labels: [this.getRandomInt(), this.getRandomInt()],
-        datasets: [
-          {
-            label: "Data One",
-            backgroundColor: "#f87979",
-            data: [this.getRandomInt(), this.getRandomInt()],
-          },
-          {
-            label: "Data One",
-            backgroundColor: "#f87979",
-            data: [this.getRandomInt(), this.getRandomInt()],
-          },
-        ],
-      };
+   methods: {
+    onVharacterReady (chart, google) {
+      this.characterLib = google
     },
-    getRandomInt() {
-      return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
-    },
-  },
+    onCreatorReady (chart, google) {
+      this.creatorLib = google
+    }
+  }
 };
 </script>
 <style>
