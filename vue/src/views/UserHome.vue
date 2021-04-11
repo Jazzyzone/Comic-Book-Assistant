@@ -1,7 +1,7 @@
 //displays the users home page when signed in
 <template>
   <v-container>
-      <user-home />
+      <user-home :key="$route.params.username"/>
   </v-container>
 </template>
 
