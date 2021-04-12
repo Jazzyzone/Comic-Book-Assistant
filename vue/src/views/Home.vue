@@ -58,11 +58,7 @@
           <v-row class="fill-height" align="center" justify="center">
             <div class="display-3" v-if="characterData.length > 1">
               <h2 class="ml-1">{{ characterOptions.chart.title }}</h2>
-              <GChart
-                type="ColumnChart"
-                :data="characterData"
-                :options="characterOptions"
-                v-if="chartLoaded"
+              <GChart type="ColumnChart" :data="characterData" :options="characterOptions" v-if="chartLoaded"
               />
             </div>
           </v-row>
@@ -71,13 +67,9 @@
       <v-carousel-item>
         <v-sheet color="pink" height="100%" tile>
           <v-row class="fill-height" align="center" justify="center">
-            <div class="display-3" v-if="characterData.length > 1">
+            <div class="display-3" v-if="creatorData.length > 1">
               <h2 class="ml-1">{{ creatorOptions.chart.title }}</h2>
-              <GChart
-                type="ColumnChart"
-                :data="creatorData"
-                :options="creatorOptions"
-                v-if="chartLoaded2"
+              <GChart type="ColumnChart" :data="creatorData" :options="creatorOptions" v-if="chartLoaded2"
               />
             </div>
           </v-row>

@@ -77,9 +77,10 @@ CREATE SEQUENCE seq_friend_id
 CREATE TABLE comics (
 
 	comic_id int DEFAULT nextval('seq_comic_id'::regclass) NOT NULL,
-	title varchar(50) NOT NULL,
+	title varchar(200) NOT NULL,
 	issue_num int,
 	img varchar(200),
+	marvel_id int,
 	
 	CONSTRAINT PK_comics PRIMARY KEY (comic_id)
 );
@@ -88,7 +89,7 @@ CREATE TABLE collections (
 
 	collection_id int DEFAULT nextval('seq_collection_id'::regclass) NOT NULL,
 	user_id int NOT NULL,
-	name varchar(50) NOT NULL,
+	name varchar(200) NOT NULL,
 	private boolean DEFAULT false,
 	
 	CONSTRAINT PK_collections PRIMARY KEY (collection_id)
@@ -97,7 +98,7 @@ CREATE TABLE collections (
 CREATE TABLE characters (
 
 	character_id int DEFAULT nextval('seq_character_id'::regclass) NOT NULL,
-	name varchar(50) NOT NULL,
+	name varchar(200) NOT NULL,
 	
 	CONSTRAINT PK_characters PRIMARY KEY (character_id)
 	--CONSTRAINT UQ_username UNIQUE (username)
@@ -106,7 +107,7 @@ CREATE TABLE characters (
 CREATE TABLE creator (
 
 	creator_id int DEFAULT nextval('seq_creator_id'::regclass) NOT NULL,
-	full_name varchar(100)NOT NULL,
+	full_name varchar(200)NOT NULL,
 	
         CONSTRAINT PK_creator PRIMARY KEY (creator_id)
 	--CONSTRAINT FK_accounts_user FOREIGN KEY (user_id) REFERENCES users (user_id)
@@ -115,7 +116,7 @@ CREATE TABLE creator (
 CREATE TABLE series (
 
 	series_id int DEFAULT nextval('seq_series_id'::regclass) NOT NULL,
-	title varchar(50) NOT NULL,
+	title varchar(200) NOT NULL,
 	--rating varchar(50) NOT NULL,
 	
 	CONSTRAINT PK_series PRIMARY KEY (series_id)
@@ -125,7 +126,7 @@ CREATE TABLE series (
 CREATE TABLE publisher (
 
 	publisher_id int DEFAULT nextval('seq_publisher_id'::regclass) NOT NULL,
-	name varchar(50) NOT NULL,
+	name varchar(200) NOT NULL,
 	
 	CONSTRAINT PK_publisher PRIMARY KEY (publisher_id)
 );
@@ -133,10 +134,10 @@ CREATE TABLE publisher (
 
 CREATE TABLE friend (
         
-        friend_id int DEFAULT nextval('seq_friend_id'::regclass) NOT NULL,
+        friend_id int NOT NULL,
         user_id int NOT NULL,
-        username varchar(50) NOT NULL,
-        following boolean DEFAULT false,
+        status_id int NOT NULL,
+        status_id_desc varchar(50),
         
         
         CONSTRAINT friend_series PRIMARY KEY (friend_id)
@@ -216,6 +217,11 @@ CREATE TABLE friend_user (
         CONSTRAINT FK_friend_user_user FOREIGN KEY (user_id) REFERENCES users(user_id)
         
 );
+
+--INSERT INTO friend (status_id_desc) VALUES ('Pending');
+--INSERT INTO friend (status_id_desc) VALUES ('Approved');
+--INSERT INTO friend (status_id_desc) VALUES ('Rejected');
+
 
 
 --ROLLBACK;
