@@ -244,8 +244,8 @@ public List<ComicDTO> getAllComics(){
 	 * @return
 	 */
 	public long getComicID(ComicDTO comic) {
-		String getComicID = "SELECT comic_id FROM comics WHERE title = ? AND issue_num = ? AND img = ? ";
-		SqlRowSet row = jdbcTemplate.queryForRowSet(getComicID,comic.getName(),comic.getIssueNumber(),comic.getThumbnailLink());
+		String getComicID = "SELECT comic_id FROM comics WHERE marvel_id = ? ";
+		SqlRowSet row = jdbcTemplate.queryForRowSet(getComicID,comic.getMarvelID());
 		if(row.next()) {
 			return row.getLong("comic_id");
 		}
@@ -364,7 +364,7 @@ public List<ComicDTO> getAllComics(){
 		comic.setName(comicRow.getString("title"));
 		comic.setThumbnailLink(comicRow.getString("img"));
 		comic.setId(comicRow.getLong("comic_id"));
-		
+		comic.setMarvelID(comicRow.getLong("marvel_id"));
 		String getCreatorComic = "SELECT * FROM creator_comics cc " + 
 				"        INNER JOIN creator AS c ON cc.creator_id = c.creator_id " +
 				"WHERE cc.comic_id = ?";

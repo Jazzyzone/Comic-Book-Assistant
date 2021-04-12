@@ -11,6 +11,7 @@ public class ComicDTO {
 	 */
 	
 	private long id;
+	private long marvelID;
 	private String name;
 	private int issueNumber;
 	private String publisher;
@@ -66,6 +67,12 @@ public class ComicDTO {
 	}
 	public void setSeries(String series) {
 		Series = series;
+	}
+	public long getMarvelID() {
+		return marvelID;
+	}
+	public void setMarvelID(long marvelID) {
+		this.marvelID = marvelID;
 	}
 	
 }

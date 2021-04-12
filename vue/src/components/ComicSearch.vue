@@ -19,7 +19,7 @@
             <!-- {{comic.id}} -->
             <!-- {{comic.characters}} -->
             <!-- {{comic.description}} -->
-            <v-btn disabled v-if="comicInCollection(comic.title)" :class="disabled">already in collection</v-btn>
+            <v-btn disabled v-if="comicInCollection(comic.id)" :class="disabled">already in collection</v-btn>
             <v-btn rounded
       color="primary"
       dark @click="addComicToCollection(comic)" v-else>add to collection</v-btn>
@@ -105,7 +105,8 @@ export default {
                     
                 ],
                 thumbnailLink: comic.thumbnail.path.concat("." + comic.thumbnail.extension),
-                series: comic.series.name
+                series: comic.series.name,
+                marvelID: comic.id
             }
             comic.characters.items.forEach(character => {
                 comicDTO.characters.push(character.name);
@@ -124,7 +125,7 @@ export default {
             //     return true;
             // }
             
-            if (comics.find(e => e.name === comicTitle)) {
+            if (comics.find(e => e.marvelID === comicTitle)) {
                return true;
              } else {
                  return false;
