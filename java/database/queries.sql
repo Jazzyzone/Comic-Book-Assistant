@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS creator_comics;
 DROP TABLE IF EXISTS series_comics;
 DROP TABLE IF EXISTS publisher_comics;
 DROP TABLE IF EXISTS characters_series;
+DROP TABLE IF EXISTS friend_user;
 
 DROP TABLE IF EXISTS comics;
 DROP TABLE IF EXISTS collections;
@@ -14,6 +15,7 @@ DROP TABLE IF EXISTS characters;
 DROP TABLE IF EXISTS creator;
 DROP TABLE IF EXISTS series;
 DROP TABLE IF EXISTS publisher;
+DROP TABLE IF EXISTS friend;
 
 DROP SEQUENCE IF EXISTS seq_comic_id;
 DROP SEQUENCE IF EXISTS seq_collection_id;
@@ -21,6 +23,7 @@ DROP SEQUENCE IF EXISTS seq_character_id;
 DROP SEQUENCE IF EXISTS seq_creator_id;
 DROP SEQUENCE IF EXISTS seq_series_id;
 DROP SEQUENCE IF EXISTS seq_publisher_id;
+DROP SEQUENCE IF EXISTS seq_friend_id;
 
 
 CREATE SEQUENCE seq_comic_id
@@ -57,6 +60,13 @@ CREATE SEQUENCE seq_series_id
   CACHE 1;
   
 CREATE SEQUENCE seq_publisher_id
+  INCREMENT BY 1
+  START WITH 4001
+  NO MAXVALUE
+  NO MINVALUE
+  CACHE 1;
+
+CREATE SEQUENCE seq_friend_id
   INCREMENT BY 1
   START WITH 4001
   NO MAXVALUE
@@ -121,6 +131,19 @@ CREATE TABLE publisher (
 );
 
 
+CREATE TABLE friend (
+        
+        friend_id int DEFAULT nextval('seq_friend_id'::regclass) NOT NULL,
+        user_id int NOT NULL,
+        username varchar(50) NOT NULL,
+        following boolean DEFAULT false,
+        
+        
+        CONSTRAINT friend_series PRIMARY KEY (friend_id)
+
+);
+
+
 CREATE TABLE collections_comics (
 
         collection_id int NOT NULL,
@@ -181,6 +204,17 @@ CREATE TABLE publisher_comics (
         CONSTRAINT PK_publisher_comic PRIMARY KEY (publisher_id, comic_id),
         CONSTRAINT FK_publisher_comic_publisher FOREIGN KEY (publisher_id) REFERENCES publisher(publisher_id),
         CONSTRAINT FK_publisher_comic_comic FOREIGN KEY (comic_id) REFERENCES comics(comic_id)      
+);
+
+CREATE TABLE friend_user (
+
+        friend_id int NOT NULL,
+        user_id int NOT NULL,
+        
+        CONSTRAINT PK_friend_user PRIMARY KEY (friend_id, user_id),
+        CONSTRAINT FK_friend_user_friend FOREIGN KEY (friend_id) REFERENCES friend(friend_id),
+        CONSTRAINT FK_friend_user_user FOREIGN KEY (user_id) REFERENCES users(user_id)
+        
 );
 
 
