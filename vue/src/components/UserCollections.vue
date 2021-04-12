@@ -27,7 +27,7 @@
       </v-expand-transition>
     </v-col>
    </v-row>
-  <v-expansion-panels accordion>
+  <v-expansion-panels accordion flat >
     <v-expansion-panel
       v-for="collection in collections"
             v-bind:key="collection.collection_ID"
@@ -35,7 +35,7 @@
       <v-expansion-panel-header>
         {{collection.name}}
       </v-expansion-panel-header>
-      <v-expansion-panel-content>
+      <v-expansion-panel-content class="bg">
         <v-flex v-if="isCurrentUser" class="d-flex flex-row align-center">
  
           <v-expansion-panels class="ma-1">
@@ -197,6 +197,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.transparent {
+  opacity: 0.1;
 
+}
 </style>

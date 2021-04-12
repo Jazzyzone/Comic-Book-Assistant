@@ -77,7 +77,7 @@
         class="text-center"
       >
       <v-card-text class="white--text">
-          {{ new Date().getFullYear() }} — <strong>Comic Elevator</strong>
+          {{ new Date().getFullYear() }} — <strong>&copy; Comic Elevator</strong>
           
         </v-card-text>
         </v-card>
