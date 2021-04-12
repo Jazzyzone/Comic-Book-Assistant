@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <v-card width="400" class="mx-auto mt-5">
+  <v-container>
+    <v-card dark color = primary width="400" class="mx-auto mt-5">
       <v-card-title>
         <h1 class="display-1">Login</h1>
       </v-card-title>
@@ -32,7 +32,7 @@
           <v-btn color="info" @click="login">Login</v-btn>
       </v-card-actions>
     </v-card>
-  </v-app>
+  </v-container>
 
 </template>
 

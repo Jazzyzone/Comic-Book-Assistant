@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <v-card width="800" class="mx-auto mt-5">
+  <v-container>
+    <v-card dark color= primary width="800" class="mx-auto mt-5">
       <v-card-title>
         <h1 class="display-1">Register</h1>
       </v-card-title>
@@ -32,7 +32,7 @@
 
               <v-row>
             <v-col cols=6>
-              <v-card height="200" class = "ma-1" :elevation="user.role=='premium' ? 10:2" :color="user.role=='premium' ? 'yellow lighten-3' : 'white'" lighten3 @click= "user.role='premium'">
+              <v-card height="200" class = "ma-1" :elevation="user.role=='premium' ? 10:2" :color="user.role=='premium' ? 'indigo' : 'primary'" lighten3 @click= "user.role='premium'">
                 <v-card-title>
                   Comic Elevator Super!
                 </v-card-title>
@@ -42,7 +42,7 @@
               </v-card>
               </v-col>
                 <v-col cols=6>
-              <v-card  height="200" class = "ma-1" :elevation="user.role=='standard' ? 10:2" :color="user.role=='standard' ? 'yellow lighten-3' : 'white'" @click= "user.role='standard'" >
+              <v-card  height="200" class = "ma-1" :elevation="user.role=='standard' ? 10:2" :color="user.role=='standard' ? 'indigo' : 'primary'" @click= "user.role='standard'" >
                 <v-card-title>
                   Comic Elevator Basic.
                 </v-card-title>
@@ -61,10 +61,10 @@
       <v-card-actions>
         <v-spacer></v-spacer>
           
-          <v-btn color="info" @click="register">Login</v-btn>
+          <v-btn color="info" @click="register">Register</v-btn>
       </v-card-actions>
     </v-card>
-  </v-app>
+  </v-container>
 <!--<div class="card text-center mx-auto bg-light" style="max-width: 650px; margin: 175px 0px" >
   <div class="card-body">
   <div id="register" class="text-center">

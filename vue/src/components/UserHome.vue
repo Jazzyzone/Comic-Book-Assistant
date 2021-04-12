@@ -1,7 +1,7 @@
 <template>
   <v-container >
-    <v-container  class="mx-auto grad1">
-    <h1>{{$route.params.username}}
+    <v-card  dark color=primary  class=" grad1 ma-3">
+    <h1  >{{$route.params.username}}
       <v-icon
         color="yellow"
         large
@@ -9,10 +9,24 @@
       >
         mdi-star
       </v-icon> </h1>
-    <v-divider></v-divider>
-    </v-container>
-    <v-card max-width="600" text-center>
-      <v-carousel v-model="model" >
+
+    </v-card>
+    <v-card  class="mt-5"  dark color=primary text-center>
+      <v-row>
+        <v-col cols="6" >
+      <div class="display-3" v-if="characterData.length>1">
+        <h2 class ="ml-1">{{characterOptions.chart.title}}</h2>
+        <GChart type="ColumnChart" :data="characterData" :options="characterOptions" v-if="chartLoaded" />
+      </div>
+      </v-col>
+      <v-col cols="6">
+      <div class="display-3"  v-if="creatorData.length>1">
+        <h2 class ="ml-1">{{creatorOptions.chart.title}}</h2>
+        <GChart type="ColumnChart" :data="creatorData" :options="creatorOptions" v-if="chartLoaded2" />
+      </div>
+      </v-col>
+      </v-row>
+      <!--<v-carousel v-model="model" >
         <v-carousel-item>
           <v-sheet :color="color" height="100%" tile>
             <v-row class="fill-height" align="center" justify="center" >
@@ -41,7 +55,7 @@
             </v-row>
           </v-sheet>
         </v-carousel-item>
-      </v-carousel>
+      </v-carousel>-->
     </v-card>
     <v-container v-if="isCurrentUser">   
       
@@ -144,6 +158,6 @@ import ComicServices from '../services/ComicServices';
 <style>
 .grad1 {
   height: 75px;
-  background-image: linear-gradient(to right, "primary", rgb(255, 0, 0,0) 70%);
+
 }
 </style>
