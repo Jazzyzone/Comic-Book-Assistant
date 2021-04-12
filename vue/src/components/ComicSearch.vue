@@ -12,8 +12,8 @@
     >
     <v-col>
             <v-card max-width="300" :elevation="10" class="mb-5">
-                <v-img v-bind:src='comic.thumbnail.path.concat("." + comic.thumbnail.extension)' srcset=""/>
-                <v-card-title>{{comic.title}}</v-card-title>
+                <v-img v-bind:src='comic.thumbnail.path.concat("." + comic.thumbnail.extension)' srcset="" />
+                <v-card-title><p>{{comic.title}}</p></v-card-title>
             
             <!-- {{comic.issueNumber}} -->
             <!-- {{comic.id}} -->
@@ -30,7 +30,15 @@
         </v-row>
       </v-sheet>
       </v-flex>
-      <h2 v-else>No search results found</h2>
+        <div class="loading" v-if="isLoading">
+           <v-progress-circular
+                indeterminate
+                color="primary"
+                >
+                <div><h4>...Searching for results</h4></div>
+                </v-progress-circular>
+          </div>
+      <h2 v-if="searchResults.length === 0 && !isLoading">No search results found</h2>
     </v-container>
     <div class="text-center">
         <v-pagination
@@ -56,7 +64,8 @@ export default {
             page: 1,
             // collectionid: '',
             comicid: '',
-            inCollection: false
+            inCollection: false,
+            isLoading: true
         }
     },
     created() {
@@ -78,7 +87,9 @@ export default {
          });
         MarvelService.getComicList(config).then(response => {
              this.searchResults = response.data.data.results;
+             this.isLoading = false;
          });
+         
     },
     methods: {
         addComicToCollection(comic) {
@@ -131,5 +142,36 @@ export default {
 <style scoped>
 h2 {
     text-align: center;
+}
+img:hover {
+    height: 50px;
+    
+}
+.loading {
+    text-align: center;
+}
+.loading h4 {
+    margin-top: 150px;
+}
+p {
+    font-size: 1rem;
+    text-align: center;
+    word-break: normal;
+}
+div button {
+    height:20px; 
+    width:200px; 
+    margin:-100px -100px -80px; 
+    position:relative;
+    top:50%; 
+    left:50%;
+}
+.disabled {
+    height:20px; 
+    width:100px; 
+    margin: -20px -50px; 
+    position:relative;
+    top:50%; 
+    left:50%;
 }
 </style>
