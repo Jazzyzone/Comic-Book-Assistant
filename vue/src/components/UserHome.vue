@@ -1,5 +1,6 @@
 <template>
-  <v-container>
+  <v-container >
+    <v-container  class="mx-auto grad1">
     <h1>{{$route.params.username}}
       <v-icon
         color="yellow"
@@ -9,7 +10,8 @@
         mdi-star
       </v-icon> </h1>
     <v-divider></v-divider>
-    <v-card max-width="600">
+    </v-container>
+    <v-card max-width="600" text-center>
       <v-carousel v-model="model" >
         <v-carousel-item>
           <v-sheet :color="color" height="100%" tile>
@@ -140,5 +142,8 @@ import ComicServices from '../services/ComicServices';
 </script>
 
 <style>
-
+.grad1 {
+  height: 75px;
+  background-image: linear-gradient(to right, "primary", rgb(255, 0, 0,0) 70%);
+}
 </style>
