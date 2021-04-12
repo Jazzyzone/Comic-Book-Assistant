@@ -5,18 +5,17 @@
       Home to comic enthusiasts who wish to keep their collections all in one
       place.
     </p>
-     <v-card
-    color="grey lighten-4" flat height="100px"
-  >
-    <v-toolbar dense>
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
 
-      <v-toolbar-title>Search For Friends</v-toolbar-title>
-    </v-toolbar>
-  </v-card>
-     <v-divider></v-divider>
+      <v-spacer></v-spacer>
+          <v-text-field
+            placeholder="Search"
+            prepend-inner-icon="mdi-magnify"
+            class="expanding-search mt-1"
+            filled
+            dense
+            dark
+          ></v-text-field>
+
     <v-carousel
       v-model="model"
       cycle
@@ -172,4 +171,9 @@ export default {
   max-width: 300px;
   margin: 150px auto;
 }
+.expanding-search{
+  border-color: transparent;
+  max-width: 45px;
+}
+
 </style>
