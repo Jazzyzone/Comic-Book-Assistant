@@ -5,6 +5,18 @@
       Home to comic enthusiasts who wish to keep their collections all in one
       place.
     </p>
+     <v-card
+    color="grey lighten-4" flat height="100px"
+  >
+    <v-toolbar dense>
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-toolbar-title>Search For Friends</v-toolbar-title>
+    </v-toolbar>
+  </v-card>
+     <v-divider></v-divider>
     <v-carousel
       v-model="model"
       cycle
@@ -52,11 +64,11 @@
     >
     <v-divider></v-divider>
     <v-carousel v-model="model">
-       <v-card max-width="2000">
+       <v-card max-width="700">
       <v-carousel-item>
         <v-sheet color="orange" height="100%" tile>
           <v-row class="fill-height" align="center" justify="center">
-            <div class="display-3" v-if="characterData.length > 1">
+            <div class="display-2" v-if="characterData.length > 1">
               <h2 class="ml-1">{{ characterOptions.chart.title }}</h2>
               <GChart type="ColumnChart" :data="characterData" :options="characterOptions" v-if="chartLoaded"
               />
@@ -67,7 +79,7 @@
       <v-carousel-item>
         <v-sheet color="pink" height="100%" tile>
           <v-row class="fill-height" align="center" justify="center">
-            <div class="display-3" v-if="creatorData.length > 1">
+            <div class="display-2" v-if="creatorData.length > 1">
               <h2 class="ml-1">{{ creatorOptions.chart.title }}</h2>
               <GChart type="ColumnChart" :data="creatorData" :options="creatorOptions" v-if="chartLoaded2"
               />
@@ -157,7 +169,7 @@ export default {
 </script>
 <style>
 .small {
-  max-width: 600px;
+  max-width: 300px;
   margin: 150px auto;
 }
 </style>
