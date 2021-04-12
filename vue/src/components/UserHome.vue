@@ -4,7 +4,7 @@
       <v-icon
         color="yellow"
         large
-        v-if="this.$store.state.user.role=='ROLE_PREMIUM'"
+        v-if="this.user.authorities[0].name=='ROLE_PREMIUM'"
       >
         mdi-star
       </v-icon> </h1>
@@ -61,6 +61,7 @@ import ComicServices from '../services/ComicServices';
     },
     data() {
       return{
+        user: {},
         model: 0,
         chartLoaded:false,
         chartLoaded2:false,
@@ -94,8 +95,11 @@ import ComicServices from '../services/ComicServices';
       }
     }, 
     created(){
+      ComicServices.getUserByUsername(this.$route.params.username).then(response =>{
+          this.user = response.data;
+      }),
       ComicServices.getTopCharacterByUser(this.$route.params.username).then(response =>{
-        console.log(response.data);
+        console.log();
         response.data.forEach(element => {
           let arr = [];
           arr.push(element.name);
@@ -113,7 +117,7 @@ import ComicServices from '../services/ComicServices';
           arr.push(element.number);
           this.creatorData.push(arr);
         });
-        this.creatorOptions.chart.title = `Top ${this.characterData.length-1} Creators in Collections`;
+        this.creatorOptions.chart.title = `Top ${this.creatorData.length-1} Creators in Collections`;
         this.chartLoaded2=true;
       });
     },
