@@ -1,8 +1,10 @@
 <template>
-  <v-container class="friends-container">
-      
+  <v-container class="friends-container" color = primary>
+      <div @click="expand = !expand">
+                <v-card-title class="top-friends-display">Friends</v-card-title>
+                 </div>
       <v-expand-transition>
-      <v-flex >
+      <v-flex>
           <!-- remove this an uncomment code below-->
           <!-- <v-sheet v-for="friend in friends.userId"
             v-bind:key="friend.id"
@@ -21,10 +23,8 @@
       >
         View Friends
       </v-btn> -->
-             <div class="friends-display" @click="expand = !expand">
-                <p>Friends</p>
-                 </div>
-              <div v-show="expand">
+             
+              <div v-show="expand" class="friends-display">
                   <v-card-title class="headline">
                       placeholder1
                   </v-card-title>
@@ -110,28 +110,46 @@ export default {
     margin-bottom: 43px;
     margin-top: 150px;
     width:250px;
-    height: 320px;
+    max-height: 320px;
     overflow: auto;
     position: fixed;
     bottom: 0;
     right: 0;
-    z-index: 10;
+    z-index: 100 !important;
     font-size: 1rem;
-    background-color: black;
+    background-color: #00002E;
+    text-align: center;
+    opacity: 1;
+}
+.vflex {
+    background-color: #00002E;
+}
+.top-friends-display {
+    color: white;
+    background-color: #00002E;
+    text-align: center;
+    z-index: 100 !important;
+    margin-top: -25px;
+    margin-bottom: -10px;
 }
 .friends-display {
-    color: white;
-    background-color: black;
+    color: rgb(0, 146, 19);
+    background-color: #00002E;
     text-align: center;
+    z-index: 100 !important;
 }
 .sticky {
     position: sticky;
+    z-index: 100 !important;
 }
+
 
 .headline {
     border: 1px solid black;
     height: 60px;
-    justify-content: center;    
+    justify-content: center;  
+    z-index: 100 !important; 
+     
 }
 
 </style>

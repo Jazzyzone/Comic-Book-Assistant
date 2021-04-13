@@ -10,6 +10,7 @@
         class="ma-2"
         color="primary"
         @click="expand = !expand"
+        v-if="isCurrentUser"
       >
         Add a Collection
       </v-btn>
@@ -27,11 +28,16 @@
       </v-expand-transition>
     </v-col>
    </v-row>
-  <v-expansion-panels accordion flat >
+  <v-expansion-panels accordion flat v-for="collection in collections"
+            v-bind:key="collection.collection_ID">
+            <!--added div below and moved v-for and v-bind from v-expansion panel to v-expansion panels
+            in order to add a div that would only display elements if the user is signed in or the 
+            collection is not private -->
+    <div v-if="isCurrentUser || !collection.private">
     <v-expansion-panel
-      v-for="collection in collections"
-            v-bind:key="collection.collection_ID"
+      
     >
+      
       <v-expansion-panel-header>
         {{collection.name}}
       </v-expansion-panel-header>
@@ -122,6 +128,7 @@
         <comics-list v-bind:collectionID="collection.collectionID"/>
       </v-expansion-panel-content>
     </v-expansion-panel>
+    </div>
   </v-expansion-panels>
 
 </v-container>
@@ -140,7 +147,7 @@ export default {
   components: { AddACollection, ComicsList },
    data() {
        return {
-         expand:false,
+     expand:false,
      createCollection: false,
      collectionid: '',
      searchForI:"",
@@ -198,6 +205,10 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  position: relative;
+  z-index: 0;
+}
 .transparent {
   opacity: 0.1;
 

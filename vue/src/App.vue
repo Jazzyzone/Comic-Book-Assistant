@@ -106,6 +106,7 @@ export default {
   font-family: "BADA";
   src: url(../src/fonts/BADABB__.TTF) format("truetype");
   }
+  
   .bada{
     font-family: "BADA", 'Courier New', Courier, monospace;
     color: #ABB3D8;

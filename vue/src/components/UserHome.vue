@@ -62,8 +62,8 @@
     <v-container v-if="isCurrentUser">   
       
     </v-container>
-    <v-container v-else>
-      ITS NOT ME
+    <v-container>
+     
     </v-container>
   </v-container>
 </template>
