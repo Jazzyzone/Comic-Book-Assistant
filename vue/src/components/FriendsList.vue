@@ -1,6 +1,8 @@
 <template>
   <v-container class="friends-container">
-      <v-flex class="sticky">
+      
+      <v-expand-transition>
+      <v-flex >
           <!-- remove this an uncomment code below-->
           <!-- <v-sheet v-for="friend in friends.userId"
             v-bind:key="friend.id"
@@ -12,7 +14,17 @@
             </div> 
           </v-sheet> -->
           <v-sheet>
-              <div>
+              <!-- <v-btn
+        class="ma-2 bg"
+        color="primary"
+        @click="expand = !expand"
+      >
+        View Friends
+      </v-btn> -->
+             <div class="friends-display" @click="expand = !expand">
+                <p>Friends</p>
+                 </div>
+              <div v-show="expand">
                   <v-card-title class="headline">
                       placeholder1
                   </v-card-title>
@@ -70,6 +82,7 @@
               </div>
           </v-sheet>
       </v-flex>
+      </v-expand-transition>
   </v-container>
 </template>
 
@@ -77,6 +90,7 @@
 export default {
     data() {
         return {
+            expand: false,
             friends: {
 
             }
@@ -96,11 +110,19 @@ export default {
     margin-bottom: 43px;
     margin-top: 150px;
     width:250px;
-    height: 400px;
+    height: 320px;
     overflow: auto;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     right: 0;
+    z-index: 10;
+    font-size: 1rem;
+    background-color: black;
+}
+.friends-display {
+    color: white;
+    background-color: black;
+    text-align: center;
 }
 .sticky {
     position: sticky;
@@ -108,5 +130,8 @@ export default {
 
 .headline {
     border: 1px solid black;
+    height: 60px;
+    justify-content: center;    
 }
+
 </style>
