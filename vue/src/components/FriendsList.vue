@@ -107,7 +107,7 @@ export default {
 
 <style scoped>
 .friends-container {
-    margin-bottom: 43px;
+    margin-bottom: 64px;
     margin-top: 150px;
     width:250px;
     max-height: 320px;

@@ -70,16 +70,19 @@
     <div class="flist">
     <friends-list />
     </div>"
-    <v-footer app :padless="true">
+    <v-footer app :padless="true" >
       <v-card
         flat
         tile
         width="100%"
         color = primary
         class="text-center"
+        
       >
       <v-card-text class="white--text">
           {{ new Date().getFullYear() }} — <strong>&copy; Comic Elevator</strong>
+          <br>
+          <strong >All &copy;Marvel images are registered trademarks of &copy;Disney</strong>
           
         </v-card-text>
         </v-card>
@@ -117,7 +120,8 @@ export default {
   }
   .flist {
     position: sticky;
+  }
+  
 
-}
 </style>
 
