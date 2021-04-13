@@ -19,5 +19,5 @@ public class FriendController {
 		this.userDAO = userDAO;
 	}
 	
-	@RequestMapping(value = "friend/", method = requestMethod.GET)
+	//@RequestMapping(value = "friend/", method = requestMethod.GET)
 }
