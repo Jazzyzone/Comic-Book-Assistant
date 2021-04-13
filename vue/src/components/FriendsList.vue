@@ -1,5 +1,5 @@
-<template>
-  <v-container class="friends-container" color = primary>
+<template >
+  <v-container class="friends-container" color = primary v-if="$store.state.token != ''">
       <div @click="expand = !expand">
                 <v-card-title class="top-friends-display">Friends</v-card-title>
                  </div>
