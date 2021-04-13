@@ -9,12 +9,9 @@ import UserCollections from '../views/UserCollections'
 import UserHome from '../views/UserHome'
 import AddACollection from '../views/AddACollection'
 import SearchedUser from '../views/SearchedUser'
-<<<<<<< HEAD
 import FriendsList from '../views/FriendsList'
 
-=======
 import CollectionSearch from '../views/CollectionSearch'
->>>>>>> 02d5fbca3cfa4fc8826066001c9c132189f6bfce
 
 Vue.use(Router)
 
