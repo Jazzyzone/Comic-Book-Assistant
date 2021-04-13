@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <img src="@/images/marvel_comics_cast.png">
     <h1>Welcome To Comic Elevator</h1>
     <p>
       Home to comic enthusiasts who wish to keep their collections all in one

@@ -1,4 +1,5 @@
 <template>
+
   <v-container >
     <v-card  dark color="rgba(100,0,0,.3)" justify-center class="semi ma-3" height="100" >
     <h1 class="ml-5" >{{$route.params.username}}
@@ -11,6 +12,7 @@
       </v-icon> </h1>
 
     </v-card>
+     
     <v-card color="rgba(100,0,0,.3)" class="mt-5 semi d-flex flex-row align-center justify-space-around"  dark align-center text-center>
  
       <v-card color="rgba(100,0,0,.3)" class="display-3 d-flex flex-column align-center ma-5  rounded-xl"  text-center width="30vw" v-if="characterData.length>1" >
