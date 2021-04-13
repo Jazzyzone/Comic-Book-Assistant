@@ -1,34 +1,60 @@
 <template>
   <div>
     <v-container>
-      <v-flex class="d-flex flex-wrap flex-row align-stretch " v-if="searchResults.length > 0">
-            <v-sheet class="rounded-xl mx-auto pa-2 ma-3 d-flex flex-wrap flex-column justify-space-between"
-            v-for="comic in searchResults.slice(((10 * this.page) - 10),(this.page * 10) + 2)"
-            v-bind:key="comic.id"
+        <v-row  class="semi mb-5 rounded-xl" align="center">
+                <v-col  cols="7">
+                <v-text-field dark  label="title" v-model="$route.params.title"
+
+                ></v-text-field>
+                </v-col>
+                  <v-col  cols="4">
+                    <v-text-field  dark label="issue number" v-model="$route.params.issue"
+
+                ></v-text-field>
+                
+                    </v-col>
+                      <v-col  cols="1"  justify="center">
+                            <v-btn @click="search"  color= secondary>Search</v-btn>
+                     </v-col>
+                    </v-row>
+      <v-flex class="d-flex flex-wrap flex-row align-stretch" v-if="searchResults.length > 0 && !isLoading" :key="somekey">
+          <v-col cols=3  v-for="comic in searchResults.slice(((12 * this.page) - 12),(this.page * 12))"
+            v-bind:key="comic.id">
+            <v-sheet class="rounded-xl mx-auto pa-2 ma-3  d-flex flex-column justify-space-between"
+           
+            max-width="320"
+            height="680"
+            text-center
+            color="rgba(100,0,0,.3)"
+            dark
             >
-            <v-row
-      class="mb-6"
-      no-gutters
-    >
-    <v-col>
-            <v-card max-width="300" :elevation="10" class="mb-5">
-                <v-img v-bind:src='comic.thumbnail.path.concat("." + comic.thumbnail.extension)' srcset="" />
-                <v-card-title><p>{{comic.title}}</p></v-card-title>
+   
+   
+
+                <div>        
+                <v-img class="rounded-xl"  v-bind:src='comic.thumbnail.path.concat("." + comic.thumbnail.extension)' lazy-src="..\images\comicblur.png" srcset="" />
+                 <v-divider></v-divider>
+                  <v-card-title text-center dark class="break">{{comic.title}}</v-card-title >
+                </div>
+                <div>
+                   
+                <v-btn rounded width="100%" color=primary disabled v-if="comicInCollection(comic.id)" :class="disabled">already in collection</v-btn>
+            <v-btn rounded width="100%"
+                    color= secondary
+                    dark @click="addComicToCollection(comic)" v-else>add to collection</v-btn>
+                </div>
             
             <!-- {{comic.issueNumber}} -->
             <!-- {{comic.id}} -->
             <!-- {{comic.characters}} -->
             <!-- {{comic.description}} -->
-            <v-btn disabled v-if="comicInCollection(comic.id)" :class="disabled">already in collection</v-btn>
-            <v-btn rounded
-      color="primary"
-      dark @click="addComicToCollection(comic)" v-else>add to collection</v-btn>
             
-            </v-card>
+        
             
-            </v-col>
-        </v-row>
+          
+        
       </v-sheet>
+      </v-col>
       </v-flex>
         <div class="loading" v-if="isLoading">
            <v-progress-circular
@@ -43,8 +69,8 @@
     <div class="text-center">
         <v-pagination
         v-model="page"
-        :length="searchResults.length / 10"
-        v-if="searchResults.length > 0"
+        :length="searchResults.length / 12"
+        v-if="searchResults.length > 0 && !isLoading"
         ></v-pagination>
         </div>
   </div>
@@ -62,6 +88,7 @@ export default {
 
             },
             page: 1,
+            somekey:0,
             // collectionid: '',
             comicid: '',
             inCollection: false,
@@ -69,6 +96,11 @@ export default {
         }
     },
     created() {
+        this.loadSearchData();
+         
+    },
+    methods: {
+        loadSearchData(){
         let config = {
         params: {
             title : null,
@@ -84,14 +116,21 @@ export default {
         }
         ComicServices.getAllComicsByCollectionId(this.$route.params.collectionID).then(response => {
              this.collection = response.data;
+             this.somekey++;
          });
         MarvelService.getComicList(config).then(response => {
              this.searchResults = response.data.data.results;
              this.isLoading = false;
          });
-         
-    },
-    methods: {
+        },
+        search(){
+            this.page=1;
+            
+            this.isLoading=true;
+            this.loadSearchData();
+            
+
+        },
         addComicToCollection(comic) {
             
             let comicDTO = {
@@ -154,25 +193,13 @@ img:hover {
 .loading h4 {
     margin-top: 150px;
 }
-p {
+.break {
     font-size: 1rem;
     text-align: center;
     word-break: normal;
 }
-div button {
-    height:20px; 
-    width:200px; 
-    margin:-100px -100px -80px; 
-    position:relative;
-    top:50%; 
-    left:50%;
+.semi{
+    background: rgba(100,0,0,.3);
 }
-.disabled {
-    height:20px; 
-    width:100px; 
-    margin: -20px -50px; 
-    position:relative;
-    top:50%; 
-    left:50%;
-}
+
 </style>

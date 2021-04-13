@@ -1,7 +1,7 @@
 <template>
   <v-container >
-    <v-card  dark color=primary  class=" grad1 ma-3">
-    <h1  >{{$route.params.username}}
+    <v-card  dark color="rgba(100,0,0,.3)" justify-center class="semi ma-3" height="100" >
+    <h1 class="ml-5" >{{$route.params.username}}
       <v-icon
         color="yellow"
         large
@@ -11,21 +11,26 @@
       </v-icon> </h1>
 
     </v-card>
-    <v-card  class="mt-5"  dark color=primary text-center>
-      <v-row>
-        <v-col cols="6" >
-      <div class="display-3" v-if="characterData.length>1">
-        <h2 class ="ml-1">{{characterOptions.chart.title}}</h2>
-        <GChart type="ColumnChart" :data="characterData" :options="characterOptions" v-if="chartLoaded" />
-      </div>
-      </v-col>
-      <v-col cols="6">
-      <div class="display-3"  v-if="creatorData.length>1">
-        <h2 class ="ml-1">{{creatorOptions.chart.title}}</h2>
+    <v-card color="rgba(100,0,0,.3)" class="mt-5 semi d-flex flex-row align-center justify-space-around"  dark align-center text-center>
+ 
+      <v-card color="rgba(100,0,0,.3)" class="display-3 d-flex flex-column align-center ma-5  rounded-xl"  text-center width="30vw" v-if="characterData.length>1" >
+        <h2 class ="ma-auto text-center">{{characterOptions.chart.title}}</h2>
+        <GChart type="ColumnChart" :data="characterData" :options="characterOptions" v-if="chartLoaded" style="color:red"/>
+      </v-card>
+       <v-card  color="rgba(100,0,0,.3)" class="display-3 align-center ma-5 rounded-xl" width="30vw" v-else>
+                 <h2 >Fill a collection with comics</h2>
+                 <h2 >to see collection stats!</h2>
+                </v-card>
+ 
+      <v-card color="rgba(100,0,0,.3)" class="display-3 d-flex flex-column align-center ma-5  rounded-xl"  width="30vw"  v-if="creatorData.length>1">
+        <h2  class ="ma-auto text-center">{{creatorOptions.chart.title}}</h2>
         <GChart type="ColumnChart" :data="creatorData" :options="creatorOptions" v-if="chartLoaded2" />
-      </div>
-      </v-col>
-      </v-row>
+      </v-card>
+       <v-card color="rgba(100,0,0,.3)" class="display-3 align-center ma-5  rounded-xl" width="30vw" v-else>
+                 <h2 >Fill a collection with comics</h2>
+                 <h2 >to see collection stats!</h2>
+                </v-card>
+
       <!--<v-carousel v-model="model" >
         <v-carousel-item>
           <v-sheet :color="color" height="100%" tile>
@@ -34,10 +39,7 @@
                   <h2 class ="ml-1">{{characterOptions.chart.title}}</h2>
                   <GChart type="ColumnChart" :data="characterData" :options="characterOptions" v-if="chartLoaded" />
               </div>
-              <div class="display-3" v-else>
-                 <h2 >Fill a collection with comics</h2>
-                 <h2 >to see collection stats!</h2>
-                </div>
+             
             </v-row>
           </v-sheet>
         </v-carousel-item >
@@ -84,16 +86,29 @@ import ComicServices from '../services/ComicServices';
         characterData: [
           ['Comic Name', 'Comics']
         ],
-        color:'primary',
+        
         characterOptions: {
             chart: {
               title: "",
             },
             bars: 'vertical', // Required for Material Bar Charts.
-            hAxis: { format: 'decimal' },
-            height: 400,
-            width:600,
-            colors: ['#1b9e77']
+            hAxis: { format: 'decimal' ,
+             textStyle:{color: '#FFF'}
+            },
+            vAxis: {  
+             textStyle:{color: '#FFF'}
+            },
+            legend: {
+        textStyle: { color: 'white' }
+    },
+            height: 300,
+            width:450,
+            colors: ['#1b9e77'],
+             backgroundColor: {
+        fill: '#AA0000',
+        fillOpacity: 0.0
+      },
+            
           },
         creatorData: [
           ['Creator Name', 'comics']
@@ -103,11 +118,25 @@ import ComicServices from '../services/ComicServices';
               title: "",
             },
             bars: 'vertical', // Required for Material Bar Charts.
-            hAxis: { format: 'decimal' },
-            height: 400,
-            width:600,
-            colors: ['#1c9e77']
+            hAxis: { format: 'decimal' ,
+             textStyle:{color: '#FFF'}
+            },
+            vAxis: {  
+             textStyle:{color: '#FFF'}
+            },
+            legend: {
+        textStyle: { color: 'white' }
+    },
+            height: 300,
+            width:450,
+            colors: ['#1c9e77'],
+            backgroundColor: {
+        fill: '#AA0000',
+        fillOpacity: 0.0
+      },
+       
           },
+          
       }
     }, 
     created(){
@@ -156,8 +185,8 @@ import ComicServices from '../services/ComicServices';
 </script>
 
 <style>
-.grad1 {
-  height: 75px;
 
+.semi{
+    background: rgba(0,0,100,.3);
 }
 </style>

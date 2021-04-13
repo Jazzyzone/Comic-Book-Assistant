@@ -127,7 +127,7 @@ public List<ComicDTO> getAllComics(){
 			return true;
 		}
 		// link comic in collection-comic and all bride tables + depending tables
-		String sqlInsertComic = "INSERT INTO comics (title, issue_num, img) VALUES (?,?,?) RETURNING comic_id";
+		String sqlInsertComic = "INSERT INTO comics (title, issue_num, img, marvel_id) VALUES (?,?,?,?) RETURNING comic_id";
 		
 		String sqlInsertCharacterComic = "INSERT INTO characters_comics (character_id, comic_id) VALUES (?,?)";
 		
@@ -141,7 +141,7 @@ public List<ComicDTO> getAllComics(){
 		try {
 
 			SqlRowSet row = jdbcTemplate.queryForRowSet(sqlInsertComic, comic.getName(), comic.getIssueNumber(),
-					comic.getThumbnailLink());
+					comic.getThumbnailLink(),comic.getMarvelID());
 			int newComicId = 0;
 
 			if (row.next()) {
@@ -499,7 +499,7 @@ public List<ComicDTO> getAllComics(){
 										"INNER JOIN comics c ON c.comic_id=cc.comic_id  "+
 									"INNER JOIN characters_comics chc ON chc.comic_id = c.comic_id "+
 										"INNER JOIN characters ch ON chc.character_id = ch.character_id "+	
-										"WHERE cu.collection_id = ? "+
+										"WHERE cu.collection_id = ? AND ch.name != X"+
 								"GROUP BY ch.name "+
 								"ORDER BY amount DESC "+
 								"LIMIT 5; ";
