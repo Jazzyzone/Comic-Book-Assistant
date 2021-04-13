@@ -67,7 +67,9 @@
       </v-container>
     
     </v-main>
-    
+    <div class="flist">
+    <friends-list />
+    </div>"
     <v-footer app :padless="true">
       <v-card
         flat
@@ -87,9 +89,11 @@
   
 </template>
 <script>
+import FriendsList from './views/FriendsList.vue';
 
 
 export default {
+  components: { FriendsList },
   unmounted() {
     this.$store.commit("LOGOUT");
     
@@ -109,6 +113,10 @@ export default {
   .bg {
   background: url('../src/images/triangles.png') no-repeat center center fixed !important;
   background-size: cover;
+  }
+  .flist {
+    position: sticky;
+
 }
 </style>
 

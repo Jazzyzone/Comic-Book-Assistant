@@ -9,6 +9,7 @@ import UserCollections from '../views/UserCollections'
 import UserHome from '../views/UserHome'
 import AddACollection from '../views/AddACollection'
 import SearchedUser from '../views/SearchedUser'
+import FriendsList from '../views/FriendsList'
 
 
 Vue.use(Router)
@@ -89,6 +90,14 @@ const router = new Router({
       component: SearchedUser,
       meta: {
         requiresAuth: false
+      }
+    },
+    {
+      path: "/account/:username/friends",
+      name: "friends",
+      component: FriendsList,
+      meta: {
+        requiresAuth: true
       }
     }
   ]
