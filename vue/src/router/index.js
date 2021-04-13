@@ -9,7 +9,7 @@ import UserCollections from '../views/UserCollections'
 import UserHome from '../views/UserHome'
 import AddACollection from '../views/AddACollection'
 import SearchedUser from '../views/SearchedUser'
-
+import CollectionSearch from '../views/CollectionSearch'
 
 Vue.use(Router)
 
@@ -84,9 +84,18 @@ const router = new Router({
       }
     },
     {
-      path: "/:username/ComicSearch/:collectionId",
+      path: "/:username/ComicSearch/",
       name:"ComicSearch",
       component: SearchedUser,
+      meta: {
+        requiresAuth: true
+      }
+    }
+    ,
+    {
+      path: "/collections/",
+      name:"CollectionSearch",
+      component: CollectionSearch,
       meta: {
         requiresAuth: false
       }

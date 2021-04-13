@@ -2,6 +2,9 @@ import axios from 'axios';
 
 
 export default {
+  searchCollections(name) {
+    return axios.get(`collectionslike/${name}`)
+  },
 
   getAllCollections(user) {
     return axios.get(`collection/user/${user}`)
