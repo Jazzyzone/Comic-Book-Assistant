@@ -51,7 +51,21 @@ public class UserSqlDAO implements UserDAO {
 
         return users;
     }
+    
+    @Override
+    public List<User> findLike(String username){
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE lower(username) LIKE ?";
 
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql,"%"+username.toLowerCase()+"%");
+        while(results.next()) {
+            User user = mapRowToUser(results);
+            users.add(user);
+        }
+
+        return users;
+    }
+    
     @Override
     public User findByUsername(String username) throws UsernameNotFoundException {
         for (User user : this.findAll()) {

@@ -84,7 +84,16 @@ public class CollectionController {
 		}
     	return collectionDAO.getCollection(id,userID);
     }
-	
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value = "userslike/{user}", method = RequestMethod.GET )
+	public List<User> getUsersLike(@PathVariable String user, Principal principal){
+		return userDAO.findLike(user);
+	}
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value = "collectionslike/{name}", method = RequestMethod.GET )
+	public List<CollectionDTO> getCollectionsLike(@PathVariable String name, Principal principal){
+		return collectionDAO.SearchPublicCollections(name);
+	}
 	//Creates a blank collection is my guess, maybe it can pass in a list of comics already attached but tbh I don't think that is how I will handle it.
 	@RequestMapping(value = "collection/", method = RequestMethod.POST )
     public boolean addCollection(@RequestBody CollectionDTO collection, Principal principal) {
