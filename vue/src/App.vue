@@ -2,16 +2,32 @@
 
   <v-app  class="bg">
     
-    <v-app-bar app color = primary height="100">
-      <v-container class="py-0 fill-height" text-center>
+    <v-app-bar app color = primary height="100" >
+      <v-container class="py-0 fill-height" text-center >
+        
           <v-avatar  size="85" >
+            
           <img 
         src="../src/images/ComicElevatorLogo.png"
         alt="Comic Elevator"
+       
       >
           </v-avatar> 
-          <h1 dark class="ml-2 bada">Comic Elevator</h1>
+          <h1 dark class="ml-2 bada"  >Comic Elevator</h1>
+           
+        <v-text-field
+          placeholder="Search For Collections"
+          class=" mr-5 ml-5 mt-5 "
+          filled
+          dense
+          dark
+          v-model="search"
+        />
+        
+        <v-btn dark color=secondary @click="searchForCollection()">Search</v-btn>  
+     
       </v-container>
+      
       <v-tabs
         fixed-tabs
         class="mr-9"
@@ -23,9 +39,7 @@
           <v-tab  :to="{ name: 'userCollections', params: {username: this.$store.state.user.username} }"> 
             Collection
           </v-tab >
-          <v-tab href="https://www.youtube.com/watch?v=LQiOA7euaYA">
-            Friends
-          </v-tab>
+    
       </v-tabs>
       
       <v-btn offset-y v-if="$store.state.token == ''" @click="$router.push('login' )" color= secondary >LogIn</v-btn>
@@ -97,9 +111,21 @@ import FriendsList from './views/FriendsList.vue';
 
 export default {
   components: { FriendsList },
+  data(){
+    return{
+      search:""
+    }
+  },
   unmounted() {
     this.$store.commit("LOGOUT");
     
+  },
+  methods:{
+     searchForCollection() {
+            
+            //will need a conditional to make sure string isn't empty and will need a .trim()
+            this.$router.push({ name: "CollectionSearch", params: {name: this.search}});
+        },
   }
 }
 </script>

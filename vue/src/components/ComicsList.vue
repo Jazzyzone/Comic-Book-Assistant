@@ -5,14 +5,17 @@
         <v-flex class="d-flex flex-wrap flex-row align-stretch ">
             <v-sheet v-for="comic in collection.comics"
             v-bind:key="comic.id"
-            class="rounded-xl mx-auto transition-swing  pa-2 ma-3 d-flex flex-wrap flex-column justify-space-between"
+            class="rounded-xl mx-auto transition-swing semi pa-2 ma-3 d-flex flex-wrap flex-column justify-space-between"
             max-width="300"
+            dark
             :elevation="10"
+            color="rgba(100,0,0,.3)"
             >
 
 
                 <div>
                     <v-card-title 
+                    
                     class="headline"
                     v-text="comic.name"
                     ></v-card-title>
@@ -75,7 +78,9 @@ export default {
 </script>
 
 <style>
-
+.semi{
+    background: rgba(100,0,0,.3);
+}
 
 
 </style>

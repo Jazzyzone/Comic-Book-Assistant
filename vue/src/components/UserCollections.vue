@@ -27,15 +27,21 @@
     </v-col>
    </v-row>
   <v-expansion-panels accordion flat  dark>
+            
             <!--added div below and moved v-for and v-bind from v-expansion panel to v-expansion panels
             in order to add a div that would only display elements if the user is signed in or the 
             collection is not private -->
+    
     <v-expansion-panel  
+           
+            
       v-for="collection in filtered"
             v-bind:key="collection.collection_ID"
             class="mb-5"
     >
+      
       <v-expansion-panel-header  dark
+           
             color="primary" >
         {{collection.name}}
       </v-expansion-panel-header>
@@ -43,10 +49,10 @@
         <v-flex v-if="isCurrentUser" class="d-flex flex-row align-center">
           <v-expansion-panels class="ma-1">
             <v-expansion-panel>
-              <v-expansion-panel-header>
-                <template v-slot:default="{ open }">
-                  <v-row no-gutters>
-                    <v-col cols="4" class="addCollection">
+              <v-expansion-panel-header color="primary">
+                <template color="primary" v-slot:default="{ open }">
+                  <v-row  no-gutters >
+                    <v-col cols="4"  class="addCollection">
                       Add a comic
                     </v-col>
                     <v-col
@@ -54,23 +60,19 @@
                       class="text--secondary"
                     >
                       <v-fade-transition leave-absolute>
-                        <span
+                        <span 
                           v-if="open"
                           key="0"
                         >
                           Search the Marvel database for a comic
                         </span>
-                        <span
-                          v-else
-                          key="1"
-                        >
-                        </span>
+                       
                       </v-fade-transition>
                     </v-col>
                   </v-row>
                 </template>
               </v-expansion-panel-header>
-              <v-expansion-panel-content>
+              <v-expansion-panel-content color="primary">
                 <v-row>
                 <v-col  cols="8">
                 <v-text-field label="title" v-model="searchForT"
@@ -86,10 +88,10 @@
             </v-expansion-panel>
              </v-expansion-panels>
           <div class="text-center ma-1">
-            <v-dialog v-model="dialog" width="500">
+            <v-dialog  v-model="dialog" width="500" color="primary">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
-                  color="orange lighten-1"
+                  color= accent
                   dark
                   v-bind="attrs"
                   v-on="on"
@@ -101,7 +103,8 @@
                 <v-card-title class="headline grey lighten-2">
                   Edit Collection
                 </v-card-title>
-                <v-card-text>
+
+                <v-card-text >
                   <v-text-field v-model="rename" label="name"></v-text-field>                          
                 </v-card-text>
                 <v-divider></v-divider>
@@ -118,6 +121,7 @@
         <comics-list v-bind:collectionID="collection.collectionID"/>
       </v-expansion-panel-content>
     </v-expansion-panel>
+    
   </v-expansion-panels>
 </v-container>
 </template>

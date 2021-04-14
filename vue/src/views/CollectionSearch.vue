@@ -15,14 +15,17 @@
 </template>
 <script>
     import ComicServices from '../services/ComicServices';
+    import ComicsList from '../components/ComicsList.vue';
     export default {
+
+      components: { ComicsList },
       data() {
        return {
          collections :  [],
          }
       },
       created(){
-        ComicServices.searchCollections("men").then(responce => {
+        ComicServices.searchCollections(this.$route.params.name).then(responce => {
           this.collections = responce.data;
         })
       }

@@ -1,29 +1,26 @@
-package com.techelevator.dao;
+package com.techelevator.model;
 
 
-import javax.validation.constraints.Positive;
 
-public class Friend {
-	
-	
-	@Positive
+public class FriendDTO {
+
 	private int friendID;
 	private int userID;
 	private int statusID;
 	private String statusIDDesc;
 	
-	public int getFriendByFriendID() {
+	public int getFriendID() {
 		return friendID;
 	}
 	
-	public void setFriendByFriendID(int friendID) {
+	public void setFriendID(int friendID) {
 		this.friendID = friendID;
 	}
 
-	public int getFriendByUserID() {
+	public int getUserID() {
 		return userID;
 	}
-	public void setFriendByUserID(int userID) {
+	public void setUserID(int userID) {
 		this.userID = userID;
 	}
 
@@ -39,7 +36,7 @@ public class Friend {
 		return statusIDDesc;
 	}
 
-	public void setpendingRequest(String statusIDDesc) {
+	public void setStatusIDDesc(String statusIDDesc) {
 		this.statusIDDesc = statusIDDesc;
 	}
 
