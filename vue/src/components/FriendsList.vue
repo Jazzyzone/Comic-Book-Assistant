@@ -6,17 +6,19 @@
       <v-expand-transition>
       <v-flex>
           <!-- remove this an uncomment code below-->
-           <v-sheet v-for="friend in friends"
+           <v-sheet dark v-for="friend in friends"
             v-bind:key="friend.id"
             >
+            <router-link :to="{ name: 'userHome',params: {username: friend.username}}">
             <div v-show="expand" class="friends-display">
                 
                     <v-card-title class="headline"
                         v-text="friend.username"
-                        :to="{ name: 'userHome',params: {username: friend.username}}">
+                        >
                     </v-card-title>
                 
             </div> 
+            </router-link>
           </v-sheet> 
           <!-- <v-sheet> -->
               <!-- <v-btn
@@ -113,6 +115,9 @@ export default {
 </script>
 
 <style scoped>
+.friends-display:hover{
+     background-color: #00003E;
+}
 .friends-container {
     margin-bottom: 64px;
     margin-top: 150px;
@@ -124,7 +129,7 @@ export default {
     right: .5%;
     z-index: 100 !important;
     font-size: 1rem;
-    background-color: #00002E;
+   
     text-align: center;
     opacity: 1;
     border-top-right-radius: 25px;
