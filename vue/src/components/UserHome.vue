@@ -12,9 +12,10 @@
       >
         mdi-star
       </v-icon> </h1>
-        <v-card v-if="!isCurrentUser" color="rgba(0,0,0,0)" :elevation=0 dark text-center class="d-flex flex-column">
+        <v-card v-if="!isCurrentUser" color="rgba(0,0,0,0)" :elevation=0 dark text-center class="d-flex flex-row justify-center align-center">
           
-          <v-btn class="mx-auto" color= secondary dark :to="{ name: 'userCollections', params: {username: this.$route.params.username} }" >Go to User's Collections</v-btn>
+          <v-btn class="ml-auto mr-5" color= secondary dark :to="{ name: 'userCollections', params: {username: this.$route.params.username} }" >Go to User's Collections</v-btn>
+           <v-btn class="mr-auto ml-5" color= secondary dark >Follow this dork</v-btn>
          </v-card>
     </v-card >
 
