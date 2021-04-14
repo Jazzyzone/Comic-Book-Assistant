@@ -15,7 +15,10 @@
 </template>
 <script>
     import ComicServices from '../services/ComicServices';
+    import ComicsList from '../components/ComicsList.vue';
     export default {
+
+      components: { ComicsList },
       data() {
        return {
          collections :  [],

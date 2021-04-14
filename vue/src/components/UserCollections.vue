@@ -19,7 +19,7 @@
         <v-card
           v-show="expand"
           lighten3
-          class="mx-auto white mb-2"
+          class="mx-auto white mb-2 semi"
           width = "300"
           elevation=10
         >
@@ -28,17 +28,23 @@
       </v-expand-transition>
     </v-col>
    </v-row>
-  <v-expansion-panels accordion flat v-for="collection in collections"
-            v-bind:key="collection.collection_ID">
+  <v-expansion-panels accordion flat  dark
+           
+            color="rgba(100,0,0,.3)" >
             <!--added div below and moved v-for and v-bind from v-expansion panel to v-expansion panels
             in order to add a div that would only display elements if the user is signed in or the 
             collection is not private -->
-    <div v-if="isCurrentUser || !collection.private">
-    <v-expansion-panel
-      
+    
+    <v-expansion-panel  dark
+           
+            color="rgba(100,0,0,.3)"
+      v-for="collection in filtered"
+            v-bind:key="collection.collection_ID"
     >
       
-      <v-expansion-panel-header>
+      <v-expansion-panel-header  dark
+           
+            color="rgba(100,0,0,.3)">
         {{collection.name}}
       </v-expansion-panel-header>
       <v-expansion-panel-content class="bg">
@@ -128,7 +134,7 @@
         <comics-list v-bind:collectionID="collection.collectionID"/>
       </v-expansion-panel-content>
     </v-expansion-panel>
-    </div>
+    
   </v-expansion-panels>
 
 </v-container>
@@ -169,6 +175,14 @@ export default {
         isCurrentUser() {
             return this.$route.params.username === this.$store.state.user.username;
         },
+        filtered(){
+          return this.$store.state.userCollections.filter(item=>{
+            if(this.isCurrentUser||item.private==false){
+                return true;
+            }
+            return false;
+          })
+        }
     },
     methods: {
         deleteCollection(collectionId) {

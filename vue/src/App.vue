@@ -2,16 +2,31 @@
 
   <v-app  class="bg">
     
-    <v-app-bar app color = primary height="100">
-      <v-container class="py-0 fill-height" text-center>
+    <v-app-bar app color = primary height="100" >
+      <v-container class="py-0 fill-height" text-center >
+        
           <v-avatar  size="85" >
+            
           <img 
         src="../src/images/ComicElevatorLogo.png"
         alt="Comic Elevator"
+       
       >
           </v-avatar> 
-          <h1 dark class="ml-2 bada">Comic Elevator</h1>
+          <h1 dark class="ml-2 bada"  >Comic Elevator</h1>
+           
+        <v-text-field
+          placeholder="Search For Collections"
+          class=" mr-5 ml-5 mt-5 "
+          filled
+          dense
+          dark
+        />
+        <router-link v-bind:to=" {name: 'CollectionSearch'} "><v-btn>Search</v-btn></router-link>
+     
+     
       </v-container>
+      
       <v-tabs
         fixed-tabs
         class="mr-9"
