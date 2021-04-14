@@ -15,7 +15,8 @@
         <v-card v-if="!isCurrentUser" color="rgba(0,0,0,0)" :elevation=0 dark text-center class="d-flex flex-row justify-center align-center">
           
           <v-btn class="ml-auto mr-5" color= secondary dark :to="{ name: 'userCollections', params: {username: this.$route.params.username} }" >Go to User's Collections</v-btn>
-           <v-btn class="mr-auto" color= secondary dark >Follow this dork</v-btn>
+           <v-btn class="mr-auto" color= secondary dark @click="addUser" v-if="!isFollowing">Follow</v-btn>
+           <v-btn class="mr-auto" color= secondary dark @click="unfollow" v-if="isFollowing">Unfollow</v-btn>
          </v-card>
     </v-card >
 
@@ -280,12 +281,40 @@ import ComicServices from '../services/ComicServices';
     });
     },
     computed: {
-     
-
         isCurrentUser() {
             return this.$route.params.username === this.$store.state.user.username;
         },
+        isFollowing() {
+          return this.$store.state.friends.find(e => e.id == this.user.id);
+        }
     },
+    methods: {
+      addUser() {
+        let friendDTO = {
+          friendID: this.user.id,
+          userID: this.$store.state.user.id,
+          statusID: 1,
+          statusIDDescription: 'follow'
+        }
+        ComicServices.addFriendByUserId(friendDTO).then(response => {
+          if (response.status == 200) {
+            ComicServices.getFriendsByUserId(this.$store.state.user.id).then(response => {
+            this.$store.commit("SET_FRIENDS", response.data);
+          });
+          }
+        });
+        },
+        unfollow() {
+          ComicServices.unfollowUser(this.user.id).then(response => {
+          if (response.status == 200) {
+            ComicServices.getFriendsByUserId(this.$store.state.user.id).then(response => {
+            this.$store.commit("SET_FRIENDS", response.data);
+          });
+          }
+        })
+        }
+      }
+    
 
 }
 </script>
