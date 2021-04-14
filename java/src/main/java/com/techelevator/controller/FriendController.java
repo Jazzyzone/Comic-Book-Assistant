@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.techelevator.dao.FriendDAO;
 import com.techelevator.dao.UserDAO;
 import com.techelevator.model.FriendDTO;
+import com.techelevator.model.User;
 
 
 @RestController
@@ -37,7 +38,16 @@ public class FriendController {
 		}
 	}
 
-	
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value = "friend/{userID}", method = RequestMethod.GET)
+		public List<User> getAllFriendbyIDs(Principal principal,@PathVariable long userID){
+		if(principal != null) {
+			return friendDAO.getAllFriendsById(userID);
+		}	else {
+			return null;
+		}
+	}
+
 	@RequestMapping( value = "friend/", method = RequestMethod.POST )
 	public boolean addFriend(@RequestBody FriendDTO friendID, Principal principal ) {
 		
@@ -46,10 +56,10 @@ public class FriendController {
 	}
 	
 	@PreAuthorize("permitAll()")
-	@RequestMapping( value = "friend/{friend_id}", method = RequestMethod.DELETE)
-		public boolean deleteFriend(@PathVariable int friend_id, Principal principal) {
+	@RequestMapping( value = "/friend/{friendid}", method = RequestMethod.DELETE)
+		public boolean deleteFriend(@PathVariable int friendid, Principal principal) {
 		int friendID = userDAO.findIdByUsername(principal.getName());
-		return friendDAO.deleteFriend(friend_id, friendID);
+		return friendDAO.deleteFriend(friendid, friendID);
 	}
 }
 	
