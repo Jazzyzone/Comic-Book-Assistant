@@ -24,7 +24,7 @@
                    
                      
                 </div>
-                <v-divider></v-divider>
+               
                 <div>
 
                     <v-img  min-height="480" min-width="280" class="rounded-xl" :aspect-ratio="6.5/10" :src="comic.thumbnailLink"></v-img>

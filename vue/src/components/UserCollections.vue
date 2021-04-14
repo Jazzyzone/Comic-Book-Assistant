@@ -3,11 +3,22 @@
 //them to ComicsList
 <template>
 <v-container>
-    <v-row  justify="center">
+    <v-row  justify="center" v-if="isCurrentUser">
   <v-col class="d-flex justify-center mb-5">
       
          <add-a-collection />
          
+         
+      
+    </v-col>
+   </v-row>
+   <v-row  dark justify="center"  v-if="!isCurrentUser">
+  <v-col class="d-flex justify-center mb-5">
+      
+         <v-card color="rgba(0,0,0,0)" :elevation=0 dark text-center class="d-flex flex-column">
+           <h2>{{this.$route.params.username}}'s Collections</h2>
+          <v-btn class="mx-auto" color= secondary dark :to="{ name: 'userHome', params: {username: this.$route.params.username} }" >Go to User Profile</v-btn>
+         </v-card>
          
       
     </v-col>
@@ -152,6 +163,7 @@ export default {
          //window.alert(this.collections.length);
     },
     computed: {
+    
         collections() {
             return this.$store.state.userCollections;
         },
