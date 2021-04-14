@@ -3,12 +3,21 @@ package com.techelevator.model;
 
 
 public class FriendDTO {
-
+	
+	private int iD;
 	private int friendID;
 	private int userID;
 	private int statusID;
 	private String statusIDDesc;
 	
+	
+	public int getID() {
+		return iD;
+	}
+	
+	public void setID(int iD) {
+		this.iD = iD;
+	}
 	public int getFriendID() {
 		return friendID;
 	}

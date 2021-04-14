@@ -33,8 +33,8 @@ public class FriendDAO {
 	}
 	public boolean addFriend(FriendDTO friend, int userID) {
 		
-		String sqlInsertFriend = "INSERT INTO friend (user_id, friend_id, status_id, status_id_desc) " +
-								 "VALUES (?, ?, ?, ?)";
+		String sqlInsertFriend = "INSERT INTO friend (id, user_id, friend_id, status_id, status_id_desc) " +
+								 "VALUES (?, ?, ?, ?, ?)";
 		String sqlInsertFriendUser = "INSERT INTO friend_user (user_id, friend_id) VALUES (?,?)";
 		try {
 			
