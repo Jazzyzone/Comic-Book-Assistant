@@ -74,7 +74,7 @@
    class="bg" 
           >
        
-          <router-view />
+          <router-view :key="force"/>
      
         </v-sheet>
            
@@ -113,6 +113,7 @@ export default {
   components: { FriendsList },
   data(){
     return{
+      force:0,
       search:""
     }
   },
@@ -124,7 +125,9 @@ export default {
      searchForCollection() {
             
             //will need a conditional to make sure string isn't empty and will need a .trim()
-            this.$router.push({ name: "CollectionSearch", params: {name: this.search}});
+            this.$router.push({ name: "CollectionSearch", query: {name: this.search}});
+            this.search="";
+            this.force++;
         },
   }
 }

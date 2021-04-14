@@ -7,8 +7,9 @@
             v-bind:key="comic.id"
             class="rounded-xl mx-auto transition-swing semi pa-2 ma-3 d-flex flex-wrap flex-column justify-space-between"
             max-width="300"
+             :elevation="10"
             dark
-            :elevation="10"
+           
             color="rgba(100,0,0,.3)"
             >
 

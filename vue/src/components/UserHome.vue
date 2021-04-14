@@ -49,62 +49,56 @@
     </v-card>
 
 <v-card
-      color="transparent"
-      class="mt-5 semi d-flex flex-row align-center justify-space-around"
+      color="rgba(0,0,0,.3)"
+      class="mt-5 semi d-flex flex-row align-center justify-space-around rounded-xl"
       dark
       align-center
       text-center
+      flat
     >
       <v-card
-        color="rgba(100,0,0,.3)"
-        class="mt-5 semi d-flex flex-row align-center justify-space-around"
+       color="transparent"
+        class="display-3 d-flex flex-column align-center ma-5  rounded-xl"
         dark
         align-center
         text-center
+        flat
+        width="30vw"
       >
-        <div class="display-2" v-if="allCharacterData.length > 1">
-          <h2 class="ml-1">{{ allCharacterOptions.chart.title }}</h2>
+        
+          <h2 class ="ma-auto text-center">{{ allCharacterOptions.chart.title }}</h2>
           <GChart
             type="ColumnChart"
             :data="allCharacterData"
             :options="allCharacterOptions"
             v-if="chartLoaded3"
           />
-        </div>
-      </v-card>
-      <v-card
-        color="rgba(100,0,0,.3)"
-        class="display-3 align-center ma-5 rounded-xl"
-        width="30vw"
-      >
+        
       </v-card>
 
       <v-card
-        color="rgba(100,0,0,.3)"
-        class="mt-5 semi d-flex flex-row align-center justify-space-around"
+        color="transparent"
+        class="display-3 d-flex flex-column align-center ma-5  rounded-xl"
         dark
         align-center
         text-center
+        flat
+        width="30vw"
       >
-        <div class="display-2" v-if="allCreatorData.length > 1">
-          <h2 class="ml-1">{{ allCreatorOptions.chart.title }}</h2>
+        
+          <h2 class ="ma-auto text-center">{{ allCreatorOptions.chart.title }}</h2>
           <GChart
             type="ColumnChart"
             :data="allCreatorData"
             :options="allCreatorOptions"
             v-if="chartLoaded4"
           />
-        </div>
+        
       </v-card>
     </v-card>
 
 
-    <v-container v-if="isCurrentUser">   
-      
-    </v-container>
-    <v-container>
-     
-    </v-container>
+
   </v-container>
 </template>
 
@@ -264,7 +258,7 @@ import ComicServices from '../services/ComicServices';
       });
       this.allCharacterOptions.chart.title = `Top ${
         this.allCharacterData.length - 1
-      } Characters in Collections Sitewide`;
+      } Characters Sitewide`;
       this.chartLoaded3 = true;
     });
     ComicServices.getAllTopCreatorByUser().then((response) => {
@@ -276,8 +270,8 @@ import ComicServices from '../services/ComicServices';
         this.allCreatorData.push(arr);
       });
       this.allCreatorOptions.chart.title = `Top ${
-        this.allCharacterData.length - 1
-      } Creators in Collections Sitewide`;
+        this.allCreatorData.length - 1
+      } Creators Sitewide`;
       this.chartLoaded4 = true;
     });
     },

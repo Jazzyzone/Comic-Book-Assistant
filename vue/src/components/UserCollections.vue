@@ -4,26 +4,12 @@
 <template>
 <v-container>
     <v-row  justify="center">
-  <v-col class="shrink">
-      <v-btn
-        class="ma-2"
-        color="primary"
-        @click="expand = !expand"
-        v-if="isCurrentUser"
-      >
-        Add a Collection
-      </v-btn>
-      <v-expand-transition>
-        <v-card
-          v-show="expand"
-          lighten3
-          class="mx-auto white mb-2 semi"
-          width = "300"
-          elevation=10
-        >
+  <v-col class="d-flex justify-center mb-5">
+      
          <add-a-collection />
-         </v-card>
-      </v-expand-transition>
+         
+         
+      
     </v-col>
    </v-row>
   <v-expansion-panels accordion flat  dark>
@@ -43,7 +29,13 @@
       <v-expansion-panel-header  dark
            
             color="primary" >
+            <div class="d-flex justify-left align-center">
+              <div v-if="isCurrentUser">
+            <v-icon left class="mr-4" v-if="!collection.private">mdi-eye</v-icon>
+            <v-icon left class="mr-4" v-if="collection.private">mdi-eye-off</v-icon>
+            </div>
         {{collection.name}}
+        </div>
       </v-expansion-panel-header>
       <v-expansion-panel-content class="bg">
         <v-flex v-if="isCurrentUser" class="d-flex flex-row align-center">
@@ -88,7 +80,7 @@
             </v-expansion-panel>
              </v-expansion-panels>
           <div class="text-center ma-1">
-            <v-dialog  v-model="dialog" width="500" color="primary">
+            <v-dialog  @input="reset"  v-model="dialog" width="500" color="primary">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   color= accent
@@ -106,7 +98,14 @@
                 </v-card-title>
 
                 <v-card-text >
-                  <v-text-field v-model="rename" label="name"></v-text-field>                          
+                  <v-text-field v-model="rename" label="name"></v-text-field>    
+                  <v-checkbox
+              v-model="isPrivate"
+              label="private"
+              color="secondary"
+              
+              hide-details
+            ></v-checkbox>                           
                 </v-card-text>
                 <v-divider></v-divider>
                 <v-card-actions>
@@ -135,11 +134,13 @@ export default {
    data() {
        return {
      expand:false,
+     error:false,
      createCollection: false,
      collectionid: '',
      searchForI:"",
      searchForT:"",
      rename:"",
+     isPrivate:false,
      backdoor:0,
      dialog : false,
        }
@@ -185,10 +186,18 @@ export default {
         searchForComic(collectionId) {
             this.collectionid = collectionId;
             //will need a conditional to make sure string isn't empty and will need a .trim()
-            this.$router.push({ name: "ComicSearch", params: {collectionID: this.collectionid, title: this.searchForT, issue: this.searchForI}});
+            this.$router.push({ name: "ComicSearch", query: {collectionID: this.collectionid, title: this.searchForT, issue: this.searchForI}});
+        },
+        reset(){
+this.rename = "";
+            this.isPrivate = false;
+            this.error=false;
         },
         updateCollection(collection) {
-            collection.name = this.rename
+            collection.name = this.rename;
+            collection.private = this.isPrivate;
+            collection.name = collection.name.trim();
+            if(collection.name != "") {
             ComicServices.updateCollection(collection).then(response => {
                 if(response.status == 200) {
                     this.changeId = '';
@@ -196,8 +205,12 @@ export default {
                     ComicServices.getAllCollections(this.$route.params.username).then(response => {
              this.$store.commit("SET_COLLECTIONS", response.data)
          });
+          this.reset();
                 }
             });
+            }else{
+              this.error=true;
+            }
         },
     }
 }

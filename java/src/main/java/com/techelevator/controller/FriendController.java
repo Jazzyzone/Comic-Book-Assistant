@@ -17,7 +17,7 @@ import com.techelevator.model.FriendDTO;
 
 @RestController
 @CrossOrigin
-@PreAuthorize("IsAuthenticated()")
+@PreAuthorize("isAuthenticated()")
 public class FriendController {
 	private FriendDAO friendDAO;
 	private UserDAO userDAO;

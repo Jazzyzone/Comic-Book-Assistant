@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <h1>Welcome To Comic Elevator</h1>
-    <img src="@/images/marvel_comics_cast.png">
+    <img src="@/images/marvel_comics_cast.png" >
 
     <v-spacer></v-spacer>
 

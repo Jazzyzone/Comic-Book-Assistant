@@ -3,12 +3,12 @@
     <v-container>
         <v-row  class="semi mb-5 rounded-xl" align="center">
                 <v-col  cols="7">
-                <v-text-field dark  label="title" v-model="$route.params.title"
+                <v-text-field dark  label="title" v-model="title"
 
                 ></v-text-field>
                 </v-col>
                   <v-col  cols="4">
-                    <v-text-field  dark label="issue number" v-model="$route.params.issue"
+                    <v-text-field  dark label="issue number" v-model="issue"
 
                 ></v-text-field>
                 
@@ -59,7 +59,9 @@
         <div class="loading" v-if="isLoading">
            <v-progress-circular
                 indeterminate
-                color="primary"
+            
+                color="prime"
+                class="my-auto"
                 >
                 <div><h4>...Searching for results</h4></div>
                 </v-progress-circular>
@@ -92,7 +94,9 @@ export default {
             // collectionid: '',
             comicid: '',
             inCollection: false,
-            isLoading: true
+            isLoading: true,
+            title:"",
+            issue:"",
         }
     },
     created() {
@@ -107,14 +111,16 @@ export default {
             issue : null
         }
         }
-        if(this.$route.params.title!=""){
-            config.params.title = this.$route.params.title;
+        if(this.$route.query.title!=""){
+            config.params.title = this.$route.query.title;
+            this.title = this.$route.query.title;
         }
 
-        if(this.$route.params.issue!=""){
-            config.params.issue = this.$route.params.issue;
+        if(this.$route.query.issue!=""){
+            config.params.issue = this.$route.query.issue;
+            this.issue = this.$route.query.issue;
         }
-        ComicServices.getAllComicsByCollectionId(this.$route.params.collectionID).then(response => {
+        ComicServices.getAllComicsByCollectionId(this.$route.query.collectionID).then(response => {
              this.collection = response.data;
              this.somekey++;
          });
@@ -124,6 +130,7 @@ export default {
          });
         },
         search(){
+            this.$router.push({ name: "ComicSearch", query: {collectionID: this.$route.query.collectionID, title: this.title, issue: this.issue}});
             this.page=1;
             
             this.isLoading=true;
@@ -153,7 +160,7 @@ export default {
             comic.creators.items.forEach(creator => {
                 comicDTO.creators.push(creator.name);
             });
-            ComicServices.addComic(this.$route.params.collectionID, comicDTO);
+            ComicServices.addComic(this.$route.query.collectionID, comicDTO);
             this.collection.comics.push(comicDTO);
         },
         comicInCollection(comicTitle) {

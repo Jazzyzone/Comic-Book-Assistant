@@ -1,10 +1,10 @@
 <template>
-<v-expansion-panels accordion flat >
+<v-expansion-panels accordion flat dark :key="$route.query.name">
     <v-expansion-panel
       v-for="collection in collections"
             v-bind:key="collection.collection_ID"
     >
-      <v-expansion-panel-header>
+      <v-expansion-panel-header  color="primary">
         {{collection.name}}
       </v-expansion-panel-header>
       <v-expansion-panel-content class="bg">
@@ -25,7 +25,7 @@
          }
       },
       created(){
-        ComicServices.searchCollections(this.$route.params.name).then(responce => {
+        ComicServices.searchCollections(this.$route.query.name).then(responce => {
           this.collections = responce.data;
         })
       }

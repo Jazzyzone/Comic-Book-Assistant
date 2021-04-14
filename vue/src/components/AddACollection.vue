@@ -2,18 +2,51 @@
 
 <template>
 
-    <v-container
-    class="pa-5 d-flex flex-row"
-    fluid
-    align-center
-  >
-       
-        
-         <v-text-field  v-model="collections.name" label="Collection Name" :append-icon="collections.private ? 'mdi-eye':'mdi-eye-off'"
-            @click:append="collections.private=!collections.private"/>     
-        <v-btn icon v-on:click="addCollection()" class="ml-2"><v-icon>mdi-content-save</v-icon></v-btn>
+ <v-dialog @input="reset" v-model="dialog" width="500" color="primary">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                class="mx-auto"
+                  color= secondary
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  @click.stop="error=false"
+                >
+                  Add a Collection
+                </v-btn>
+              </template>
 
-   </v-container>
+              <v-card dark color= primary>
+                <v-card-title class="headline prime">
+                  Add a Collection
+                </v-card-title>
+
+                <v-card-text >
+                    <v-alert
+            color="red"
+            type="error"
+            v-if="error"
+          >
+            The Collection name may not be blank!
+          </v-alert>
+                  <v-text-field v-model="collections.name" label="name"></v-text-field>   
+                  <v-checkbox
+              v-model="collections.private"
+              label="private"
+              color="secondary"
+              
+              hide-details
+            ></v-checkbox>                       
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  
+                  <v-btn  color="green darken-1"
+                  dark @click="addCollection()">Save</v-btn>     
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
   
 </template>
 
@@ -22,8 +55,11 @@
 import ComicServices from '../services/ComicServices';
 
 export default {
+   
     data() {
         return {
+            dialog:false,
+            error:false,
             collections: {
                 userID: this.$store.state.user.id,
                 name: "",
@@ -33,6 +69,11 @@ export default {
 
     },
     methods: {
+        reset(){
+            this.collections.name = "";
+            this.collections.private = false;
+            this.error=false;
+        },
         addCollection(){
             this.collections.name = this.collections.name.trim();
             if(this.collections.name != "") {
@@ -44,6 +85,11 @@ export default {
             });
                 }
             });
+            this.dialog=false;
+            this.collections.name = "";
+            this.collections.private = false;
+            }else{
+                this.error=true;
             }
 
 
