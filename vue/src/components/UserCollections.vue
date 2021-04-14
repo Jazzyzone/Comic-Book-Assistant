@@ -1,7 +1,6 @@
 //Display all collections a user has
 //if they select on the icon it will take
 //them to ComicsList
-
 <template>
 <v-container>
     <v-row  justify="center">
@@ -14,7 +13,6 @@
       >
         Add a Collection
       </v-btn>
-
       <v-expand-transition>
         <v-card
           v-show="expand"
@@ -49,7 +47,6 @@
       </v-expansion-panel-header>
       <v-expansion-panel-content class="bg">
         <v-flex v-if="isCurrentUser" class="d-flex flex-row align-center">
- 
           <v-expansion-panels class="ma-1">
             <v-expansion-panel>
               <v-expansion-panel-header color="primary">
@@ -79,12 +76,10 @@
                 <v-row>
                 <v-col  cols="8">
                 <v-text-field label="title" v-model="searchForT"
-
                 ></v-text-field>
                 </v-col>
                   <v-col  cols="4">
                     <v-text-field label="issue number" v-model="searchForI"
-
                 ></v-text-field>
                     </v-col>
                     </v-row>
@@ -92,7 +87,6 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
              </v-expansion-panels>
-
           <div class="text-center ma-1">
             <v-dialog  v-model="dialog" width="500" color="primary">
               <template v-slot:activator="{ on, attrs }">
@@ -123,7 +117,6 @@
               </v-card>
             </v-dialog>
           </div>
-
             <v-btn color="red lighten-1" dark class="ma-1" @click="deleteCollection(collection.collectionID)">Delete</v-btn>
         </v-flex>
         <comics-list v-bind:collectionID="collection.collectionID" :key="collection.collectionID" />
@@ -131,19 +124,12 @@
     </v-expansion-panel>
     
   </v-expansion-panels>
-
 </v-container>
-
-    
 </template>
-
 <script>
-
 import ComicServices from '../services/ComicServices';
 import AddACollection from './AddACollection.vue';
 import ComicsList from './ComicsList.vue';
-
-
 export default {
   components: { AddACollection, ComicsList },
    data() {
@@ -216,7 +202,6 @@ export default {
     }
 }
 </script>
-
 <style scoped>
 .container {
   position: relative;
@@ -224,7 +209,6 @@ export default {
 }
 .transparent {
   opacity: 0.1;
-
 }
 .addCollection {
   width: 100px;
