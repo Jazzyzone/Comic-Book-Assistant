@@ -37,7 +37,9 @@ export default {
   getAllUsernames() {
       return axios.get('/user');
   },
-
+  getUserById(id) {
+    return axios.get(`/user/id/${id}`);
+},
   getUserByUsername(username) {
       return axios.get(`/user/${username}`);
   },
