@@ -1,12 +1,13 @@
 <template>
-  <v-container  ma-0 pa-0 fill-height>
-
+  <v-container flat  mx-0  fill-height  >
+    <v-card flat class="transparent mx-auto" px-0 width="60vw"> 
     <v-carousel v-model="model" 
+   
     cycle
     class="container">
     <v-carousel-item>
       <v-sheet
-        color="indigo"
+        class="transparent"
         height="100%"
         tile
       >
@@ -24,7 +25,7 @@
     </v-carousel-item>
       <v-carousel-item>
       <v-sheet
-        color="deep-purple"
+        class="transparent"
         height="100%"
         tile
       >
@@ -42,7 +43,7 @@
     </v-carousel-item>
      <v-carousel-item>
       <v-sheet
-        color="purple"
+        class="transparent"
         height="100%"
         tile
       >
@@ -59,7 +60,7 @@
       </v-sheet>
     </v-carousel-item>
   </v-carousel>
-
+</v-card>
     <div class="text">
     <h2>Comic Elevator</h2>
     <h4>

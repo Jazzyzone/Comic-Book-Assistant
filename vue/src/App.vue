@@ -34,7 +34,7 @@
         color="white white"
         dark
       >
-        <v-tab :to="{ name: 'home'}">Home </v-tab>
+        <v-tab :to="{ name: 'home'}">Home</v-tab>
         <v-tab  darken :to="{ name: 'userHome',params: {username: this.$store.state.user.username}}"  v-if="$store.state.token!=''">Profile </v-tab>
           <v-tab  :to="{ name: 'userCollections', params: {username: this.$store.state.user.username} }" v-if="$store.state.token!=''" > 
             Collection
