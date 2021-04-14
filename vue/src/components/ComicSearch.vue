@@ -133,6 +133,13 @@ export default {
          });
         MarvelService.getComicList(config).then(response => {
              this.searchResults = response.data.data.results;
+             this.searchResults.forEach(filterImg);
+             function filterImg(item) {
+                 
+                if (item.thumbnail.path.includes("image_not")) {
+                item.thumbnail.path = "http://i.annihil.us/u/prod/marvel/i/mg/8/f0/4bc5c33cc4139";
+            }
+             }
              this.isLoading = false;
          });
         },
