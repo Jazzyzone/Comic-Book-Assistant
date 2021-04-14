@@ -1,70 +1,48 @@
 <template>
-  <v-container fluid>
-    <h1>Welcome To Comic Elevator</h1>
-    <img src="@/images/marvel_comics_cast.png" >
+  <v-container  ma-0 pa-0 fill-height>
+    <img v-img src="@/images/marvel_comics_cast.png" class="homepage" />
 
-    <v-spacer></v-spacer>
-
-  <!--  <v-carousel
-      v-model="model"
-      cycle
-      height="400"
-      hide-delimiter-background
-      show-arrows-on-hover
-    >
-      <v-card max-width="2000">
-        <v-carousel-item>
-          <v-sheet color="white" height="100%" tile shaped>
-            <v-row class="fill-height" align="center" justify="center">
-              <div class="display-3" align="center">
-                <img src="@/images/ironman_flying.png">
-              </div>
-            </v-row>
-          </v-sheet>
-        </v-carousel-item>
-        <v-carousel-item>
-          <v-sheet color="purple" height="100%" tile>
-            <v-row class="fill-height" align="center" justify="center">
-              <div class="display-3" align="center">
-                <img src="@/images/captain_america_running.png">
-              </div>
-            </v-row>
-          </v-sheet>
-        </v-carousel-item>
-        <v-carousel-item>
-          <v-sheet color="red" height="100%" tile>
-            <v-row class="fill-height" align="center" justify="center">
-              <div class="display-3" align="center">
-                Quickly Check How Many Comics You Have and Aim For Top Of The
-                Leaderboard!
-              </div>
-            </v-row>
-          </v-sheet>
-        </v-carousel-item>
-      </v-card>
-    </v-carousel> -->
+    <div>
+    <h1>Comic Elevator</h1>
+    <h3>
+      Make your own custom collections and add your favorite marvel comics to
+      them. Manage your comic book collections and see how your stats compare to other users.
+    </h3>
+    </div>
 
   </v-container>
+
 </template>
 
 <script>
-
 export default {
-  components: {
-  },
+  components: {},
   data() {
     return {
       model: 0,
     };
   },
-  created() {
-
-  },
+  created() {},
 };
 </script>
 <style>
 h1 {
   text-align: center;
   color: whitesmoke;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h3 {
+  text-align: center;
+  color: whitesmoke;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  overflow: visible;
+}
+
+.homepage {
+  width:auto;
+   height:auto;
+   max-width:100%;
+   max-height:100%;
 }
 </style>
