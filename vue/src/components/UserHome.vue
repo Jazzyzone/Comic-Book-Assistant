@@ -8,7 +8,7 @@
       <v-icon
         color="yellow"
         large
-        v-if="this.user.authorities[0].name=='ROLE_PREMIUM'"
+        v-if="this.user!=null&&this.user.authorities[0].name=='ROLE_PREMIUM'"
       >
         mdi-star
       </v-icon> </h1>

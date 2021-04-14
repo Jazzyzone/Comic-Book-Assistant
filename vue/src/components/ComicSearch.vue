@@ -75,6 +75,12 @@
         v-if="searchResults.length > 0 && !isLoading"
         ></v-pagination>
         </div>
+        <v-snackbar
+      v-model="snackbar"
+      color= error
+    >
+      Your Collection is too powerful, upgrade to Comic Elevator Super to increase your collection size
+      </v-snackbar>
   </div>
 </template>
 
@@ -97,6 +103,7 @@ export default {
             isLoading: true,
             title:"",
             issue:"",
+            snackbar:false,
         }
     },
     created() {
@@ -139,7 +146,10 @@ export default {
 
         },
         addComicToCollection(comic) {
-            
+            if(this.$store.state.user.authorities[0].name!='ROLE_PREMIUM'&&this.collection.comics.length >= 100){
+                this.snackbar=true;
+                return;
+            }
             let comicDTO = {
                 name: comic.title,
                 issueNumber: comic.issueNumber,
