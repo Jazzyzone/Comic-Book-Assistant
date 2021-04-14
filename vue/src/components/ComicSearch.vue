@@ -150,6 +150,10 @@ export default {
                 this.snackbar=true;
                 return;
             }
+            let imagePath = comic.thumbnail.path;
+            if (imagePath.includes("image_not")) {
+                imagePath = "http://i.annihil.us/u/prod/marvel/i/mg/8/f0/4bc5c33cc4139"
+            }
             let comicDTO = {
                 name: comic.title,
                 issueNumber: comic.issueNumber,
@@ -160,10 +164,11 @@ export default {
                 characters: [
                     
                 ],
-                thumbnailLink: comic.thumbnail.path.concat("." + comic.thumbnail.extension),
+                thumbnailLink: imagePath.concat("." + comic.thumbnail.extension),
                 series: comic.series.name,
                 marvelID: comic.id
             }
+            
             comic.characters.items.forEach(character => {
                 comicDTO.characters.push(character.name);
             });
