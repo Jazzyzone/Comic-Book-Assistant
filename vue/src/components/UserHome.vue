@@ -3,8 +3,8 @@
   <v-container >
 
 
-    <v-card  dark color="transparent" justify-center class="semi ma-3" height="100" flat >
-    <h1 class="ml-5" >{{$route.params.username}}
+    <v-card   dark color="transparent" justify-center class="semi mx-auto d-flex flex-column align-center" height="100" flat >
+    <h1 class="mx-5" >{{$route.params.username}}
       <v-icon
         color="yellow"
         large
