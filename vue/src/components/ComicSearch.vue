@@ -23,7 +23,7 @@
             <v-sheet class="rounded-xl mx-auto pa-2 ma-3  d-flex flex-column justify-space-between"
            
             max-width="320"
-            height="680"
+            height="650"
             text-center
             color="rgba(100,0,0,.3)"
             dark
@@ -32,7 +32,7 @@
    
 
                 <div>        
-                <v-img class="rounded-xl"  v-bind:src='comic.thumbnail.path.concat("." + comic.thumbnail.extension)' lazy-src="..\images\comicblur.png" srcset="" />
+                <v-img height="450" class="rounded-xl"  v-bind:src='comic.thumbnail.path.concat("." + comic.thumbnail.extension)' lazy-src="..\images\comicblur.png" srcset="" />
                  <v-divider></v-divider>
                   <v-card-title text-center dark class="break">{{comic.title}}</v-card-title >
                 </div>

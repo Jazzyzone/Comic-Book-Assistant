@@ -17,11 +17,11 @@
 
 
 
-    <v-banner color="rgba(0,0,0,.3)" elevation="9" single-line dark
-      ><h2>
+    <v-card color="rgba(0,0,0,.3)" class="rounded-xl pt-4 pl-5" height="75" flat single-line dark 
+      ><h2 >
         <span class="mdi mdi-chart-box"></span> Check Out How Your Stats Compare to the Current
         Stats of the Site
-      </h2></v-banner
+      </h2></v-card
     >
 
   
