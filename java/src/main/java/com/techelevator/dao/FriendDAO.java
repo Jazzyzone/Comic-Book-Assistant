@@ -14,7 +14,7 @@ import com.techelevator.model.FriendDTO;
 public class FriendDAO {
 	private JdbcTemplate jdbcTemplate;
 	
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+	public FriendDAO(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 	
@@ -22,7 +22,6 @@ public class FriendDAO {
 
 		List<FriendDTO> friendDTO = new ArrayList<>();
 		String sqlFindFriendID = "SELECT f.* FROM friend f " +
-				"INNER JOIN friend_user fu ON fu.friend_id = f.friend_id " +
 				"WHERE fu.user_id = ? ORDER by f.friend_id ";
 		SqlRowSet friendRow = jdbcTemplate.queryForRowSet(sqlFindFriendID);
 		while (friendRow.next()) {
@@ -33,16 +32,14 @@ public class FriendDAO {
 	}
 	public boolean addFriend(FriendDTO friend, int userID) {
 		
-		String sqlInsertFriend = "INSERT INTO friend (id, user_id, friend_id, status_id, status_id_desc) " +
-								 "VALUES (?, ?, ?, ?, ?)";
-		String sqlInsertFriendUser = "INSERT INTO friend_user (user_id, friend_id) VALUES (?,?)";
+		String sqlInsertFriend = "INSERT INTO friend (user_id, friend_id, status_id, status_id_desc) " +
+								 "VALUES (?, ?, ?, ?)";
+		
 		try {
 			
-			SqlRowSet row = jdbcTemplate.queryForRowSet(sqlInsertFriend, friend.getFriendID(),
-					friend.getUserID(), friend.getStatusID(), friend.getStatusIDDesc());
-			if(row.next()) {
-				jdbcTemplate.update(sqlInsertFriendUser, friend.getUserID(), row.getInt("friend_id"));
-			}
+			jdbcTemplate.update(sqlInsertFriend,friend.getUserID(),
+					friend.getFriendID(), friend.getStatusID(), friend.getStatusIDDesc());
+			
 		} catch (DataAccessException ex) {
 			ex.printStackTrace();
 			return false;
