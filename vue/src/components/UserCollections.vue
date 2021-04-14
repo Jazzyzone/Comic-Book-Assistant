@@ -106,8 +106,8 @@
                 </v-btn>
               </template>
 
-              <v-card>
-                <v-card-title class="headline grey lighten-2">
+              <v-card dark color= primary>
+                <v-card-title class="headline prime">
                   Edit Collection
                 </v-card-title>
 
@@ -126,7 +126,7 @@
 
             <v-btn color="red lighten-1" dark class="ma-1" @click="deleteCollection(collection.collectionID)">Delete</v-btn>
         </v-flex>
-        <comics-list v-bind:collectionID="collection.collectionID"/>
+        <comics-list v-bind:collectionID="collection.collectionID" :key="collection.collectionID" />
       </v-expansion-panel-content>
     </v-expansion-panel>
     
@@ -154,6 +154,7 @@ export default {
      searchForI:"",
      searchForT:"",
      rename:"",
+     backdoor:0,
      dialog : false,
        }
    },
@@ -171,6 +172,8 @@ export default {
             return this.$route.params.username === this.$store.state.user.username;
         },
         filtered(){
+          this.backdoor;
+        
           return this.$store.state.userCollections.filter(item=>{
             if(this.isCurrentUser||item.private==false){
                 return true;
@@ -184,8 +187,9 @@ export default {
             ComicServices.removeCollection(collectionId).then(response => {
                 if(response.status == 200) {
                     ComicServices.getAllCollections(this.$route.params.username).then(response => {
-             this.$store.commit("SET_COLLECTIONS", response.data)
-         });
+                    this.$store.commit("SET_COLLECTIONS", response.data)
+                   
+                });
                 }
             });
         },
