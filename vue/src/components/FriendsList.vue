@@ -6,7 +6,7 @@
       <v-expand-transition>
       <v-flex>
           <!-- remove this an uncomment code below-->
-           <v-sheet dark v-for="friend in friends"
+           <v-sheet dark v-for="friend in this.$store.state.friends"
             v-bind:key="friend.id"
             >
             <router-link :to="{ name: 'userHome',params: {username: friend.username}}">
@@ -105,6 +105,7 @@ export default {
     created() {
         ComicServices.getFriendsByUserId(this.$store.state.user.id).then(response => {
            this.friends = response.data;
+           this.$store.commit("SET_FRIENDS", response.data);
         });
     },
     computed: {

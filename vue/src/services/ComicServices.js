@@ -71,6 +71,12 @@ export default {
   },
   getFriendsByUserId(id) {
     return axios.get(`/friend/${id}`);
+  },
+  addFriendByUserId(friendDTO) {
+    return axios.post(`/friend/`, friendDTO);
+  },
+  unfollowUser(id) {
+    return axios.delete(`/friend/${id}`);
   }
 
 //   getStats() {
