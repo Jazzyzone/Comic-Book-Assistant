@@ -54,6 +54,11 @@ public class CollectionController {
 	public User getAllUsers(@PathVariable String user){
 		return userDAO.findByUsername(user);
 	}
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value = "user/id/{id}", method = RequestMethod.GET)
+	public User getAllUsers(@PathVariable long id){
+		return userDAO.getUserById(id);
+	}
 	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value = "collection/user/{user}", method = RequestMethod.GET )

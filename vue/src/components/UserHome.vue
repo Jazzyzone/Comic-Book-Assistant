@@ -15,7 +15,7 @@
         <v-card v-if="!isCurrentUser" color="rgba(0,0,0,0)" :elevation=0 dark text-center class="d-flex flex-row justify-center align-center">
           
           <v-btn class="ml-auto mr-5" color= secondary dark :to="{ name: 'userCollections', params: {username: this.$route.params.username} }" >Go to User's Collections</v-btn>
-           <v-btn class="mr-auto ml-5" color= secondary dark >Follow this dork</v-btn>
+           <v-btn class="mr-auto" color= secondary dark >Follow this dork</v-btn>
          </v-card>
     </v-card >
 
@@ -36,7 +36,7 @@
         <h2 class ="ma-auto text-center">{{characterOptions.chart.title}}</h2>
         <GChart type="ColumnChart" :data="characterData" :options="characterOptions" v-if="chartLoaded" style="color:red"/>
       </v-card>
-       <v-card  color="rgba(100,0,0,.3)" class="display-3 align-center ma-5 rounded-xl" width="30vw" v-else>
+       <v-card  color="rgba(0,0,0,0)"  width="400" height ="600" class="display-3 align-center ma-5 rounded-xl"  v-else>
                  <h2 >Fill a collection with comics</h2>
                  <h2 >to see collection stats!</h2>
                 </v-card>
@@ -45,7 +45,7 @@
         <h2  class ="ma-auto text-center">{{creatorOptions.chart.title}}</h2>
         <GChart type="ColumnChart" :data="creatorData" :options="creatorOptions" v-if="chartLoaded2" />
       </v-card>
-       <v-card color="rgba(100,0,0,.3)" class="display-3 align-center ma-5  rounded-xl" width="30vw" v-else>
+       <v-card color="rgba(0,0,0,.0)" width="400" height ="600" class="display-3 align-center ma-5  rounded-xl"  v-else>
                  <h2 >Fill a collection with comics</h2>
                  <h2 >to see collection stats!</h2>
                 </v-card>

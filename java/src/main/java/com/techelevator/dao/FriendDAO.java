@@ -46,6 +46,13 @@ public class FriendDAO {
 		}
 		return true;
 	}
+	
+	public boolean deleteFriend(int friendID, int userID) {
+		String deleteFriend = "DELETE FROM friend WHERE friend_id =?";
+		
+		int success = jdbcTemplate.update(deleteFriend, friendID);
+		return (success>0)? true:false;
+	}
 		
 	private FriendDTO mapRowToFriend(SqlRowSet friendRow) {
 		FriendDTO friend = new FriendDTO();

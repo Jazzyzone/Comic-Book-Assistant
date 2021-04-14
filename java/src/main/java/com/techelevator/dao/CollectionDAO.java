@@ -39,8 +39,8 @@ public class CollectionDAO {
 		List<CollectionDTO> collectionDTOs = new ArrayList<>();
 		String sqlFindAccountID = "SELECT c.* FROM collections c "
 				+ "			INNER JOIN collections_user cu ON cu.collection_id = c.collection_id "
-				+ "			WHERE c.private = false AND c.name LIKE ? ORDER BY c.collection_id";
-		SqlRowSet collectionRow = jdbcTemplate.queryForRowSet(sqlFindAccountID,"%"+name+"%");
+				+ "			WHERE c.private = false AND lower(c.name) LIKE ? ORDER BY c.collection_id";
+		SqlRowSet collectionRow = jdbcTemplate.queryForRowSet(sqlFindAccountID,"%"+name.toLowerCase()+"%");
 		while (collectionRow.next()) {
 			collectionDTOs.add(mapRowToCollection(collectionRow));
 		}

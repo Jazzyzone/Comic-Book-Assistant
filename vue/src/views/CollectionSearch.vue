@@ -1,6 +1,6 @@
 <template>
 <v-expansion-panels accordion flat dark :key="$route.query.name">
-    <v-expansion-panel
+    <v-expansion-panel class="mb-5"
       v-for="collection in collections"
             v-bind:key="collection.collection_ID"
     >
@@ -8,7 +8,8 @@
         {{collection.name}}
       </v-expansion-panel-header>
       <v-expansion-panel-content class="bg">
-        <comics-list v-bind:collectionID="collection.collectionID"/>
+        <collection-info class="mt-5" v-bind:userID="collection.userID" :key="collection.userID"/>
+        <comics-list v-bind:collectionID="collection.collectionID" :key="collection.collectionID"/>
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -16,10 +17,13 @@
 <script>
     import ComicServices from '../services/ComicServices';
     import ComicsList from '../components/ComicsList.vue';
+    import CollectionInfo from '../components/CollectionInfo';
+    
     export default {
 
-      components: { ComicsList },
+      components: { ComicsList, CollectionInfo },
       data() {
+      
        return {
          collections :  [],
          }
