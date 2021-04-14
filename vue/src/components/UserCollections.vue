@@ -28,23 +28,23 @@
       </v-expand-transition>
     </v-col>
    </v-row>
-  <v-expansion-panels accordion flat  dark
-           
-            color="rgba(100,0,0,.3)" >
+  <v-expansion-panels accordion flat  dark>
+            
             <!--added div below and moved v-for and v-bind from v-expansion panel to v-expansion panels
             in order to add a div that would only display elements if the user is signed in or the 
             collection is not private -->
     
-    <v-expansion-panel  dark
+    <v-expansion-panel  
            
-            color="rgba(100,0,0,.3)"
+            
       v-for="collection in filtered"
             v-bind:key="collection.collection_ID"
+            class="mb-5"
     >
       
       <v-expansion-panel-header  dark
            
-            color="rgba(100,0,0,.3)">
+            color="primary" >
         {{collection.name}}
       </v-expansion-panel-header>
       <v-expansion-panel-content class="bg">

@@ -21,9 +21,10 @@
           filled
           dense
           dark
+          v-model="search"
         />
-        <router-link v-bind:to=" {name: 'CollectionSearch'} "><v-btn>Search</v-btn></router-link>
-     
+        
+        <v-btn dark color=secondary @click="searchForCollection()">Search</v-btn>  
      
       </v-container>
       
@@ -38,9 +39,7 @@
           <v-tab  :to="{ name: 'userCollections', params: {username: this.$store.state.user.username} }"> 
             Collection
           </v-tab >
-          <v-tab href="https://www.youtube.com/watch?v=LQiOA7euaYA">
-            Friends
-          </v-tab>
+    
       </v-tabs>
       
       <v-btn offset-y v-if="$store.state.token == ''" @click="$router.push('login' )" color= secondary >LogIn</v-btn>
@@ -112,9 +111,21 @@ import FriendsList from './views/FriendsList.vue';
 
 export default {
   components: { FriendsList },
+  data(){
+    return{
+      search:""
+    }
+  },
   unmounted() {
     this.$store.commit("LOGOUT");
     
+  },
+  methods:{
+     searchForCollection() {
+            
+            //will need a conditional to make sure string isn't empty and will need a .trim()
+            this.$router.push({ name: "CollectionSearch", params: {name: this.search}});
+        },
   }
 }
 </script>

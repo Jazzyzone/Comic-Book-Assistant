@@ -25,7 +25,7 @@
          }
       },
       created(){
-        ComicServices.searchCollections("men").then(responce => {
+        ComicServices.searchCollections(this.$route.params.name).then(responce => {
           this.collections = responce.data;
         })
       }

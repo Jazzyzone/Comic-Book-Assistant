@@ -13,20 +13,20 @@
         mdi-star
       </v-icon> </h1>
 
-    </v-card>
+    </v-card >
 
-      <v-divider></v-divider>
 
-    <v-banner elevation="9" single-line dark
+
+    <v-banner color="rgba(0,0,0,.3)" elevation="9" single-line dark
       ><h2>
         <span class="mdi mdi-chart-box"></span> Check Out How Your Stats Compare to the Current
         Stats of the Site
       </h2></v-banner
     >
 
-    <v-divider></v-divider>
+  
      
-    <v-card color="transparent" class="mt-5 semi d-flex flex-row align-center justify-space-around"  dark align-center text-center flat>
+    <v-card color="rgba(0,0,0,.3)" class="mt-5 semi d-flex flex-row align-center justify-space-around rounded-xl"  dark align-center text-center flat>
  
       <v-card color="transparent" class="display-3 d-flex flex-column align-center ma-5  rounded-xl"  text-center width="30vw" v-if="characterData.length>1" flat>
         <h2 class ="ma-auto text-center">{{characterOptions.chart.title}}</h2>
@@ -143,8 +143,8 @@ import ComicServices from '../services/ComicServices';
             legend: {
         textStyle: { color: 'white' }
     },
-            height: 300,
-            width:450,
+            height: 400,
+            width:600,
             colors: ['#1b9e77'],
              backgroundColor: {
         fill: '#AA0000',
@@ -169,8 +169,8 @@ import ComicServices from '../services/ComicServices';
             legend: {
         textStyle: { color: 'white' }
     },
-            height: 300,
-            width:450,
+            height: 400,
+            width:600,
             colors: ['#1c9e77'],
             backgroundColor: {
         fill: '#AA0000',
@@ -184,10 +184,22 @@ import ComicServices from '../services/ComicServices';
           title: "",
         },
         bars: "vertical", // Required for Material Bar Charts.
-        hAxis: { format: "decimal" },
-        height: 400,
-        width: 600,
-        colors: ["#1b9e77"],
+        hAxis: { format: 'decimal' ,
+             textStyle:{color: '#FFF'}
+            },
+            vAxis: {  
+             textStyle:{color: '#FFF'}
+            },
+            legend: {
+        textStyle: { color: 'white' }
+    },
+            height: 400,
+            width:600,
+            colors: ['#1c9e77'],
+            backgroundColor: {
+        fill: '#AA0000',
+        fillOpacity: 0.0
+      },
       },
       allCreatorData: [["Creator Name", "comics"]],
       allCreatorOptions: {
@@ -195,10 +207,22 @@ import ComicServices from '../services/ComicServices';
           title: "",
         },
         bars: "vertical", // Required for Material Bar Charts.
-        hAxis: { format: "decimal" },
-        height: 400,
-        width: 600,
-        colors: ["#1c9e77"],
+       hAxis: { format: 'decimal' ,
+             textStyle:{color: '#FFF'}
+            },
+            vAxis: {  
+             textStyle:{color: '#FFF'}
+            },
+            legend: {
+        textStyle: { color: 'white' }
+    },
+            height: 400,
+            width:600,
+            colors: ['#1c9e77'],
+            backgroundColor: {
+        fill: '#AA0000',
+        fillOpacity: 0.0
+      },
       },
           
       }
