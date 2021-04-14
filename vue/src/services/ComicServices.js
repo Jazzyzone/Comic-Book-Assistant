@@ -69,6 +69,9 @@ export default {
   getTopCreatorByCollection(id){
     return axios.get(`/collection/${id}/topCreators/`);
   },
+  getFriendsByUserId(id) {
+    return axios.get(`/friend/${id}`);
+  }
 
 //   getStats() {
 //     return axios.get(`/stats/${type}`)

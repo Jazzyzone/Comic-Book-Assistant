@@ -6,16 +6,19 @@
       <v-expand-transition>
       <v-flex>
           <!-- remove this an uncomment code below-->
-          <!-- <v-sheet v-for="friend in friends.userId"
+           <v-sheet v-for="friend in friends"
             v-bind:key="friend.id"
             >
-            <div>
-                <v-card-title 
-                v-text="friend.name">
-                </v-card-title>
+            <div v-show="expand" class="friends-display">
+                
+                    <v-card-title class="headline"
+                        v-text="friend.username"
+                        :to="{ name: 'userHome',params: {username: friend.username}}">
+                    </v-card-title>
+                
             </div> 
-          </v-sheet> -->
-          <v-sheet>
+          </v-sheet> 
+          <!-- <v-sheet> -->
               <!-- <v-btn
         class="ma-2 bg"
         color="primary"
@@ -24,7 +27,7 @@
         View Friends
       </v-btn> -->
              
-              <div v-show="expand" class="friends-display">
+              <!-- <div v-show="expand" class="friends-display">
                   <v-card-title class="headline">
                       placeholder1
                   </v-card-title>
@@ -79,14 +82,15 @@
                   <v-card-title class="headline">
                       placeholder19
                   </v-card-title>
-              </div>
-          </v-sheet>
+              </div> 
+          </v-sheet> -->
       </v-flex>
       </v-expand-transition>
   </v-container>
 </template>
 
 <script>
+import ComicServices from '../services/ComicServices'
 export default {
     data() {
         return {
@@ -97,11 +101,14 @@ export default {
         }
     },
     created() {
-
+        ComicServices.getFriendsByUserId(this.$store.state.user.id).then(response => {
+           this.friends = response.data;
+        });
     },
     computed: {
 
-    }
+    },
+    
 }
 </script>
 

@@ -82,7 +82,7 @@
     
     </v-main>
     <div class="flist">
-    <friends-list />
+    <friends-list :key="this.$store.state.user.id"/>
     </div>"
     <v-footer app :padless="true" >
       <v-card
