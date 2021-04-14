@@ -23,7 +23,7 @@
             <v-sheet class="rounded-xl mx-auto pa-2 ma-3  d-flex flex-column justify-space-between"
            
             max-width="320"
-            height="650"
+            height="665"
             text-center
             color="rgba(100,0,0,.3)"
             dark
@@ -70,6 +70,8 @@
     </v-container>
     <div class="text-center">
         <v-pagination
+        dark
+        color= "secondary"
         v-model="page"
         :length="searchResults.length / 12"
         v-if="searchResults.length > 0 && !isLoading"

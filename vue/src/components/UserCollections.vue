@@ -230,4 +230,5 @@ this.rename = "";
 .collectionDropdown {
   margin-bottom: 10px;
 }
+
 </style>

@@ -17,13 +17,14 @@
                 <div>
                     <v-card-title 
                     
-                    class="headline"
+                    class="headline break"
                     v-text="comic.name"
                     ></v-card-title>
                     
-                    <v-card-subtitle v-text="comic.publisher"></v-card-subtitle>
-                     <v-divider></v-divider>
+                   
+                     
                 </div>
+                <v-divider></v-divider>
                 <div>
 
                     <v-img  min-height="480" min-width="280" class="rounded-xl" :aspect-ratio="6.5/10" :src="comic.thumbnailLink"></v-img>
@@ -82,6 +83,10 @@ export default {
 .semi{
     background: rgba(100,0,0,.3);
 }
-
+.break {
+    font-size: 1rem;
+    text-align: center;
+    word-break: normal;
+}
 
 </style>
