@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,4 +35,15 @@ public class FriendController {
 			return null;
 		}
 	}
+
+	
+	@RequestMapping( value = "friend/", method = RequestMethod.POST )
+	public boolean addFriend(@RequestBody FriendDTO friendID, Principal principal ) {
+		
+		int userID = userDAO.findIdByUsername(principal.getName());
+		return friendDAO.addFriend(friendID, userID);
+	}
 }
+	
+
+

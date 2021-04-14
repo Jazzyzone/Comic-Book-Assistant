@@ -3,11 +3,11 @@ package com.techelevator.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
-import com.techelevator.model.CollectionDTO;
 import com.techelevator.model.FriendDTO;
 
 @Service
@@ -31,23 +31,24 @@ public class FriendDAO {
 
 		return friendDTO;
 	}
-	
-//	public FriendDTO findFriendByFriendID(int friendID) {
-//		FriendDTO findFriendID = null;
-//		String sqlFindFriendID = "SELECT * FROM friend WHERE friend_id = ?";
-//		SqlRowSet findFriendIDRow = jdbcTemplate.queryForRowSet(sqlFindFriendID, friendID);
-//		if (findFriendIDRow.next()) {
-//			findFriendID = mapRowToFindFriendByFriendID(findFriendIDRow);
-//		}
-//		return findFriendID;
-//	}
-	
-//	public FriendDTO mapRowToFindFriendByFriendID(SqlRowSet row) {
-//		FriendDTO mapRowToFindFriendByFriendID = new FriendDTO();
-//		mapRowToFindFriendByFriendID.setFriendByFriendID(row.getInt("friend_id"));
-//		
-//		return mapRowToFindFriendByFriendID;
-//	}
+	public boolean addFriend(FriendDTO friend, int userID) {
+		
+		String sqlInsertFriend = "INSERT INTO friend (user_id, friend_id, status_id, status_id_desc) " +
+								 "VALUES (?, ?, ?, ?)";
+		String sqlInsertFriendUser = "INSERT INTO friend_user (user_id, friend_id) VALUES (?,?)";
+		try {
+			
+			SqlRowSet row = jdbcTemplate.queryForRowSet(sqlInsertFriend, friend.getFriendID(),
+					friend.getUserID(), friend.getStatusID(), friend.getStatusIDDesc());
+			if(row.next()) {
+				jdbcTemplate.update(sqlInsertFriendUser, friend.getUserID(), row.getInt("friend_id"));
+			}
+		} catch (DataAccessException ex) {
+			ex.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 		
 	private FriendDTO mapRowToFriend(SqlRowSet friendRow) {
 		FriendDTO friend = new FriendDTO();
