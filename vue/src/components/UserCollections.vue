@@ -4,7 +4,7 @@
 
 <template>
 <v-container>
-    <v-row  justify="center" class="collectionDropdown">
+    <v-row  justify="center">
   <v-col class="shrink">
       <v-btn
         class="ma-2"
@@ -52,10 +52,10 @@
  
           <v-expansion-panels class="ma-1">
             <v-expansion-panel>
-              <v-expansion-panel-header>
-                <template v-slot:default="{ open }">
-                  <v-row no-gutters>
-                    <v-col cols="4" class="addCollection">
+              <v-expansion-panel-header color="primary">
+                <template color="primary" v-slot:default="{ open }">
+                  <v-row  no-gutters >
+                    <v-col cols="4"  class="addCollection">
                       Add a comic
                     </v-col>
                     <v-col
@@ -63,24 +63,19 @@
                       class="text--secondary"
                     >
                       <v-fade-transition leave-absolute>
-                        <span
+                        <span 
                           v-if="open"
                           key="0"
                         >
                           Search the Marvel database for a comic
                         </span>
-                        <span
-                          v-else
-                          key="1"
-                        >
-                         
-                        </span>
+                       
                       </v-fade-transition>
                     </v-col>
                   </v-row>
                 </template>
               </v-expansion-panel-header>
-              <v-expansion-panel-content>
+              <v-expansion-panel-content color="primary">
                 <v-row>
                 <v-col  cols="8">
                 <v-text-field label="title" v-model="searchForT"
@@ -99,10 +94,10 @@
              </v-expansion-panels>
 
           <div class="text-center ma-1">
-            <v-dialog v-model="dialog" width="500">
+            <v-dialog  v-model="dialog" width="500" color="primary">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
-                  color="orange lighten-1"
+                  color= accent
                   dark
                   v-bind="attrs"
                   v-on="on"
@@ -116,7 +111,7 @@
                   Edit Collection
                 </v-card-title>
 
-                <v-card-text>
+                <v-card-text >
                   <v-text-field v-model="rename" label="name"></v-text-field>                          
                 </v-card-text>
                 <v-divider></v-divider>
@@ -160,7 +155,6 @@ export default {
      searchForT:"",
      rename:"",
      dialog : false,
-     nameChangeErrorMsg: "Your collection name must be at least 1 character"
        }
    },
     created() {
@@ -204,18 +198,16 @@ export default {
             this.$router.push({ name: "ComicSearch", params: {collectionID: this.collectionid, title: this.searchForT, issue: this.searchForI}});
         },
         updateCollection(collection) {
-            collection.name = this.rename.trim();
-          
+            collection.name = this.rename
             ComicServices.updateCollection(collection).then(response => {
                 if(response.status == 200) {
                     this.changeId = '';
-                    this.nameChange = true;
+                    this.changeName = false;
                     ComicServices.getAllCollections(this.$route.params.username).then(response => {
              this.$store.commit("SET_COLLECTIONS", response.data)
          });
                 }
             });
-            
         },
     }
 }
@@ -234,9 +226,7 @@ export default {
   width: 100px;
   white-space: nowrap;
 }
-.collectionDropdown div{
+.collectionDropdown {
   margin-bottom: 10px;
-  border: 0px solid black;
-  border-radius: 5px;
 }
 </style>
