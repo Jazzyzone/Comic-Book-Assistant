@@ -4,7 +4,7 @@
 
 <template>
 <v-container>
-    <v-row  justify="center">
+    <v-row  justify="center" class="collectionDropdown">
   <v-col class="shrink">
       <v-btn
         class="ma-2"
@@ -154,6 +154,7 @@ export default {
      searchForT:"",
      rename:"",
      dialog : false,
+     nameChangeErrorMsg: "Your collection name must be at least 1 character"
        }
    },
     created() {
@@ -189,16 +190,18 @@ export default {
             this.$router.push({ name: "ComicSearch", params: {collectionID: this.collectionid, title: this.searchForT, issue: this.searchForI}});
         },
         updateCollection(collection) {
-            collection.name = this.rename
+            collection.name = this.rename.trim();
+          
             ComicServices.updateCollection(collection).then(response => {
                 if(response.status == 200) {
                     this.changeId = '';
-                    this.changeName = false;
+                    this.nameChange = true;
                     ComicServices.getAllCollections(this.$route.params.username).then(response => {
              this.$store.commit("SET_COLLECTIONS", response.data)
          });
                 }
             });
+            
         },
     }
 }
@@ -217,7 +220,9 @@ export default {
   width: 100px;
   white-space: nowrap;
 }
-.collectionDropdown {
+.collectionDropdown div{
   margin-bottom: 10px;
+  border: 0px solid black;
+  border-radius: 5px;
 }
 </style>

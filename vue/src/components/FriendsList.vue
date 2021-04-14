@@ -114,12 +114,14 @@ export default {
     overflow: auto;
     position: fixed;
     bottom: 0;
-    right: 0;
+    right: .5%;
     z-index: 100 !important;
     font-size: 1rem;
     background-color: #00002E;
     text-align: center;
     opacity: 1;
+    border-top-right-radius: 25px;
+    border-top-left-radius: 25px;
 }
 .vflex {
     background-color: #00002E;
@@ -131,6 +133,7 @@ export default {
     z-index: 100 !important;
     margin-top: -25px;
     margin-bottom: -10px;
+    justify-content: center;
 }
 .friends-display {
     color: rgb(0, 146, 19);
@@ -142,8 +145,9 @@ export default {
     position: sticky;
     z-index: 100 !important;
 }
-
-
+::-webkit-scrollbar {
+    display: none;
+}
 .headline {
     border: 1px solid black;
     height: 60px;
