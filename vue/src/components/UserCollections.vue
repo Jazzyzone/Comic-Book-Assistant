@@ -15,7 +15,7 @@
         Add a Collection
       </v-btn>
 
-      <v-expand-transition >
+      <v-expand-transition>
         <v-card
           v-show="expand"
           lighten3
@@ -55,7 +55,7 @@
               <v-expansion-panel-header>
                 <template v-slot:default="{ open }">
                   <v-row no-gutters>
-                    <v-col cols="4">
+                    <v-col cols="4" class="addCollection">
                       Add a comic
                     </v-col>
                     <v-col
@@ -123,7 +123,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn  color="green lighten-1"
-                  dark @click="updateCollection(collection)">Add</v-btn>     
+                  dark @click="updateCollection(collection)">Save</v-btn>     
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -226,5 +226,12 @@ export default {
 .transparent {
   opacity: 0.1;
 
+}
+.addCollection {
+  width: 100px;
+  white-space: nowrap;
+}
+.collectionDropdown {
+  margin-bottom: 10px;
 }
 </style>
