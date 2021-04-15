@@ -1,6 +1,6 @@
 <template>
 <v-expansion-panels accordion flat dark :key="$route.query.name">
-    <v-expansion-panel class="mb-5 container"
+    <v-expansion-panel class="mb-5 cz"
       v-for="collection in collections"
             v-bind:key="collection.collection_ID"
     >
@@ -36,7 +36,7 @@
     }
 </script>
 <style >
-.container {
+.cz{
   position: relative;
   z-index: 0;
 }
