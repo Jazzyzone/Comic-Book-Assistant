@@ -11,7 +11,10 @@
         v-if="this.user!=null&&this.user.authorities[0].name=='ROLE_PREMIUM'"
       >
         mdi-star
-      </v-icon> </h1>
+      </v-icon> 
+     
+      </h1>
+
         <v-card v-if="!isCurrentUser" color="rgba(0,0,0,0)" :elevation=0 dark text-center class="d-flex flex-row justify-center align-center">
           
           <v-btn class="ml-auto mr-5" color= secondary dark :to="{ name: 'userCollections', params: {username: this.$route.params.username} }" >Go to User's Collections</v-btn>

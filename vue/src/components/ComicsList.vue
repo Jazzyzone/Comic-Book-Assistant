@@ -39,7 +39,7 @@
 <script>
 import ComicServices from '../services/ComicServices'
 export default {
-    props: ["collectionID"],
+    props: ["collectionID","userID"],
     data() {
         return {
             collection: {
@@ -47,18 +47,23 @@ export default {
             },
             collectionid: '',
             comicid: '',
+            username:""
         }
     },
     created() {
-         ComicServices.getAllComicsByCollectionId(this.collectionID).then(response => {
+        ComicServices.getUserById(this.userID).then(response=>{
+            this.username = response.data.username;
+             ComicServices.getAllComicsByCollectionId(this.collectionID).then(response => {
              this.collection = response.data;
-         });
+            });
+        });
+        
          //window.alert(this.collections.length);
     },
     computed: {
         
         isCurrentUser() {
-            return this.$route.params.username === this.$store.state.user.username;
+            return this.username === this.$store.state.user.username;
         },
     },
     methods: {

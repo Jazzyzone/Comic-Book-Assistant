@@ -9,7 +9,7 @@
       </v-expansion-panel-header>
       <v-expansion-panel-content class="bg">
         <collection-info class="mt-5" v-bind:userID="collection.userID" :key="collection.userID"/>
-        <comics-list v-bind:collectionID="collection.collectionID" :key="collection.collectionID"/>
+        <comics-list v-bind:collectionID="collection.collectionID" v-bind:userID="collection.userID" :key="collection.collectionID"/>
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>

@@ -56,7 +56,7 @@
                 <template color="primary" v-slot:default="{ open }">
                   <v-row  no-gutters >
                     <v-col cols="4"  class="addCollection">
-                      Add a comic
+                      Add comic
                     </v-col>
                     <v-col
                       cols="8"
@@ -129,7 +129,7 @@
           </div>
             <v-btn color="red lighten-1" dark class="ma-1" @click="deleteCollection(collection.collectionID)">Delete</v-btn>
         </v-flex>
-        <comics-list v-bind:collectionID="collection.collectionID" :key="collection.collectionID" />
+        <comics-list v-bind:collectionID="collection.collectionID" v-bind:userID="collection.userID" :key="collection.collectionID" />
       </v-expansion-panel-content>
     </v-expansion-panel>
     

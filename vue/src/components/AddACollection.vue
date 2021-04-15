@@ -12,13 +12,13 @@
                   v-on="on"
                   @click.stop="error=false"
                 >
-                  Add a Collection
+                  Add Collection
                 </v-btn>
               </template>
 
               <v-card dark color= primary>
                 <v-card-title class="headline prime">
-                  Add a Collection
+                  Add Collection
                 </v-card-title>
 
                 <v-card-text >

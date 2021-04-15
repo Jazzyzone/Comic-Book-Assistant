@@ -35,14 +35,14 @@
         dark
       >
         <v-tab :to="{ name: 'home'}">Home</v-tab>
-        <v-tab  darken :to="{ name: 'userHome',params: {username: this.$store.state.user.username}}"  v-if="$store.state.token!=''">Profile </v-tab>
+       
           <v-tab  :to="{ name: 'userCollections', params: {username: this.$store.state.user.username} }" v-if="$store.state.token!=''" > 
             Collection
           </v-tab >
-    
+     <v-tab  darken :to="{ name: 'userHome',params: {username: this.$store.state.user.username}}"  v-if="$store.state.token!=''">Profile </v-tab>
       </v-tabs>
       
-      <v-btn offset-y v-if="$store.state.token == ''" @click="$router.push('login' )" color= secondary >LogIn</v-btn>
+      <v-btn offset-y v-if="$store.state.token == ''" :to="{ name: 'login'}" color= secondary >LogIn</v-btn>
       <v-menu offset-y v-if="$store.state.token != ''">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
