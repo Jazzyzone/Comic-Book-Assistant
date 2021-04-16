@@ -231,6 +231,7 @@ this.rename = "";
 .container {
   position: relative;
   z-index: 0;
+  border:none;
 }
 .transparent {
   opacity: 0.1;
